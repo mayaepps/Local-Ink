@@ -99,7 +99,7 @@ This app aims to help independent, local booksellers by recommending books to us
 
 ## Wireframes
 
-<img src="userWireframe.jpg" width=600>
+<img src="userWireframeUpdated.jpg" width=600>
 <img src="storeWireframe.jpg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
