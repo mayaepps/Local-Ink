@@ -1,6 +1,6 @@
 # friendly-barnacle
 
-# Bookstore App Design Project - README
+# Bookstore app
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -19,7 +19,7 @@ This app aims to help independent, local booksellers by recommending books to us
 - **Story:** Buying from independent, local booksellers supports the user's community and local economy, and with so many people staying at home right now, some small booksellers are struggling.
 - **Market:** Adults and young adults who enjoy reading or want to read more while stuck at home. It provides value for those who want to read but don't know what to read. In addition, independent bookstores would use this app often. 
 - **Habit:** The home screen for users is an infinitely scrolling list of books that match the user's profile starting with the best match. In addition, the user could go back and change their profile to search for gifts for a family member or friend.
-- **Scope:** This is a resonable scope project. The required features are similar to other apps in this course, especially Instagram. First, the app would allow users and bookstores to create an account and users can create a profile. Bookstores could add books that appear on the user's home screen. Then the app would incorporate logging in and out and an algorithm to match the user's profile to books based on their preferences and location. Next, I would add a way for users to add books to a wishlist and see details (including location) of the bookstore. V4 would incorporate sending wishlists to others, a bookstore's hours/curbside pick-up policy, contact info, website. Also using the Goodreads API for review and book ratings, and maybe the ability to "like" a book?
+- **Scope:** This is a resonably scoped project. The required features are similar to other apps in this course, especially Instagram. First, the app would allow users and bookstores to create an account and users can create a profile. Bookstores could add books that appear on the user's home screen. Then the app would incorporate logging in and out and an algorithm to match the user's profile to books based on their preferences and location. Next, I would add a way for users to add books to a wishlist and see details (including location) of the bookstore. V4 would incorporate sending wishlists to others, a bookstore's hours/curbside pick-up policy, contact info, website. Also using the Goodreads API for review and book ratings, and maybe the ability to "like" a book? In addition, since bookstores are so busy and probably already have a databse of their books, I could add a website where they could upload their database and they wouldn't have to individually upload every book
 
 ## Product Spec
 
@@ -47,6 +47,7 @@ This app aims to help independent, local booksellers by recommending books to us
 * The user can rank their preferences
 * The user can search for books by title
 * The Goodreads API provides reviews and star-ratings for each book
+* For bookstores, make a website where they could upload their database and they wouldn't have to individually upload every book
 * ...
 
 ### 2. Screen Archetypes
@@ -74,7 +75,7 @@ This app aims to help independent, local booksellers by recommending books to us
 **Tab Navigation** (Tab to Screen)
 
 * Home feed
-* Search book (optional)
+* Wishlist
 * View/edit profile
 
 **Flow Navigation** (Screen to Screen)
@@ -95,3 +96,21 @@ This app aims to help independent, local booksellers by recommending books to us
     * => None
 * Add book screen
     * => Add book screen again
+
+## Wireframes
+
+<img src="userWireframe.jpg" width=600>
+<img src="storeWireframe.jpg" width=600>
+
+### [BONUS] Digital Wireframes & Mockups
+
+### [BONUS] Interactive Prototype
+
+## Schema 
+[This section will be completed in Unit 9]
+### Models
+[Add table of models]
+### Networking
+- [Add list of network requests by screen ]
+- [Create basic snippets for each Parse network request]
+- [OPTIONAL: List endpoints if using existing API such as Yelp]
