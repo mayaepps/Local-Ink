@@ -111,10 +111,199 @@ https://www.figma.com/file/6TFIQDPIiqvo3lr4rwBAvG/Bookstore-app-wireframe?node-i
 https://www.figma.com/proto/6TFIQDPIiqvo3lr4rwBAvG/Bookstore-app-wireframe?node-id=1%3A3&scaling=scale-down
 
 ## Schema 
-[This section will be completed in Unit 9]
-### Models
-[Add table of models]
+#### Models
+
+Book
+| Property      | Type                | Description |
+| --------------| ------------------- | ----------- |
+|objectId	    |String	              |unique id for the book (default field)
+| title         | String              | Title of the book        |
+| author        | String              | Author of the book       |
+| cover         | File  (maybe URL?)  | Image (or URL to image) of the cover of the book|
+| synopsis      | String              | Summary of book from publisher|
+| isbn          | Number              | Standard number that is used to identify books|
+| genre         | String              | Genre the book falls into|
+| age range     | String              | The book's target age range for readers|
+| store         | Pointer to Bookstore| The store selling this book |
+| price? (optional)| Number           | Price of the book|
+|createdAt	    |DateTime	          |date when book is created (default field)
+|updatedAt	    |DateTime	          |date when book is last updated (default field)
+
+Bookstore
+| Property      | Type     | Description |
+| ------------- | -------- | ----------- |
+|objectId	    |String	   |unique id for the bookstore (default field)
+| name          | String   | Name of the store|
+| location      | String (possibly make new location object)| Address of the store|
+| books         | Array of Pointers to Books| Books sold at this store|
+| profile       | File     | Store's profile image|
+|createdAt	    |DateTime  |date when store is created (default field)
+|updatedAt	    |DateTime  |date when store is last updated (default field)
+
+User
+| Property       | Type     | Description |
+| -------------- | -------- | ----------- |
+|objectId	     | String   |unique id for the bookstore (default field)
+| username       | String   | User's login username|
+| email?         | String   | User's login email|
+| location       | String   | User's current location|
+| profile (maybe)| File     | User's profile image|
+| wishlist       | Array of Pointers to books| Array of all the books the user has on their wishlist |
+| genrePreference| String   | The user's preference of genre for recommended books|
+| agePreference  | String   | The user's preference for target age range of recommended books|
+| pricePreference| String   | The user's preference for price range of recommended books|
+|createdAt	     |DateTime  | date when user is created (default field)
+|updatedAt	     |DateTime  | date when user is last updated (default field)
+
+
 ### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
+List of network requests by screen and basic snippets for each Parse network request:
+* User registration screen
+    * (Create/POST) Create a new user object
+ ```
+// Create the ParseUser
+ParseUser user = new ParseUser();
+// Set properties
+user.setUsername(username);
+user.setPassword(password);
+user.setEmail(email);
+user.setGenrePreference(genrePreference);
+user.setLocation(location);
+user.setAgePreference(agePreference);
+user.setPricePreference(genrePreference);
+// Invoke signUpInBackground
+user.signUpInBackground(new SignUpCallback() {
+    public void done(ParseException e) {
+        if (e == null) {
+            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(i);
+        } else {
+            // Sign up didn't succeed.
+```
+* Bookseller registration screen
+    * (Create/POST) Create a new bookstore object
+```
+Bookstore bookstore = new Bookstore();
+// Set properties
+bookstore.setName(name);
+bookstore.setPassword(password);
+bookstore.setEmail(email);
+bookstore.setGenrePreference(genrePreference);
+bookstore.setLocation(location);
+bookstore.signUpInBackground(new SignUpCallback() {
+    public void done(ParseException e) {
+        if (e == null) {
+            //Successful sign up, now go to home screen
+        } else {
+            // Sign up didn't succeed.
+```
+* Log in screen
+    * (Read/GET) Authenticate & query log in info about user attempting to log in
+    * (Read/GET) Or query persisted logged in user if someone is already logged in
+```
+ParseUser.logInInBackground(username, password, new LogInCallback() {
+    @Override
+    public void done(ParseUser user (or bookstore), ParseException e) {
+        // If the request is successful, the exception will be null
+        if (e != null) {
+            // Issue with log in
+            return;
+        } else {
+            // Log in successful
+```
+or 
+```
+if (ParseUser.getCurrentUser() != null) {
+    // Someone is already logged in
+}
+```
+    
+* User profile screen
+    * (Read/GET) Query logged in user object
+```
+ParseUser.getCurrentUser();
+```
+* Edit user profile screen
+    * (Update/PUT) Update logged in user object
+```
+ParseUser.getCurrentUser().setGenrePreference(genrePreference);
+```
+* Bookstore profile screen
+    * (Read/GET) Query logged in bookstore object
+```
+ParseUser.getCurrentUser()
+```
+* Recommendations/"stream" screen
+    * (Read/GET) Query all books nearby that match user's preferences (algorithm)
+```
+// I can think of two ways of doing this: 
+// Get all books and match by location & preferences(probably less efficient, more flexible)
+
+ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
+// include data referred by user key
+query.include(Post.KEY_BOOK);
+// start an asynchronous call for books
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    // issue getting books
+                }
+```
+Or
+```
+
+// Get the nearest x number of bookstores and match the user's preferences in those bookstores to the books in those bookstores
+//(I think less flexible, more efficient)
+
+ // specify what type of data to query - Book.class
+        ParseQuery<Book> query = ParseQuery.getQuery(Bookstore.class);
+        // include data referred by book key
+        query.include(Book.KEY_BOOKS);
+
+        // limit query to nearest x stores (or I might have to get all stores and find the nearest ones manually)
+        query.setLimit(STORE_LIMIT);
+
+        // order bookstores from nearest to farthest
+
+        // start an asynchronous call for bookstores
+        query.findInBackground(new FindCallback<Bookstore>() {
+            @Override
+            public void done(List<Bookstore> bookstores, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    //issue getting bookstores
+                    return;
+                }
+```
+* Book detail screen
+    * (Read/GET) Query specific book (Might be done already in recommendations screen--unnecessary to do here?)
+    * (Update/PUT) Update/add book object to wishlist in User object
+
+
+* Wishlist screen
+    * (Read/GET) Query logged in User and get their wishlist
+```
+ParseUser.getCurrentUser().getWishlist();
+```
+* Add book screen
+    * (Create/POST) Create a new book object
+```
+Book book = new Book();
+book.setDescription(description);
+book.setCover(new ParseFile(image));
+book.setAuthor(author);
+book.setGenre(genre);
+book.setAgeRabge(ageRange);
+book.setPrice(price);
+book.setUser(currentUser);
+book.saveInBackground(new SaveCallback() {
+    @Override
+    public void done(ParseException e) {
+        if (e != null) {
+            // Something has gone wrong
+            return;
+        }
+```
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
