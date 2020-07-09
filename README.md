@@ -42,7 +42,9 @@ This app aims to help independent, local booksellers by recommending books to us
 **Optional Nice-to-have Stories**
 
 * The user can remove books from their wishlist
+* Implement unit tests to enure high quality code
 * The bookseller can add information to their profile including curbside pick-up, availible hours
+* The bookseller can add books to by scanning the barcode of the book
 * The user can send their wishlist to friends
 * The user can rank their preferences
 * The user can search for books by title
@@ -103,8 +105,10 @@ This app aims to help independent, local booksellers by recommending books to us
 <img src="storeWireframe.jpg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
+https://www.figma.com/file/6TFIQDPIiqvo3lr4rwBAvG/Bookstore-app-wireframe?node-id=0%3A1
 
 ### [BONUS] Interactive Prototype
+https://www.figma.com/proto/6TFIQDPIiqvo3lr4rwBAvG/Bookstore-app-wireframe?node-id=1%3A3&scaling=scale-down
 
 ## Schema 
 [This section will be completed in Unit 9]
