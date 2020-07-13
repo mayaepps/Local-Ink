@@ -4,17 +4,17 @@
     <item
         android:id="@+id/action_home"
         android:icon="@drawable/ic_baseline_menu_book_24"
-        android:title="Home"
-        app:showAsAction="always" />
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_wishlist"
         android:icon="@drawable/ic_baseline_collections_bookmark_24"
-        android:title="Wishlist"
-        app:showAsAction="always" />
+        android:title="@string/wishlist"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile"
-        app:showAsAction="always"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom"
         />
 </menu>

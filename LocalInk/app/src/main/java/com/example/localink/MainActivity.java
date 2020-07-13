@@ -34,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
 
+        // Create the different fragments the user can see
         final Fragment recommendationsFragment = new RecommendationsFragment();
         final Fragment wishlistFragment = new WishlistFragment();
         final Fragment profileFragment = new ProfileFragment();
 
+        // The user can tap on the icons/items in the bottom navigation view to switch fragments
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        // Set default selection so when the app loads for the first time, it will have a fragment loaded
+        // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
     }
 }
