@@ -16,4 +16,6 @@
     <string name="wishlist">Wishlist</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="add_a_book">Add a book</string>
+    <string name="bookshelf">Bookshelf</string>
 </resources>
