@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.localink.databinding.ActivityLoginBinding;
 
@@ -13,7 +14,7 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // view binding
@@ -23,22 +24,27 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(view);
 
         // Log in as a reader button takes the user to MainActivity
-        binding.btnReaderLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
+        onClickGoToActivity(binding.btnReaderLogin, MainActivity.class, true);
 
         // Log in as a bookstore button takes the user to the BookstoreMainActivity
-        binding.btnBookstoreLogin.setOnClickListener(new View.OnClickListener() {
+        onClickGoToActivity(binding.btnBookstoreLogin, BookstoreMainActivity.class, true);
+
+        // Register as a reader button takes the user to the RegisterReaderActivity
+        onClickGoToActivity(binding.btnReaderRegister, RegisterReaderActivity.class, false);
+
+        // Register as a bookstore button takes the user to the RegisterBookstoreActivity
+        onClickGoToActivity(binding.btnBookstoreRegister, RegisterBookstoreActivity.class, false);
+    }
+
+    protected void onClickGoToActivity(Button button, final Class activity, final boolean doFinish) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, BookstoreMainActivity.class);
+                Intent i = new Intent(LoginActivity.this, activity);
                 startActivity(i);
-                finish();
+                if (doFinish) {
+                    finish();
+                }
             }
         });
     }

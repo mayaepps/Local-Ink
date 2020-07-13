@@ -58,7 +58,7 @@ public class BookstoreMainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
+        // Set default selection so when the app loads for the first time, it will have the bookshelf fragment loaded
         binding.bottomNavigation.setSelectedItemId(R.id.action_bookshelf);
     }
 }

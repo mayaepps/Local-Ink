@@ -20,4 +20,20 @@
         android:layout_below="@+id/btnReaderLogin"
         android:layout_centerHorizontal="true"
         android:text="@string/log_in_as_a_bookstore" />
+
+    <Button
+        android:id="@+id/btnReaderRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnBookstoreLogin"
+        android:layout_centerHorizontal="true"
+        android:text="Sign up as a reader" />
+
+    <Button
+        android:id="@+id/btnBookstoreRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnReaderRegister"
+        android:layout_centerHorizontal="true"
+        android:text="Sign up as a bookstore" />
 </RelativeLayout>
