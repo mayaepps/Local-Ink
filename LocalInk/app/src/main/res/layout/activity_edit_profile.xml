@@ -24,7 +24,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         tools:srcCompat="@tools:sample/avatars"
-        android:src="@drawable/ic_baseline_person_24" />
+        android:src="@drawable/ic_baseline_person_24"
+        android:contentDescription="@string/user_profile_image" />
 
     <Button
         android:id="@+id/btnChangeProfileImage"
@@ -81,9 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tvGenre"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@+id/tvGenre"
+        android:layout_toEndOf="@+id/tvGenre"
         tools:listheader="@android:layout/expandable_list_content" />
 
     <TextView
@@ -99,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tvAgeRange"
-        android:layout_toRightOf="@+id/tvAgeRange"
+        android:layout_toEndOf="@+id/tvAgeRange"
         android:layout_below="@+id/spnrGenre"
         tools:listheader="@android:layout/expandable_list_content"/>
 

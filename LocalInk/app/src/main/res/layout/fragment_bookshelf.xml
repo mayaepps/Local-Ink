@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Bookshelf"
+        android:text="@string/bookshelf"
         android:textAlignment="center"
         android:textSize="24sp"
         android:layout_marginBottom="8dp"/>

@@ -43,4 +43,7 @@
     <string name="bookstore_name">Bookstore name</string>
     <string name="address">Address</string>
     <string name="bookstore_profile_image">Bookstore profile image</string>
+    <string name="book_cover">Book cover</string>
+    <string name="user_profile_image">User profile image</string>
+
 </resources>
