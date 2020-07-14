@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditBookstoreProfileActivity"></activity>
+        <activity android:name=".BookDetailsActivity"></activity>
+        <activity android:name=".EditBookstoreProfileActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".RegisterBookstoreActivity" />
         <activity android:name=".RegisterReaderActivity" />

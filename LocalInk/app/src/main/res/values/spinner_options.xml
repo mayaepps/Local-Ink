@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="genres_array">
+        <item>Fantasy</item>
+        <item>Classics</item>
+        <item>Comic/Graphic novel</item>
+        <item>Historical Fiction</item>
+        <item>Horror</item>
+        <item>Literary Fiction</item>
+        <item>Romance</item>
+        <item>Science Fiction</item>
+        <item>Biography/Autobiography</item>
+        <item>Self Help</item>
+        <item>Cookbooks</item>
+    </string-array>
+
+    <string-array name="age_ranges_array">
+        <item>Board books</item>
+        <item>Picture books</item>
+        <item>Early Reader</item>
+        <item>Chapter books</item>
+        <item>Middle Grade</item>
+        <item>Young Adult</item>
+        <item>Adult</item>
+
+    </string-array>
+
+</resources>

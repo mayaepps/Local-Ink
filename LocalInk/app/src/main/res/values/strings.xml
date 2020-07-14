@@ -19,4 +19,12 @@
     <string name="register_as_a_reader">Register as a Reader</string>
     <string name="save_changes">Save Changes</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="wishlist_title">Wishlist:</string>
+    <string name="preferences">Preferences</string>
+    <string name="change_image">Change Image</string>
+    <string name="location">Location</string>
+    <string name="age_range">Age Range</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="genre">Genre</string>
 </resources>

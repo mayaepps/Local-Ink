@@ -3,12 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EditProfileActivity">
 
-    <Button
-        android:id="@+id/btnSave"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/save_changes" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:useCompatPadding="true"
+        android:src="@drawable/ic_baseline_done_24"/>
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        tools:srcCompat="@tools:sample/avatars"
+        android:src="@drawable/ic_baseline_person_24"/>
+
+    <Button
+        android:id="@+id/btnChangeProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_centerHorizontal="true"
+        android:text="@string/change_image" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnChangeProfileImage"
+        android:text="@string/location"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvLocation"
+        android:text="@string/genre"
+        android:layout_centerHorizontal="true"/>
+
+    <Spinner
+        android:id="@+id/spnrGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLocation"
+        android:layout_toRightOf="@+id/tvGenre"
+        tools:listheader="@android:layout/expandable_list_content" />
+
+    <TextView
+        android:id="@+id/tvAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/age_range"
+        android:layout_below="@+id/tvGenre"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/spnrAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvAgeRange"
+        android:layout_below="@+id/spnrGenre"
+        tools:listheader="@android:layout/expandable_list_content"/>
+
 </RelativeLayout>

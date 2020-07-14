@@ -14,11 +14,12 @@ import android.widget.Button;
 
 import com.example.localink.EditProfileActivity;
 import com.example.localink.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class ProfileFragment extends Fragment {
 
-    Button btnEdit;
+    FloatingActionButton fabEdit;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -40,9 +41,9 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnEdit = view.findViewById(R.id.btnEdit);
+        fabEdit = view.findViewById(R.id.fabEdit);
 
-        btnEdit.setOnClickListener(new View.OnClickListener() {
+        fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditProfileActivity.class);

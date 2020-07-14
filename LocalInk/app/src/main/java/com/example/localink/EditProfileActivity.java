@@ -22,7 +22,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         setContentView(view);
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+        binding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: Save changes in Parse
