@@ -9,17 +9,25 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.WishlistFragment;
+import com.example.localink.Models.Book;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     ActivityMainBinding binding;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
