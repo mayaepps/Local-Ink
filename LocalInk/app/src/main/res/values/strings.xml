@@ -27,4 +27,13 @@
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="genre">Genre</string>
+    <string name="sign_up_as_a_reader">Sign up as a reader</string>
+    <string name="sign_up_as_a_bookstore">Sign up as a bookstore</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register_as_a_bookstore">Register as a Bookstore</string>
+    <string name="street_address">Street address</string>
+    <string name="city">City</string>
+    <string name="zip_code">Zip code</string>
+    <string name="name">Bookstore name</string>
 </resources>

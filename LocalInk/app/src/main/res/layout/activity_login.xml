@@ -6,34 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <Button
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/username"
+        android:layout_marginHorizontal="24dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnReaderLogin"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/password"
+        android:layout_marginHorizontal="24dp"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReaderLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/log_in_as_a_reader"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="24dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBookstoreLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnReaderLogin"
         android:layout_centerHorizontal="true"
-        android:text="@string/log_in_as_a_bookstore" />
+        android:text="@string/log_in_as_a_bookstore"
+        android:layout_marginHorizontal="24dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReaderRegister"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnBookstoreLogin"
+        android:layout_above="@+id/btnBookstoreRegister"
         android:layout_centerHorizontal="true"
-        android:text="Sign up as a reader" />
+        android:text="@string/sign_up_as_a_reader"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginHorizontal="24dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBookstoreRegister"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnReaderRegister"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Sign up as a bookstore" />
+        android:text="@string/sign_up_as_a_bookstore"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="8dp"/>
 </RelativeLayout>

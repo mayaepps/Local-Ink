@@ -4,13 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterReaderActivity">
+    tools:context=".RegisterReaderActivity"
+>
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/register_as_a_reader" />
+        android:hint="@string/username"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUsername"
+        android:hint="@string/password"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etStreetAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/street_address"
+        android:layout_below="@id/etPassword"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/city"
+        android:layout_below="@id/etStreetAddress"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etZipCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/zip_code"
+        android:layout_below="@id/etCity"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvPreferences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etZipCode"
+        android:layout_alignParentStart="true"
+        android:paddingTop="16dp"
+        android:text="@string/preferences"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPreferences"
+        android:hint="@string/genre"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etAgeRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etGenre"
+        android:hint="@string/age_range"
+        android:layout_marginHorizontal="16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etAgeRange"
+        android:text="@string/register_as_a_reader"
+        android:layout_marginHorizontal="16dp"/>
 
 </RelativeLayout>
