@@ -14,6 +14,8 @@ import android.widget.Button;
 
 import com.example.localink.EditBookstoreProfileActivity;
 import com.example.localink.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +24,7 @@ import com.example.localink.R;
  */
 public class BookstoreProfileFragment extends Fragment {
 
-    Button btnSave;
+    FloatingActionButton fabSave;
 
     public BookstoreProfileFragment() {
         // Required empty public constructor
@@ -44,9 +46,9 @@ public class BookstoreProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnSave = view.findViewById(R.id.btnEdit);
+        fabSave = view.findViewById(R.id.fabEdit);
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditBookstoreProfileActivity.class);

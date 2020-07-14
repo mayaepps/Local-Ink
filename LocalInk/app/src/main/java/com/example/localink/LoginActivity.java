@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.localink.databinding.ActivityLoginBinding;
+import com.google.android.material.button.MaterialButton;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         onClickGoToActivity(binding.btnBookstoreRegister, RegisterBookstoreActivity.class, false);
     }
 
-    protected void onClickGoToActivity(Button button, final Class activity, final boolean doFinish) {
+    protected void onClickGoToActivity(MaterialButton button, final Class activity, final boolean doFinish) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

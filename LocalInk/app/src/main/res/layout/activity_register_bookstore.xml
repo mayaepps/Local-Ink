@@ -47,7 +47,6 @@
         android:layout_below="@id/etCity"
         android:layout_marginHorizontal="16dp"/>
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"

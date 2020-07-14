@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EditProfileActivity">
+    tools:context=".EditProfileActivity"
+    android:padding="16dp">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSave"
@@ -23,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         tools:srcCompat="@tools:sample/avatars"
-        android:src="@drawable/ic_baseline_person_24"/>
+        android:src="@drawable/ic_baseline_person_24" />
 
     <Button
         android:id="@+id/btnChangeProfileImage"
@@ -33,27 +34,55 @@
         android:layout_centerHorizontal="true"
         android:text="@string/change_image" />
 
-    <TextView
-        android:id="@+id/tvLocation"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etStreetAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/street_address"
+        android:layout_below="@id/btnChangeProfileImage"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/city"
+        android:layout_below="@id/etStreetAddress" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etZipCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/zip_code"
+        android:layout_below="@id/etCity" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnChangeProfileImage"
-        android:text="@string/location"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@id/etZipCode"
+        android:layout_marginTop="16dp"
+        android:text="@string/preferences"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvLocation"
+        android:layout_below="@id/tvPreferences"
         android:text="@string/genre"
-        android:layout_centerHorizontal="true"/>
+        android:textSize="16sp"
+        android:layout_marginVertical="16dp"
+        />
 
     <Spinner
         android:id="@+id/spnrGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvLocation"
+        android:layout_alignBaseline="@id/tvGenre"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="2dp"
         android:layout_toRightOf="@+id/tvGenre"
         tools:listheader="@android:layout/expandable_list_content" />
 
@@ -62,13 +91,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/age_range"
-        android:layout_below="@+id/tvGenre"
-        android:layout_centerHorizontal="true" />
+        android:textSize="16sp"
+        android:layout_below="@+id/tvGenre" />
 
     <Spinner
         android:id="@+id/spnrAgeRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAgeRange"
         android:layout_toRightOf="@+id/tvAgeRange"
         android:layout_below="@+id/spnrGenre"
         tools:listheader="@android:layout/expandable_list_content"/>

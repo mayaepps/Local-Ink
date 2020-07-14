@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.BookshelfFragment">
+    tools:context=".Fragments.BookshelfFragment"
+    android:padding="16dp">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tvBookshelf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Bookshelf"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Bookshelf fragment" />
+        android:layout_below="@+id/tvBookshelf"/>
 
-</FrameLayout>
+</RelativeLayout>

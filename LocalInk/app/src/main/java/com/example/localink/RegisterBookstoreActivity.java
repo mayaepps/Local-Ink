@@ -27,6 +27,7 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: Register a new bookstore user
                 Intent i = new Intent(RegisterBookstoreActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();

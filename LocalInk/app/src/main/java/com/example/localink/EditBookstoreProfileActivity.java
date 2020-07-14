@@ -19,14 +19,13 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // view binding
         binding = ActivityEditBookstoreProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         setContentView(view);
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+        binding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: Save the changes to Parse

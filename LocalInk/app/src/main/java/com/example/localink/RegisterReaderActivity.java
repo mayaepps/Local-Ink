@@ -26,6 +26,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: Register a new reader user
                 Intent i = new Intent(RegisterReaderActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
