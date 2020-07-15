@@ -1,5 +1,6 @@
 package com.example.localink.Models;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -31,7 +32,12 @@ public class LocalInkUser {
     }
 
     public ParseObject getBookstore() {
-        return user.getParseObject(KEY_BOOKSTORE);
+        try {
+            return user.fetchIfNeeded().getParseObject(KEY_BOOKSTORE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setBookstore(ParseObject bookstore) {
