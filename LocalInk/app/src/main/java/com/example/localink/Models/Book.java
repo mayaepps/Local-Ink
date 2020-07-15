@@ -77,6 +77,7 @@ public class Book extends ParseObject {
         put(KEY_GENRE, genre);
     }
 
+    // TODO: check the age range is in the predefined list of age ranges before setting
     public String getAgeRange() {
         return getString(KEY_AGE_RANGE);
     }

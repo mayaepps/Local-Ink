@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityLoginBinding;
 import com.google.android.material.button.MaterialButton;
 import com.parse.LogInCallback;
@@ -32,8 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(view);
 
         // If someone is already logged in, go straight to the main activity
+
+        ParseUser.getCurrentUser().fetchInBackground();
         if (ParseUser.getCurrentUser() != null) {
-            if (ParseUser.getCurrentUser().getBoolean("isBookstore")) {
+            LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+            if (user.isBookstore()) {
                 goToActivity(BookstoreMainActivity.class);
             } else {
                 goToActivity(MainActivity.class);

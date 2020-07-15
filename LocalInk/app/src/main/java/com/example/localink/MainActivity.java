@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "Error getting books: " + e.getMessage());
                     return;
                 }
+
                 for (Book book : books) {
                     Log.i(TAG, "Found book: " + book.getTitle() + " by " + book.getAuthor() +
                             ", at bookstore " + book.getBookstore().getString("name"));
                 }
-
 
             }
         });
