@@ -12,10 +12,10 @@ public class LocalInkUser {
     ParseUser user;
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
     public static final String KEY_BOOKSTORE = "bookstore";
+    public static final String KEY_LOCATION = "location";
     public static final String KEY_WISHLIST = "wishlist";
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
-
 
     public LocalInkUser (ParseUser obj) {
         user = obj;
@@ -23,6 +23,10 @@ public class LocalInkUser {
 
     public ParseUser getUser() {
         return user;
+    }
+
+    public String getLocation() {
+        return user.getString(KEY_LOCATION);
     }
 
     public Boolean isBookstore() {

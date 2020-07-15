@@ -11,15 +11,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.localink.EditProfileActivity;
+import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.ParseUser;
 
 
 public class ProfileFragment extends Fragment {
 
     FloatingActionButton fabEdit;
+    ImageView ivProfileImage;
+    TextView tvUsername;
+    TextView tvLocation;
+    TextView tvGenre;
+    TextView tvPreferences;
+    TextView tvAgeRange;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -41,8 +51,23 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Find views in profile page
         fabEdit = view.findViewById(R.id.fabEdit);
+        ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvLocation = view.findViewById(R.id.tvLocation);
+        tvGenre = view.findViewById(R.id.tvGenre);
+        tvAgeRange = view.findViewById(R.id.tvAgeRange);
 
+        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+
+        // Set views using info in user
+        tvUsername.setText(user.getUser().getUsername());
+        tvLocation.setText("Location: " + user.getLocation());
+        tvAgeRange.setText("Age Range: " + user.getAgePreference());
+        tvGenre.setText("Genre: " + user.getGenrePreference());
+
+        // Go to edit profile screen when the floating action button (edit button) is tapped
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -6,7 +6,6 @@
     tools:context=".Fragments.BookshelfFragment"
     android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/tvBookshelf"
         android:layout_width="wrap_content"
@@ -18,6 +17,7 @@
         android:layout_marginBottom="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBooks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvBookshelf"/>

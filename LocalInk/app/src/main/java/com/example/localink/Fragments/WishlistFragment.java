@@ -69,7 +69,7 @@ public class WishlistFragment extends Fragment {
         getWishlistBooks();
     }
 
-    // Gets the wishlist list stored in ParseUser and 
+    // Gets the wishlist list stored in ParseUser and save the list to wishlistBooks
     private void getWishlistBooks() {
         ParseUser.getCurrentUser().fetchInBackground();
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());

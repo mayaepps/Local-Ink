@@ -4,14 +4,13 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
-import org.json.JSONArray;
+import java.util.List;
 
 @ParseClassName("Bookstore")
 public class Bookstore extends ParseObject {
 
     //These keys must exactly match the keys in the Parse database
     public static final String KEY_NAME = "name";
-    private static final String KEY_LOCATION = "location";
     private static final String KEY_BOOKS = "books";
     private static final String KEY_PROFILE_IMAGE = "profileImage";
     public static final String KEY_CREATED_AT = "createdAt";
@@ -20,16 +19,8 @@ public class Bookstore extends ParseObject {
         return getString(KEY_NAME);
     }
 
-    public String getLocation() {
-        return getString(KEY_LOCATION);
-    }
-
-    public void setLocation(String location) {
-        put(KEY_LOCATION, location);
-    }
-
-    public JSONArray getBooks() {
-        return getJSONArray(KEY_BOOKS);
+    public List<Book> getBooks() {
+        return getList(KEY_BOOKS);
     }
 
     public void setBooks(ParseObject[] books) {
