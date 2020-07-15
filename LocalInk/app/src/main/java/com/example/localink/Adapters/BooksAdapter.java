@@ -1,6 +1,7 @@
 package com.example.localink.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
+import com.parse.Parse;
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -66,13 +69,17 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
 
         // Bind the book information to each of the views in item_book
         public void bind(Book book) {
-            if (book.getCover() != null) {
-                Glide.with(context).load(book.getCover()).into(ivCover);
+            try {
+                if (book.getCover() != null) {
+                    Glide.with(context).load(book.getCover()).into(ivCover);
 
+                }
+                tvTitle.setText(book.getTitle());
+                tvAuthor.setText(book.getAuthor());
+                tvDescription.setText(book.getSynopsis());
+            } catch (ParseException e) {
+                Log.e("ViewHolder", "Error fetching book fields from Parse " + e.getMessage());
             }
-            tvTitle.setText(book.getTitle());
-            tvAuthor.setText(book.getAuthor());
-            tvDescription.setText(book.getSynopsis());
         }
     }
 }

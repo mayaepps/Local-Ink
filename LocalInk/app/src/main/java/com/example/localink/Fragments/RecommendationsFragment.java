@@ -71,13 +71,8 @@ public class RecommendationsFragment extends Fragment {
             @Override
             public void done(List<Book> books, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Error getting books: " + e.getMessage());
+                    Log.e(TAG, "Error getting books from Parse: " + e.getMessage());
                     return;
-                }
-
-                for (Book book : books) {
-                    Log.i(TAG, "Found book: " + book.getTitle() + " by " + book.getAuthor() +
-                            ", at bookstore " + book.getBookstore().getString(Bookstore.KEY_NAME));
                 }
 
                 allBooks.clear();

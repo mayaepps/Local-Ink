@@ -6,6 +6,8 @@ import com.parse.ParseUser;
 
 import org.json.JSONArray;
 
+import java.util.List;
+
 public class LocalInkUser {
     ParseUser user;
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
@@ -19,7 +21,7 @@ public class LocalInkUser {
         user = obj;
     }
 
-    protected ParseUser getUser() {
+    public ParseUser getUser() {
         return user;
     }
 
@@ -44,8 +46,8 @@ public class LocalInkUser {
         user.put(KEY_BOOKSTORE, bookstore);
     }
 
-    public JSONArray getWishlist() {
-        return user.getJSONArray(KEY_WISHLIST);
+    public List<Book> getWishlist() {
+        return user.getList(KEY_WISHLIST);
     }
 
     public void setWishlist(JSONArray wishlist) {
