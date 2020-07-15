@@ -20,6 +20,9 @@ import com.example.localink.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+import org.parceler.Parcels;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -59,7 +62,7 @@ public class ProfileFragment extends Fragment {
         tvGenre = view.findViewById(R.id.tvGenre);
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
 
-        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+        final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         // Set views using info in user
         tvUsername.setText(user.getUser().getUsername());
@@ -72,6 +75,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditProfileActivity.class);
+                i.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
                 startActivity(i);
             }
         });

@@ -27,6 +27,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 public class BookstoreProfileFragment extends Fragment {
 
     private static final String TAG = "BookstoreProfileFragmnt";
@@ -61,12 +63,12 @@ public class BookstoreProfileFragment extends Fragment {
         tvName = view.findViewById(R.id.tvName);
         tvAddress = view.findViewById(R.id.tvAddress);
 
-        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
-        ParseObject store = user.getBookstore();
+        final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         tvAddress.setText("Address: " + user.getLocation());
 
-        store.fetchInBackground(new GetCallback<ParseObject>() {
+        user.getBookstore().fetchInBackground(new GetCallback<ParseObject>() {
+
             @Override
             public void done(ParseObject bookstore, ParseException e) {
                 if (e != null) {
@@ -77,11 +79,12 @@ public class BookstoreProfileFragment extends Fragment {
             }
         });
 
-
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditBookstoreProfileActivity.class);
+                i.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
+                i.putExtra(Bookstore.class.getSimpleName(), tvName.getText());
                 startActivity(i);
             }
         });
