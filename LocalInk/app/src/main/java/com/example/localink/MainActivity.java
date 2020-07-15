@@ -71,5 +71,27 @@ public class MainActivity extends AppCompatActivity {
         });
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
+        
+        queryBooks();
+    }
+
+    private void queryBooks() {
+        ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
+        query.include(Book.KEY_BOOKSTORE);
+        query.findInBackground(new FindCallback<Book>() {
+            @Override
+            public void done(List<Book> books, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error getting books: " + e.getMessage());
+                    return;
+                }
+                for (Book book : books) {
+                    Log.i(TAG, "Found book: " + book.getTitle() + " by " + book.getAuthor() +
+                            ", at bookstore " + book.getBookstore().getString("name"));
+                }
+
+
+            }
+        });
     }
 }

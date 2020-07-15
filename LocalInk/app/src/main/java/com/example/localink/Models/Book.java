@@ -12,7 +12,7 @@ public class Book extends ParseObject {
     private static final String KEY_AUTHOR = "author";
     public static final String KEY_COVER = "cover";
     public static final String KEY_SYNOPSIS = "synopsis";
-    private static final String KEY_BOOKSTORE = "bookstore";
+    public static final String KEY_BOOKSTORE = "bookstore";
     private static final String KEY_ISBN = "isbn";
     private static final String KEY_GENRE = "genre";
     private static final String KEY_AGE_RANGE = "age_range";
@@ -28,8 +28,8 @@ public class Book extends ParseObject {
         put(KEY_TITLE, title);
     }
 
-    public ParseFile getAuthor() {
-        return getParseFile(KEY_AUTHOR);
+    public String getAuthor() {
+        return getString(KEY_AUTHOR);
     }
 
     public void setAuthor(String author) {
