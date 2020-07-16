@@ -54,6 +54,18 @@ public class BookDetailsActivity extends AppCompatActivity {
                 // Add book to wishlist
                 LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
                 List<Book> wishlist = user.getWishlist();
+                for (Book wishBook : wishlist) {
+                    try {
+                        if (wishBook.getIsbn().equals(book.getIsbn())) {
+                            Toast.makeText(BookDetailsActivity.this, book.getTitle() + " is already in your wishlist!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } catch (ParseException e) {
+                        Log.e(TAG, "Could not get ISBN from book " + book.getTitle(), e);
+                    }
+                }
+                
+                wishlist.add(book);
                 user.setWishlist(wishlist);
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                     @Override
