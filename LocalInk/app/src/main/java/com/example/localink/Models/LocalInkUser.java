@@ -4,7 +4,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.parceler.Parcel;
 
 import java.util.List;
@@ -18,8 +17,6 @@ public class LocalInkUser {
     public static final String KEY_WISHLIST = "wishlist";
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
-
-
 
     public LocalInkUser() { }
 
