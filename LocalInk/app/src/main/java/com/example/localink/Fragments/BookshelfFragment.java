@@ -15,13 +15,10 @@ import android.view.ViewGroup;
 
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -63,7 +60,7 @@ public class BookshelfFragment extends Fragment {
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         storeBooks = new ArrayList<>(); // Have to initialize storeBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), storeBooks);
+        adapter = new BooksAdapter(getContext(), storeBooks, null);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 

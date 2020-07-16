@@ -14,21 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
-import com.parse.Parse;
 import com.parse.ParseException;
 
 import java.util.List;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> {
 
+    public interface OnClickListener {
+        void onClick(int position);
+    }
+
     private Context context;
 
     // The list of books to be adapted and shown in the recycler view
     private List<Book> books;
+    private OnClickListener clickListener;
 
-    public BooksAdapter(Context context, List<Book> books) {
+    public BooksAdapter(Context context, List<Book> books, OnClickListener clickListener) {
         this.context = context;
         this.books = books;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -65,6 +70,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+
+            if (clickListener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clickListener.onClick(getAdapterPosition());
+                    }
+                });
+            }
         }
 
         // Bind the book information to each of the views in item_book

@@ -19,9 +19,14 @@ public class Book extends ParseObject {
     private static final String KEY_AGE_RANGE = "age_range";
     public static final String KEY_CREATED_AT = "createdAt";
 
-    public String getTitle() throws ParseException {
+    public String getTitle() {
         // Method getString() is defined in the Parse object class, is like a getter for the key
-        return fetchIfNeeded().getString(KEY_TITLE);
+        try {
+            return fetchIfNeeded().getString(KEY_TITLE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setTitle(String title) {

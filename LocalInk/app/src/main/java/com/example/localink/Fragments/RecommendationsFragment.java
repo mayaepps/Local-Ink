@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,12 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.localink.Adapters.BooksAdapter;
+import com.example.localink.BookDetailsActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.Bookstore;
+import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -53,10 +59,21 @@ public class RecommendationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Instantiate my OnClickListener from the interface in BooksAdapter
+        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position) {
+
+                Intent i = new Intent(getContext(), BookDetailsActivity.class);
+                i.putExtra(Book.class.getSimpleName(), allBooks.get(position));
+                startActivity(i);
+            }
+        };
+
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         allBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), allBooks);
+        adapter = new BooksAdapter(getContext(), allBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -78,7 +95,6 @@ public class RecommendationsFragment extends Fragment {
                 allBooks.clear();
                 allBooks.addAll(books);
                 adapter.notifyDataSetChanged();
-
             }
         });
     }

@@ -58,7 +58,7 @@ public class LocalInkUser {
         return user.getList(KEY_WISHLIST);
     }
 
-    public void setWishlist(JSONArray wishlist) {
+    public void setWishlist(List<Book> wishlist) {
         user.put(KEY_WISHLIST, wishlist);
     }
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -70,8 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        int layoutId = R.id.action_home;
+        Intent i = getIntent();
+        if (i.hasExtra(Integer.class.getSimpleName())) {
+            layoutId = i.getIntExtra(Integer.class.getSimpleName(), R.id.action_home);
+        }
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
-        binding.bottomNavigation.setSelectedItemId(R.id.action_home);
+        binding.bottomNavigation.setSelectedItemId(layoutId);
+
 
     }
 
