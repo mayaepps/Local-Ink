@@ -14,10 +14,18 @@
         android:layout_marginTop="16dp"/>
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username"
+        android:layout_below="@+id/etName"
+        android:layout_marginHorizontal="16dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etName"
+        android:layout_below="@+id/etUsername"
         android:hint="@string/password"
         android:layout_marginHorizontal="16dp"/>
 
@@ -38,19 +46,34 @@
         android:layout_below="@id/etStreetAddress"
         android:layout_marginHorizontal="16dp"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etZipCode"
+    <LinearLayout
+        android:id="@+id/llStateZip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/zip_code"
         android:layout_below="@id/etCity"
-        android:layout_marginHorizontal="16dp"/>
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:hint="@string/state" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etZipCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:hint="@string/zip_code" />
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etZipCode"
+        android:layout_below="@+id/llStateZip"
         android:layout_centerHorizontal="true"
         android:text="@string/register_as_a_bookstore"
         android:layout_marginHorizontal="16dp"/>

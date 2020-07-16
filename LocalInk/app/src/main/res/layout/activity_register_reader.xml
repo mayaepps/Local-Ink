@@ -19,8 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etUsername"
+        android:layout_marginHorizontal="16dp"
         android:hint="@string/password"
-        android:layout_marginHorizontal="16dp"/>
+        android:inputType="textPassword" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etStreetAddress"
@@ -39,19 +40,34 @@
         android:layout_below="@id/etStreetAddress"
         android:layout_marginHorizontal="16dp"/>
 
+    <LinearLayout
+        android:id="@+id/llStateZip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCity"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:hint="@string/state" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etZipCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/zip_code"
-        android:layout_below="@id/etCity"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_weight="0.5"
+        android:hint="@string/zip_code" />
+    </LinearLayout>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvPreferences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etZipCode"
+        android:layout_below="@+id/llStateZip"
         android:layout_alignParentStart="true"
         android:paddingTop="16dp"
         android:text="@string/preferences"

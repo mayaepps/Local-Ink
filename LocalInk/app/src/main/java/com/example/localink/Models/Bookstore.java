@@ -19,11 +19,15 @@ public class Bookstore extends ParseObject {
         return getString(KEY_NAME);
     }
 
+    public void setName(String name) {
+        put(KEY_NAME, name);
+    }
+
     public List<Book> getBooks() {
         return getList(KEY_BOOKS);
     }
 
-    public void setBooks(ParseObject[] books) {
+    public void setBooks(List<Book> books) {
         put(KEY_BOOKS, books);
     }
 

@@ -19,7 +19,7 @@ public class LocalInkUser {
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
 
-    public LocalInkUser() { };
+    public LocalInkUser() { }
 
     public LocalInkUser (ParseUser obj) {
         user = obj;
@@ -31,6 +31,10 @@ public class LocalInkUser {
 
     public String getLocation() {
         return user.getString(KEY_LOCATION);
+    }
+
+    public void setLocation(String address) {
+        user.put(KEY_LOCATION, address);
     }
 
     public Boolean isBookstore() {
@@ -50,7 +54,7 @@ public class LocalInkUser {
         return null;
     }
 
-    public void setBookstore(ParseObject bookstore) {
+    public void setBookstore(Bookstore bookstore) {
         user.put(KEY_BOOKSTORE, bookstore);
     }
 
