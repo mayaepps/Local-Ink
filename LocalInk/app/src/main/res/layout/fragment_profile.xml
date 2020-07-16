@@ -43,14 +43,6 @@
         tools:text="Menlo Park, California" />
 
     <TextView
-        android:id="@+id/tvGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPreferences"
-        android:layout_centerHorizontal="true"
-        android:padding="8dp"/>
-
-    <TextView
         android:id="@+id/tvPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,11 +53,21 @@
         android:text="@string/preferences" />
 
     <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPreferences"
+        android:layout_centerHorizontal="true"
+        tools:text="@string/genre"
+        android:padding="8dp"/>
+
+    <TextView
         android:id="@+id/tvAgeRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvGenre"
         android:layout_centerHorizontal="true"
+        tools:text="@string/age_range"
         android:padding="8dp"/>
 
     <com.google.android.material.button.MaterialButton

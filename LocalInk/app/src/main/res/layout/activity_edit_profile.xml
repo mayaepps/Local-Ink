@@ -27,7 +27,7 @@
         android:src="@drawable/ic_baseline_person_24"
         android:contentDescription="@string/user_profile_image" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnChangeProfileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tvGenre"
         android:layout_toEndOf="@+id/tvGenre"
-        tools:listheader="@android:layout/expandable_list_content" />
+        android:entries="@array/genres_array"/>
 
     <TextView
         android:id="@+id/tvAgeRange"
@@ -100,6 +100,6 @@
         android:layout_alignBaseline="@id/tvAgeRange"
         android:layout_toEndOf="@+id/tvAgeRange"
         android:layout_below="@+id/spnrGenre"
-        tools:listheader="@android:layout/expandable_list_content"/>
+        android:entries="@array/age_ranges_array"/>
 
 </RelativeLayout>

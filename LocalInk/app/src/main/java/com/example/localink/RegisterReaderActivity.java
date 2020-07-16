@@ -57,7 +57,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
         newUser.setGenrePreference(binding.etGenre.getText().toString());
         newUser.setAgePreference(binding.etAgeRange.getText().toString());
         newUser.setLocation(binding.etStreetAddress.getText().toString() + ", "
-                + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString()
+                + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
                 + binding.etZipCode.getText().toString());
         newUser.setWishlist(new ArrayList<Book>());
         // Invoke signUpInBackground

@@ -66,9 +66,9 @@ public class ProfileFragment extends Fragment {
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         // Set views using info in user
+        final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
         tvUsername.setText(user.getUser().getUsername());
         tvLocation.setText("Location: " + user.getLocation());
         tvAgeRange.setText("Age Range: " + user.getAgePreference());

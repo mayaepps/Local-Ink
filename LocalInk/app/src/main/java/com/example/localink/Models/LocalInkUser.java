@@ -19,6 +19,8 @@ public class LocalInkUser {
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
 
+
+
     public LocalInkUser() { }
 
     public LocalInkUser (ParseUser obj) {
