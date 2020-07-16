@@ -45,5 +45,13 @@
         android:src="@drawable/ic_baseline_edit_24"
         app:useCompatPadding="true"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log_out"
+        android:layout_below="@id/tvAddress"
+        android:layout_margin="16dp"/>
+
 
 </RelativeLayout>

@@ -46,5 +46,6 @@
     <string name="user_profile_image">User profile image</string>
     <string name="log_in">Log In</string>
     <string name="book_cover">Book cover</string>
+    <string name="log_out">Log out</string>
 
 </resources>

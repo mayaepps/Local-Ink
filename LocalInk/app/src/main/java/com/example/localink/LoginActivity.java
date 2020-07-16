@@ -90,8 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Logging " + user.getUsername() + " in to Local Ink", Toast.LENGTH_SHORT).show();
                     if (user.getBoolean("isBookstore")) {
                         goToActivity(BookstoreMainActivity.class);
+                        finish();
                     } else {
                         goToActivity(MainActivity.class);
+                        finish();
                     }
                 }
             }

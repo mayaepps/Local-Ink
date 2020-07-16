@@ -64,7 +64,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         Log.e(TAG, "Could not get ISBN from book " + book.getTitle(), e);
                     }
                 }
-                
+
                 wishlist.add(book);
                 user.setWishlist(wishlist);
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
@@ -78,6 +78,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         }
                     }
                 });
+
                 // Go to MainActivity
                 Intent i = new Intent(BookDetailsActivity.this, MainActivity.class);
                 i.putExtra(Integer.class.getSimpleName(), R.id.action_wishlist);

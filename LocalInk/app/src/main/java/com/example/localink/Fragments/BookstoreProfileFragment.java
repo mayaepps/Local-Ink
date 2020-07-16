@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.localink.EditBookstoreProfileActivity;
+import com.example.localink.LoginActivity;
 import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -29,6 +31,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.Objects;
+
 public class BookstoreProfileFragment extends Fragment {
 
     private static final String TAG = "BookstoreProfileFragmnt";
@@ -36,6 +40,7 @@ public class BookstoreProfileFragment extends Fragment {
     ImageView ivProfileImage;
     TextView tvName;
     TextView tvAddress;
+    MaterialButton btnLogout;
 
     public BookstoreProfileFragment() {
         // Required empty public constructor
@@ -62,6 +67,7 @@ public class BookstoreProfileFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvName = view.findViewById(R.id.tvName);
         tvAddress = view.findViewById(R.id.tvAddress);
+        btnLogout = view.findViewById(R.id.btnLogout);
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -86,6 +92,18 @@ public class BookstoreProfileFragment extends Fragment {
                 i.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
                 i.putExtra(Bookstore.class.getSimpleName(), tvName.getText());
                 startActivity(i);
+            }
+        });
+
+        // When the user taps the log out button, log the current user out of Parse
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Activity activity = getActivity();
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                startActivity(i);
+                activity.finish();
             }
         });
     }

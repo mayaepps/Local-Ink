@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.localink.EditProfileActivity;
+import com.example.localink.LoginActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseUser;
 
@@ -31,8 +34,8 @@ public class ProfileFragment extends Fragment {
     TextView tvUsername;
     TextView tvLocation;
     TextView tvGenre;
-    TextView tvPreferences;
     TextView tvAgeRange;
+    MaterialButton btnLogout;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -61,6 +64,7 @@ public class ProfileFragment extends Fragment {
         tvLocation = view.findViewById(R.id.tvLocation);
         tvGenre = view.findViewById(R.id.tvGenre);
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
+        btnLogout = view.findViewById(R.id.btnLogout);
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -77,6 +81,18 @@ public class ProfileFragment extends Fragment {
                 Intent i = new Intent(getContext(), EditProfileActivity.class);
                 i.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
                 startActivity(i);
+            }
+        });
+
+        // When the user taps the log out button, log the current user out of Parse
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Activity activity = getActivity();
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                startActivity(i);
+                activity.finish();
             }
         });
     }

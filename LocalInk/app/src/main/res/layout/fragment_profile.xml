@@ -68,5 +68,13 @@
         android:layout_centerHorizontal="true"
         android:padding="8dp"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log_out"
+        android:layout_below="@id/tvAgeRange"
+        android:layout_margin="16dp"/>
+
 
 </RelativeLayout>
