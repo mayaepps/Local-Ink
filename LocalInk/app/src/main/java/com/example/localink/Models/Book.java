@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 @ParseClassName("Book")
 public class Book extends ParseObject {
@@ -82,5 +83,14 @@ public class Book extends ParseObject {
 
     public void setAgeRange(String age_range) {
         put(KEY_AGE_RANGE, age_range);
+    }
+
+    // TODO: check the age range is in the predefined list of age ranges before setting
+    public ParseUser getBookstore() throws ParseException {
+        return fetchIfNeeded().getParseUser(KEY_BOOKSTORE);
+    }
+
+    public void setBookstore(ParseUser bookstore) {
+        put(KEY_BOOKSTORE, bookstore);
     }
 }

@@ -5,66 +5,108 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.AddBookFragment">
 
-    <TextView
-        android:id="@+id/tvHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/put_a_new_book_on_your_bookshelf"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_margin="16dp"/>
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/tvHeader"
-        android:hint="@string/title" />
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/etTitle"
-        android:hint="@string/author" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etSynopsis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/etAuthor"
-        android:hint="@string/synopsis" />
+            <TextView
+                android:id="@+id/tvHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/put_a_new_book_on_your_bookshelf"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_margin="16dp"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etCover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/etSynopsis"
-        android:hint="@string/cover"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_below="@+id/tvHeader"
+                android:hint="@string/title" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/etCover"
-        android:hint="@string/genre"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_below="@+id/etTitle"
+                android:hint="@string/author" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etAgeRange"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_below="@+id/etGenre"
-        android:hint="@string/age_range"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etIsbn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etAuthor"
+                android:layout_marginHorizontal="16dp"
+                android:hint="@string/isbn"
+                android:inputType="number" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSynopsis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_below="@+id/etIsbn"
+                android:hint="@string/synopsis" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_below="@+id/etSynopsis"
+                android:hint="@string/cover"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etCover"
+                android:text="@string/genre"
+                android:textSize="16sp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <Spinner
+                android:id="@+id/spnrGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/tvGenre"
+                android:layout_toEndOf="@+id/tvGenre"
+                android:entries="@array/genres_array"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvAgeRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/age_range"
+                android:textSize="16sp"
+                android:layout_below="@+id/tvGenre"
+                android:layout_marginStart="16dp"/>
+
+            <Spinner
+                android:id="@+id/spnrAgeRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/tvAgeRange"
+                android:layout_toEndOf="@+id/tvAgeRange"
+                android:layout_below="@+id/spnrGenre"
+                android:entries="@array/age_ranges_array"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/create_book"
