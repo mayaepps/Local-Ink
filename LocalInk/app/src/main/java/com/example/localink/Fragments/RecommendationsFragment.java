@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.BookDetailsActivity;
 import com.example.localink.Models.Book;
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.FindCallback;

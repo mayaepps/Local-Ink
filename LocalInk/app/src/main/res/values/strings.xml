@@ -20,7 +20,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="wishlist_title">Wishlist:</string>
-    <string name="preferences">Preferences:</string>
+    <string name="preferences">Preferences</string>
     <string name="change_image">Change Image</string>
     <string name="location">Location</string>
     <string name="age_range">Age Range</string>
@@ -35,12 +35,12 @@
     <string name="street_address">Street address</string>
     <string name="city">City</string>
     <string name="zip_code">Zip code</string>
-    <string name="name">Bookstore name</string>
+    <string name="name">Name</string>
+    <string name="bookstore_name">Bookstore name</string>
     <string name="create_book">Create Book</string>
     <string name="put_a_new_book_on_your_bookshelf">Put a new book on your bookshelf</string>
     <string name="synopsis">Synopsis</string>
     <string name="cover">Cover URL</string>
-    <string name="bookstore_name">Bookstore name</string>
     <string name="address">Address</string>
     <string name="bookstore_profile_image">Bookstore profile image</string>
     <string name="user_profile_image">User profile image</string>

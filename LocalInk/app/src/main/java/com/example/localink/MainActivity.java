@@ -18,7 +18,6 @@ import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.Models.Book;
-import com.example.localink.Models.Bookstore;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;

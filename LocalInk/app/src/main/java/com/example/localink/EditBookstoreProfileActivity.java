@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityEditBookstoreProfileBinding;
 import com.parse.ParseException;
@@ -33,11 +32,10 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         final LocalInkUser user = Parcels.unwrap(i.getParcelableExtra(ParseUser.class.getSimpleName()));
-        String name = i.getStringExtra(Bookstore.class.getSimpleName());
 
         // TODO: change the way location is stored so all fields can be populated when the user edits the location
         binding.etStreetAddress.setText(user.getLocation());
-        binding.etName.setText(name);
+        binding.etName.setText(user.getName());
 
         binding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,8 +45,7 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
                 String address = binding.etStreetAddress.getText().toString();
 
                 user.setLocation(address);
-                // TODO: set name when I get getBookstore working
-                // user.getBookstore.setName(name)
+                user.setName(name);
                 user.getUser().saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

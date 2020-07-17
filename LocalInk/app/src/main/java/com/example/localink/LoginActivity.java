@@ -11,17 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityLoginBinding;
-import com.google.android.material.button.MaterialButton;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -87,8 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Error logging in: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     return;
                 } else if (user != null) {
+                    LocalInkUser localInkUser = new LocalInkUser(user);
                     Toast.makeText(LoginActivity.this, "Logging " + user.getUsername() + " in to Local Ink", Toast.LENGTH_SHORT).show();
-                    if (user.getBoolean("isBookstore")) {
+                    if (localInkUser.isBookstore()) {
                         goToActivity(BookstoreMainActivity.class);
                         finish();
                     } else {

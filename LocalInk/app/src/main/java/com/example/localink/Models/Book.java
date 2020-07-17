@@ -58,14 +58,6 @@ public class Book extends ParseObject {
         put(KEY_SYNOPSIS, synopsis);
     }
 
-    public ParseObject getBookstore() throws ParseException {
-        return fetchIfNeeded().getParseObject(KEY_BOOKSTORE);
-    }
-
-    public void setBookstore(ParseObject bookstore) {
-        put(KEY_BOOKSTORE, bookstore);
-    }
-
     public Number getIsbn() throws ParseException {
         return fetchIfNeeded().getNumber(KEY_ISBN);
     }

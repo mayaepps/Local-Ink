@@ -75,7 +75,7 @@ public class BookshelfFragment extends Fragment {
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
 
         // Only get the books from this bookstore
-        query.whereEqualTo(LocalInkUser.KEY_BOOKSTORE, user.getBookstore());
+        query.whereEqualTo(Book.KEY_BOOKSTORE, user.getUser());
 
         // Make the query
         query.findInBackground(new FindCallback<Book>() {

@@ -9,7 +9,7 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/name"
+        android:hint="@string/bookstore_name"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"/>
 

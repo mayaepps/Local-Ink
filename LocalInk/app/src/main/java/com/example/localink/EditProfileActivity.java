@@ -70,13 +70,15 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    //Per Codepath Spinner guide
+    // Takes a spinner and the value the spinner should be set to and sets the spinner to that value
     public void setSpinnerToValue(Spinner spinner, String value) {
         int index = 0;
         SpinnerAdapter adapter = spinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             if (adapter.getItem(i).equals(value)) {
                 index = i;
-                break; // terminate loop
+                break;
             }
         }
         spinner.setSelection(index);

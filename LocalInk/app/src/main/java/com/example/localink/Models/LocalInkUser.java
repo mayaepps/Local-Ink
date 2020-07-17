@@ -1,7 +1,5 @@
 package com.example.localink.Models;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
@@ -12,11 +10,12 @@ import java.util.List;
 public class LocalInkUser {
     ParseUser user;
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
-    public static final String KEY_BOOKSTORE = "bookstore";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_WISHLIST = "wishlist";
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_PROFILE_IMAGE = "profileImage";
 
     public LocalInkUser() { }
 
@@ -44,19 +43,6 @@ public class LocalInkUser {
         user.put(KEY_IS_BOOKSTORE, isBookstore);
     }
 
-    public ParseObject getBookstore() {
-        try {
-            return user.fetchIfNeeded().getParseObject(KEY_BOOKSTORE);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void setBookstore(Bookstore bookstore) {
-        user.put(KEY_BOOKSTORE, bookstore);
-    }
-
     public List<Book> getWishlist() {
         return user.getList(KEY_WISHLIST);
     }
@@ -81,5 +67,21 @@ public class LocalInkUser {
     // TODO: make sure param is valid
     public void setAgePreference(String agePreference) {
         user.put(KEY_AGE_PREFERENCE, agePreference);
+    }
+
+    public String getName() {
+        return user.getString(KEY_NAME);
+    }
+
+    public void setName(String name) {
+        user.put(KEY_NAME, name);
+    }
+
+    public String getProfileImage() {
+        return user.getString(KEY_PROFILE_IMAGE);
+    }
+
+    public void setProfileImage(String profileImage) {
+        user.put(KEY_PROFILE_IMAGE, profileImage);
     }
 }

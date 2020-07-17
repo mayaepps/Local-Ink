@@ -1,7 +1,5 @@
 package com.example.localink;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,10 +15,6 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 public class RegisterReaderActivity extends AppCompatActivity {
 
@@ -53,6 +47,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
         user.setPassword(binding.etPassword.getText().toString());
         // Set custom properties
         LocalInkUser newUser = new LocalInkUser(user);
+        newUser.setName(binding.etName.getText().toString());
         newUser.setIsBookstore(false);
         newUser.setGenrePreference(binding.etGenre.getText().toString());
         newUser.setAgePreference(binding.etAgeRange.getText().toString());

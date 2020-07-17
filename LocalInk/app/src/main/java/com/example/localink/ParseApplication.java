@@ -3,7 +3,6 @@ package com.example.localink;
 import android.app.Application;
 
 import com.example.localink.Models.Book;
-import com.example.localink.Models.Bookstore;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -15,7 +14,6 @@ public class ParseApplication extends Application {
 
         // Must register Parse models before initializing Parse
         ParseObject.registerSubclass(Book.class);
-        ParseObject.registerSubclass(Bookstore.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured

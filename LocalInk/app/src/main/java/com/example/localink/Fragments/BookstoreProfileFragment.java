@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.localink.EditBookstoreProfileActivity;
 import com.example.localink.LoginActivity;
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
@@ -72,25 +71,13 @@ public class BookstoreProfileFragment extends Fragment {
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         tvAddress.setText("Address: " + user.getLocation());
-
-        user.getBookstore().fetchInBackground(new GetCallback<ParseObject>() {
-
-            @Override
-            public void done(ParseObject bookstore, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error getting bookstore from Parse: " + e.getMessage());
-                }
-                // Set name using info in bookstore
-                tvName.setText(bookstore.getString(Bookstore.KEY_NAME));
-            }
-        });
+        tvName.setText(user.getName());
 
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditBookstoreProfileActivity.class);
                 i.putExtra(ParseUser.class.getSimpleName(), Parcels.wrap(user));
-                i.putExtra(Bookstore.class.getSimpleName(), tvName.getText());
                 startActivity(i);
             }
         });

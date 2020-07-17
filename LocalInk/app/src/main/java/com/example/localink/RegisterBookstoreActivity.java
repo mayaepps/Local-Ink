@@ -4,23 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.localink.Models.Book;
-import com.example.localink.Models.Bookstore;
 import com.example.localink.Models.LocalInkUser;
-import com.example.localink.databinding.ActivityMainBinding;
 import com.example.localink.databinding.ActivityRegisterBookstoreBinding;
-import com.example.localink.databinding.ActivityRegisterReaderBinding;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
-
-import java.util.ArrayList;
 
 public class RegisterBookstoreActivity extends AppCompatActivity {
 
@@ -46,9 +37,36 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        Intent i = new Intent(RegisterBookstoreActivity.this, LoginActivity.class);
-        startActivity(i);
-        finish();
+
+        final ParseUser user = new ParseUser();
+        final LocalInkUser newUser = new LocalInkUser(user);
+
+        //Set required fields
+        user.setUsername(binding.etUsername.getText().toString());
+        user.setPassword(binding.etPassword.getText().toString());
+
+        // Set new user's custom values from views
+        newUser.setName(binding.etName.getText().toString());
+        newUser.setLocation(binding.etStreetAddress.getText().toString() + ", "
+                + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
+                + binding.etZipCode.getText().toString());
+        newUser.setIsBookstore(true);
+
+        // Invoke signUpInBackground
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e != null) {
+                    // Sign up didn't succeed
+                    Toast.makeText(RegisterBookstoreActivity.this, "Could not sign up new user: "
+                            + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    // Sign up successful, go to login activity
+                    Intent i = new Intent(RegisterBookstoreActivity.this, LoginActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        });
     }
 
 }
