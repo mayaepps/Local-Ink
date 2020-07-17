@@ -94,28 +94,48 @@
         android:textStyle="bold"
         android:layout_marginHorizontal="16dp"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etGenre"
-        android:layout_width="match_parent"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvGenre"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPreferences"
-        android:hint="@string/genre"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_below="@id/tvPreferences"
+        android:text="@string/genre"
+        android:textSize="16sp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="16dp"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etAgeRange"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spnrGenre"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etGenre"
-        android:hint="@string/age_range"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_alignBaseline="@id/tvGenre"
+        android:layout_toEndOf="@+id/tvGenre"
+        android:entries="@array/genres_array"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/age_range"
+        android:textSize="16sp"
+        android:layout_below="@+id/tvGenre"
+        android:layout_marginStart="16dp"/>
+
+    <Spinner
+        android:id="@+id/spnrAgeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAgeRange"
+        android:layout_toEndOf="@+id/tvAgeRange"
+        android:layout_below="@+id/spnrGenre"
+        android:entries="@array/age_ranges_array"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etAgeRange"
+        android:layout_below="@+id/spnrAgeRange"
         android:text="@string/register_as_a_reader"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_margin="16dp"/>
 
 </RelativeLayout>

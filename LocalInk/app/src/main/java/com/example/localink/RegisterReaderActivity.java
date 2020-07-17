@@ -49,8 +49,8 @@ public class RegisterReaderActivity extends AppCompatActivity {
         LocalInkUser newUser = new LocalInkUser(user);
         newUser.setName(binding.etName.getText().toString());
         newUser.setIsBookstore(false);
-        newUser.setGenrePreference(binding.etGenre.getText().toString());
-        newUser.setAgePreference(binding.etAgeRange.getText().toString());
+        newUser.setGenrePreference(binding.spnrGenre.getSelectedItem().toString());
+        newUser.setAgePreference(binding.spnrAgeRange.getSelectedItem().toString());
         newUser.setLocation(binding.etStreetAddress.getText().toString() + ", "
                 + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
                 + binding.etZipCode.getText().toString());

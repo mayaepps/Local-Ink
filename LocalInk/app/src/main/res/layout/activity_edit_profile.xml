@@ -85,7 +85,7 @@
         android:layout_toEndOf="@+id/tvGenre"
         android:entries="@array/genres_array"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvAgeRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
