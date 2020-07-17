@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.localink.Adapters.BooksAdapter;
+import com.example.localink.BookDetailsActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -58,14 +61,33 @@ public class BookshelfFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        //Instantiate my OnClickListener from the interface in BooksAdapter
+        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position) {
+                return;
+            }
+
+            @Override
+            public void onLongClick(int position) {
+                Book book = storeBooks.get(position);
+                book.deleteInBackground();
+                storeBooks.remove(position);
+                adapter.notifyItemChanged(position);
+                Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+            }
+        };
+
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         storeBooks = new ArrayList<>(); // Have to initialize storeBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), storeBooks, null);
+        adapter = new BooksAdapter(getContext(), storeBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryBooks();
+
     }
 
     // Query all the books whose bookstore is the same as the currently logged in bookstore (current user)

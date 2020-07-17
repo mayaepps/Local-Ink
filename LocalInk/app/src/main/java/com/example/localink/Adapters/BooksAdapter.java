@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +21,11 @@ import java.util.List;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> {
 
+    private static final String TAG = "BooksAdapter";
+
     public interface OnClickListener {
         void onClick(int position);
+        void onLongClick(int position);
     }
 
     private Context context;
@@ -76,6 +80,13 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                     @Override
                     public void onClick(View view) {
                         clickListener.onClick(getAdapterPosition());
+                    }
+                });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        clickListener.onLongClick(getAdapterPosition());
+                        return true;
                     }
                 });
             }

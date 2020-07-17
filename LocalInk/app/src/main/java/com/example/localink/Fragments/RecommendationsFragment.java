@@ -67,6 +67,11 @@ public class RecommendationsFragment extends Fragment {
                 i.putExtra(Book.class.getSimpleName(), allBooks.get(position));
                 startActivity(i);
             }
+
+            @Override
+            public void onLongClick(int position) {
+                return;
+            }
         };
 
         // Set up recycler view with the adapter and linear layout
