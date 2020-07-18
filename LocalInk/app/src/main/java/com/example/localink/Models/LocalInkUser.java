@@ -1,9 +1,11 @@
 package com.example.localink.Models;
 
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.io.File;
 import java.util.List;
 
 @Parcel
@@ -77,11 +79,11 @@ public class LocalInkUser {
         user.put(KEY_NAME, name);
     }
 
-    public String getProfileImage() {
-        return user.getString(KEY_PROFILE_IMAGE);
+    public ParseFile getProfileImage() {
+        return user.getParseFile(KEY_PROFILE_IMAGE);
     }
 
-    public void setProfileImage(String profileImage) {
+    public void setProfileImage(ParseFile profileImage) {
         user.put(KEY_PROFILE_IMAGE, profileImage);
     }
 }

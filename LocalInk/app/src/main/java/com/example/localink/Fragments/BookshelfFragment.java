@@ -25,15 +25,12 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookshelfFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BookshelfFragment extends Fragment {
 
     private static final String TAG = "BookshelfFragment";
@@ -61,7 +58,6 @@ public class BookshelfFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         //Instantiate my OnClickListener from the interface in BooksAdapter
         BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
             @Override
@@ -76,6 +72,7 @@ public class BookshelfFragment extends Fragment {
                 storeBooks.remove(position);
                 adapter.notifyItemChanged(position);
                 Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+                //removeBookfromAllWishlists(book);
             }
         };
 
@@ -113,6 +110,43 @@ public class BookshelfFragment extends Fragment {
                 storeBooks.clear();
                 storeBooks.addAll(books);
                 adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void removeBookfromAllWishlists(final Book book) {
+        // specify what type of data to query - Book.class
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        query.include(LocalInkUser.KEY_WISHLIST);
+        // Get only the reader users
+        query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, false);
+
+        // start an asynchronous call for users
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting users: " + e.getMessage(), e);
+                    return;
+                }
+
+                for (final ParseUser user : users) {
+                    List<Book> books = user.getList(LocalInkUser.KEY_WISHLIST);
+                    if (books.contains(book)) {
+                        books.remove(book);
+                        LocalInkUser localInkUser = new LocalInkUser(user);
+                        localInkUser.setWishlist(books);
+                        user.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e!= null){
+                                    Log.e(TAG, "Error changing wishlist in Parse " + e.getLocalizedMessage());
+                                }
+                                Log.d(TAG, "removed: " + book.getTitle() + " from " + user.getUsername());
+                            }
+                        });
+                    }
+                }
             }
         });
     }

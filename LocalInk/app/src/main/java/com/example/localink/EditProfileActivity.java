@@ -1,28 +1,41 @@
 package com.example.localink;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityEditProfileBinding;
 import com.example.localink.databinding.ActivityLoginBinding;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.File;
+
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "EditProfileActivity";
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 20;
     ActivityEditProfileBinding binding;
+    private File photoFile;
+    private String photoFileName = "photo.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +68,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setLocation(address);
                 user.setGenrePreference(genrePreference);
                 user.setAgePreference(agePreference);
+                user.setProfileImage(new ParseFile(photoFile));
+
                 user.getUser().saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -68,6 +83,48 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
             }
         });
+
+        binding.btnChangeProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchCamera();
+            }
+        });
+    }
+
+    // Launch the implicit intent to open the camera application, and provide the camera with a fileProvider
+    // to save the image
+    private void launchCamera() {
+        // create implicit Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Create a File reference for future access
+        photoFile = getPhotoFile(photoFileName);
+
+        // wrap File object into a content provider, required for API >= 24
+        Uri fileProvider = FileProvider.getUriForFile(this, "com.localink.fileprovider", photoFile);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        // As long as the result is not null, it's safe to use the intent to go to the camera
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    // Returns the File for a photo stored on disk given the fileName
+    private File getPhotoFile(String photoFileName) {
+
+        // Get the photos storage directory
+        File mediaStorageDir = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // Or create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.e(TAG, "Failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
     }
 
     //Per Codepath Spinner guide
@@ -82,5 +139,21 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
         spinner.setSelection(index);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // When the camera activity comes back with the profile image
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Glide.with(this).load(photoFile).circleCrop().into(binding.ivProfileImage);
+                // TODO: compress/shrink the file so it will take less time loading
+                Log.i(TAG, "Image successfully saved in the file provider");
+
+            } else {
+                // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
