@@ -22,9 +22,6 @@ import com.example.localink.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-
-import org.parceler.Parcels;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -60,6 +57,8 @@ public class RecommendationsFragment extends Fragment {
 
         //Instantiate my OnClickListener from the interface in BooksAdapter
         BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+
+            // If clicked, the book item should open  a detail view activity for the book
             @Override
             public void onClick(int position) {
 
@@ -68,6 +67,7 @@ public class RecommendationsFragment extends Fragment {
                 startActivity(i);
             }
 
+            // Required by the interface
             @Override
             public void onLongClick(int position) {
                 return;
@@ -84,7 +84,7 @@ public class RecommendationsFragment extends Fragment {
         queryBooks();
     }
 
-    // Queries Parse for all the book objects and adds them to allBooks
+    // Queries Parse for all the book objects and adds them to allBooks/the adapter
     private void queryBooks() {
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
         query.include(Book.KEY_BOOKSTORE);

@@ -65,6 +65,7 @@ public class BookshelfFragment extends Fragment {
                 return;
             }
 
+            // Delete book from Parse if it is long clicked
             @Override
             public void onLongClick(int position) {
                 Book book = storeBooks.get(position);
@@ -72,6 +73,8 @@ public class BookshelfFragment extends Fragment {
                 storeBooks.remove(position);
                 adapter.notifyItemChanged(position);
                 Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+                // This method would remove all pointers to the removed book from all the wishlists
+                // But it doesn't quite work yet
                 //removeBookfromAllWishlists(book);
             }
         };
@@ -92,6 +95,7 @@ public class BookshelfFragment extends Fragment {
         ParseUser.getCurrentUser().fetchInBackground();
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
+        // Create the query for books
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
 
         // Only get the books from this bookstore
@@ -106,7 +110,7 @@ public class BookshelfFragment extends Fragment {
                     return;
                 }
 
-                // add to storeBooks and notify adapter
+                // add to the list of storeBooks and notify adapter
                 storeBooks.clear();
                 storeBooks.addAll(books);
                 adapter.notifyDataSetChanged();
@@ -114,6 +118,7 @@ public class BookshelfFragment extends Fragment {
         });
     }
 
+    // Removes all pointers to a specific book from every wishlist
     private void removeBookfromAllWishlists(final Book book) {
         // specify what type of data to query - Book.class
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
@@ -130,6 +135,8 @@ public class BookshelfFragment extends Fragment {
                     return;
                 }
 
+                // For each of the users, check if the book to be removed is in the wishlist
+                // If it is, remove the pointer to the removed book
                 for (final ParseUser user : users) {
                     List<Book> books = user.getList(LocalInkUser.KEY_WISHLIST);
                     if (books.contains(book)) {

@@ -44,14 +44,16 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         setContentView(view);
 
+        // Get the book to be detailed from the intent
         Intent i = getIntent();
         book = i.getParcelableExtra(Book.class.getSimpleName());
 
+        // When the add button is tapped, add the book to the user's wishlist
         binding.fabAddToWishlist.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                // Add book to wishlist
+                // Make sure the book isn't already in the wishlist
                 LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
                 List<Book> wishlist = user.getWishlist();
                 for (Book wishBook : wishlist) {
@@ -65,6 +67,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 }
 
+                // Add and save the book to the wishlist
                 wishlist.add(book);
                 user.setWishlist(wishlist);
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
@@ -86,6 +89,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // Populate the views in the detail activity with the information from the book object
         try {
             binding.tvTitle.setText(book.getTitle());
             binding.tvAuthor.setText(book.getAuthor());

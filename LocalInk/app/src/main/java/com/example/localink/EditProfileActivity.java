@@ -55,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setSpinnerToValue(binding.spnrGenre, user.getGenrePreference());
         setSpinnerToValue(binding.spnrAgeRange, user.getAgePreference());
 
+        // When the save button is pressed, save all the selections to Parse and go back to profile activity
         binding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,15 +69,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setLocation(address);
                 user.setGenrePreference(genrePreference);
                 user.setAgePreference(agePreference);
-                user.setProfileImage(new ParseFile(photoFile));
+                if (photoFile != null) {
+                    user.setProfileImage(new ParseFile(photoFile));
+                }
 
+                // Save changes to user to Parse
                 user.getUser().saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
                             Log.e(TAG, "Error saving changes to parse: " + e.getMessage(), e);
                         } else {
-                            // Return back to ProfileFragment
+                            // Return back to ProfileFragment by finishing this activity
                             finish();
                         }
                     }
@@ -84,6 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Launch the camera when the change profile image button is tapped
         binding.btnChangeProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +108,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // wrap File object into a content provider, required for API >= 24
         Uri fileProvider = FileProvider.getUriForFile(this, "com.localink.fileprovider", photoFile);
-
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // As long as the result is not null, it's safe to use the intent to go to the camera
@@ -117,8 +121,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Get the photos storage directory
         File mediaStorageDir = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Or create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.e(TAG, "Failed to create directory");
         }
@@ -147,7 +149,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Glide.with(this).load(photoFile).circleCrop().into(binding.ivProfileImage);
-                // TODO: compress/shrink the file so it will take less time loading
+                // TODO: compress/shrink the file so it will take less time loading to/from Parse
                 Log.i(TAG, "Image successfully saved in the file provider");
 
             } else {

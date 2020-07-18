@@ -75,6 +75,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvDescription = itemView.findViewById(R.id.tvDescription);
 
+            // If a clickListener was passed into the adapter, set the methods on the itemView
             if (clickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,6 +83,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                         clickListener.onClick(getAdapterPosition());
                     }
                 });
+
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
