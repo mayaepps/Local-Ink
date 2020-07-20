@@ -137,22 +137,11 @@ public class BookshelfFragment extends Fragment {
 
                 // For each of the users, check if the book to be removed is in the wishlist
                 // If it is, remove the pointer to the removed book
+                LocalInkUser localInkUser;
                 for (final ParseUser user : users) {
-                    List<Book> books = user.getList(LocalInkUser.KEY_WISHLIST);
-                    if (books.contains(book)) {
-                        books.remove(book);
-                        LocalInkUser localInkUser = new LocalInkUser(user);
-                        localInkUser.setWishlist(books);
-                        user.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e!= null){
-                                    Log.e(TAG, "Error changing wishlist in Parse " + e.getLocalizedMessage());
-                                }
-                                Log.d(TAG, "removed: " + book.getTitle() + " from " + user.getUsername());
-                            }
-                        });
-                    }
+                    localInkUser = new LocalInkUser(user);
+                    List<Book> books = localInkUser.getWishlist();
+                    Log.i(TAG, user.getUsername() + ": " + books.toString());
                 }
             }
         });

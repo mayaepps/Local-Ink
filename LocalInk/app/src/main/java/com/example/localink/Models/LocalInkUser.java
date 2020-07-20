@@ -1,11 +1,16 @@
 package com.example.localink.Models;
 
+import android.util.Log;
+
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 @Parcel
@@ -46,7 +51,8 @@ public class LocalInkUser {
     }
 
     public List<Book> getWishlist() {
-        return user.getList(KEY_WISHLIST);
+        List<Book> wishlist = user.getList(KEY_WISHLIST);
+        return wishlist;
     }
 
     public void setWishlist(List<Book> wishlist) {

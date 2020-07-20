@@ -17,6 +17,7 @@ import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
 import com.example.localink.databinding.ActivityEditBookstoreProfileBinding;
 import com.example.localink.databinding.ActivityEditProfileBinding;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -39,7 +40,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // view binding
-        ActivityBookDetailsBinding binding = ActivityBookDetailsBinding.inflate(getLayoutInflater());
+        final ActivityBookDetailsBinding binding = ActivityBookDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         setContentView(view);
@@ -96,7 +97,14 @@ public class BookDetailsActivity extends AppCompatActivity {
             binding.tvSynopsis.setText(book.getSynopsis());
             binding.tvGenre.setText(book.getGenre());
             binding.tvAgeRange.setText(book.getAgeRange());
-            binding.tvStoreLocation.setText("Location: ");
+            book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    LocalInkUser localInkUser = new LocalInkUser((user));
+                    String address = localInkUser.getLocation();
+                    binding.tvStoreLocation.setText("At " + localInkUser.getName() + ": " + address);
+                }
+            });
             Glide.with(this).load(book.getCover()).into(binding.ivCover);
         } catch (ParseException e) {
             Log.e(TAG, "Error getting book details: " + e.getMessage());

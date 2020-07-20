@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -61,10 +65,15 @@ public class WishlistFragment extends Fragment {
 
     // Gets the wishlist list stored in ParseUser and save the list to wishlistBooks
     private void getWishlistBooks() {
-        ParseUser.getCurrentUser().fetchInBackground();
-        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
-        List<Book> wishlist = user.getWishlist();
-        wishlistBooks.addAll(wishlist);
-        adapter.notifyDataSetChanged();
+        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                LocalInkUser localInkuser = new LocalInkUser(user);
+                List<Book> wishlist = localInkuser.getWishlist();
+                wishlistBooks.clear();
+                wishlistBooks.addAll(wishlist);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

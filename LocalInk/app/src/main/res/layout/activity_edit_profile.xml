@@ -35,12 +35,19 @@
         android:text="@string/change_image" />
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:layout_below="@id/btnChangeProfileImage"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etStreetAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/street_address"
-        android:layout_below="@id/btnChangeProfileImage"
-        android:layout_marginTop="8dp" />
+        android:layout_below="@id/etName" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etCity"

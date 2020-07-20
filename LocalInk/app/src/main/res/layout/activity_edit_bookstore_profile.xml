@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         tools:srcCompat="@tools:sample/avatars"
         android:src="@drawable/ic_baseline_person_24"
         android:layout_centerHorizontal="true"

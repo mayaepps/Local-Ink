@@ -17,21 +17,29 @@
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_baseline_person_24" />
 
     <TextView
-        android:id="@+id/tvUsername"
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
         android:layout_centerHorizontal="true"
         android:textSize="24sp"
         tools:text="Maya Epps" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_centerHorizontal="true"
+        tools:text="\@maya" />
 
     <TextView
         android:id="@+id/tvLocation"

@@ -50,6 +50,9 @@ public class EditProfileActivity extends AppCompatActivity {
         Intent i = getIntent();
         final LocalInkUser user = Parcels.unwrap(i.getParcelableExtra(ParseUser.class.getSimpleName()));
 
+        // Populate the current values into the views
+        binding.etName.setText(user.getName());
+        Glide.with(this).load(user.getProfileImage()).into(binding.ivProfileImage);
         // TODO: change the way location is stored so all fields can be populated when the user edits the location
         binding.etStreetAddress.setText(user.getLocation());
         setSpinnerToValue(binding.spnrGenre, user.getGenrePreference());
@@ -62,10 +65,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 // Get values
                 String address = binding.etStreetAddress.getText().toString();
+                String name = binding.etName.getText().toString();
                 String genrePreference = binding.spnrGenre.getSelectedItem().toString();
                 String agePreference = binding.spnrAgeRange.getSelectedItem().toString();
 
                 //Save new values to Parse
+                user.setName(name);
                 user.setLocation(address);
                 user.setGenrePreference(genrePreference);
                 user.setAgePreference(agePreference);
