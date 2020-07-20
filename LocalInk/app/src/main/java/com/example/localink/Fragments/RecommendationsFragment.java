@@ -21,7 +21,10 @@ import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -81,7 +84,11 @@ public class RecommendationsFragment extends Fragment {
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Old way of populating feed; just here until I get the recommendations feature working
         queryBooks();
+
+        // New recommendation system (in progress)
+        List<ParseUser> nearbyBookstores = getNearbyStores(10);
     }
 
     // Queries Parse for all the book objects and adds them to allBooks/the adapter
@@ -101,5 +108,30 @@ public class RecommendationsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    // Get the bookstores that are near the currently logged in user (from nearest to farthest)
+    private List<ParseUser> getNearbyStores(int limit) {
+        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+
+        ParseGeoPoint userLocation = user.getGeoLocation();
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        query.whereNear(LocalInkUser.KEY_GEO_LOCATION, userLocation);
+        // Only get the bookstores, not the readers
+        query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, true);
+        // Top 10 for now
+        query.setLimit(limit);
+        final List<ParseUser> stores = new ArrayList<>();
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error getting nearby bookstores: " + e.getMessage(), e);
+                } else {
+                    stores.addAll(users);
+                }
+            }
+        });
+        return stores;
     }
 }
