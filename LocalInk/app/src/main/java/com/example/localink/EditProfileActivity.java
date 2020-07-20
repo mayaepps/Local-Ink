@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -104,28 +105,28 @@ public class EditProfileActivity extends AppCompatActivity {
 
     // Launch the implicit intent to open the camera application, and provide the camera with a fileProvider
     // to save the image
-    private void launchCamera() {
+    private  void launchCamera() {
         // create implicit Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // Create a File reference for future access
-        photoFile = getPhotoFile(photoFileName);
+        photoFile = EditProfileActivity.getPhotoFile(this, photoFileName);
 
         // wrap File object into a content provider, required for API >= 24
         Uri fileProvider = FileProvider.getUriForFile(this, "com.localink.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // As long as the result is not null, it's safe to use the intent to go to the camera
-        if (intent.resolveActivity(this.getPackageManager()) != null) {
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
     // Returns the File for a photo stored on disk given the fileName
-    private File getPhotoFile(String photoFileName) {
+    static File getPhotoFile(Context context, String photoFileName) {
 
         // Get the photos storage directory
-        File mediaStorageDir = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.e(TAG, "Failed to create directory");
         }

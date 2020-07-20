@@ -68,11 +68,16 @@ public class WishlistFragment extends Fragment {
         ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                LocalInkUser localInkuser = new LocalInkUser(user);
-                List<Book> wishlist = localInkuser.getWishlist();
-                wishlistBooks.clear();
-                wishlistBooks.addAll(wishlist);
-                adapter.notifyDataSetChanged();
+                if (e == null) {
+                    LocalInkUser localInkuser = new LocalInkUser(user);
+                    List<Book> wishlist = localInkuser.getWishlist();
+                    wishlistBooks.clear();
+                    wishlistBooks.addAll(wishlist);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.e(TAG, "Error getting wishlist: " + e.getMessage());
+                }
+
             }
         });
     }

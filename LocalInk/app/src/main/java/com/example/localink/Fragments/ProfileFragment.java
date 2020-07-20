@@ -111,9 +111,9 @@ public class ProfileFragment extends Fragment {
         tvAgeRange.setText("Age Range: " + user.getAgePreference());
         tvGenre.setText("Genre: " + user.getGenrePreference());
 
-        ParseFile profileImage = user.getProfileImage();
+        String profileImage = user.getProfileImage().getUrl();
         if (profileImage != null) {
-            Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
+            Glide.with(getContext()).load(profileImage).circleCrop().into(ivProfileImage);
         }
     }
 

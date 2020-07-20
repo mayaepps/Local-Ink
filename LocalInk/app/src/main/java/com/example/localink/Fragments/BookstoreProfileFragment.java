@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.localink.EditBookstoreProfileActivity;
 import com.example.localink.LoginActivity;
 import com.example.localink.Models.LocalInkUser;
@@ -25,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -66,12 +68,18 @@ public class BookstoreProfileFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvName = view.findViewById(R.id.tvName);
         tvAddress = view.findViewById(R.id.tvAddress);
+        ivProfileImage = view.findViewById(R.id.ivProfileImage);
         btnLogout = view.findViewById(R.id.btnLogout);
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         tvAddress.setText("Address: " + user.getLocation());
         tvName.setText(user.getName());
+
+        String profileImage = user.getProfileImage().getUrl();
+        if (profileImage != null) {
+            Glide.with(getContext()).load(profileImage).circleCrop().into(ivProfileImage);
+        }
 
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override

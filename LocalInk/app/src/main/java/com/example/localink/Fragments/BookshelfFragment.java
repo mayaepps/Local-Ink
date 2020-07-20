@@ -22,7 +22,9 @@ import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -69,13 +71,13 @@ public class BookshelfFragment extends Fragment {
             @Override
             public void onLongClick(int position) {
                 Book book = storeBooks.get(position);
-                book.deleteInBackground();
-                storeBooks.remove(position);
-                adapter.notifyItemChanged(position);
-                Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
                 // This method would remove all pointers to the removed book from all the wishlists
                 // But it doesn't quite work yet
-                //removeBookfromAllWishlists(book);
+                removeBookfromAllWishlists(book);
+                storeBooks.remove(position);
+                adapter.notifyItemChanged(position);
+                book.deleteInBackground();
+                Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -119,7 +121,7 @@ public class BookshelfFragment extends Fragment {
     }
 
     // Removes all pointers to a specific book from every wishlist
-    private void removeBookfromAllWishlists(final Book book) {
+    private synchronized void removeBookfromAllWishlists(final Book book) {
         // specify what type of data to query - Book.class
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         query.include(LocalInkUser.KEY_WISHLIST);
@@ -134,7 +136,6 @@ public class BookshelfFragment extends Fragment {
                     Log.e(TAG, "Issue with getting users: " + e.getMessage(), e);
                     return;
                 }
-
                 // For each of the users, check if the book to be removed is in the wishlist
                 // If it is, remove the pointer to the removed book
                 LocalInkUser localInkUser;
