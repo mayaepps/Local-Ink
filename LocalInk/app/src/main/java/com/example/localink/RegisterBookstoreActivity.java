@@ -3,15 +3,23 @@ package com.example.localink;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityRegisterBookstoreBinding;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class RegisterBookstoreActivity extends AppCompatActivity {
 
@@ -21,11 +29,9 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // view binding
         binding = ActivityRegisterBookstoreBinding.inflate(getLayoutInflater());;
         View view = binding.getRoot();
-
         setContentView(view);
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +44,7 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
 
     private void registerUser() {
 
-        final ParseUser user = new ParseUser();
+        ParseUser user = new ParseUser();
         final LocalInkUser newUser = new LocalInkUser(user);
 
         //Set required fields
@@ -51,6 +57,11 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
                 + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
                 + binding.etZipCode.getText().toString());
         newUser.setIsBookstore(true);
+
+        ParseGeoPoint point = getGeoLocationFromAddress();
+        if (point != null) {
+            newUser.setGeoLocation(point);
+        }
 
         // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {
@@ -69,4 +80,23 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
         });
     }
 
+    private ParseGeoPoint getGeoLocationFromAddress() {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.US);
+            String address = binding.etStreetAddress.getText().toString() + ", " + binding.etState.getText().toString();
+            List<Address> addresses = geocoder.getFromLocationName(address, 5);
+
+            if (addresses.size() > 0) {
+                Double latitude = addresses.get(0).getLatitude();
+                Double longitude = addresses.get(0).getLongitude();
+                ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+                return point;
+            } else {
+                Toast.makeText(this, "Sorry, invalid address!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating GeoPoint for this address", e);
+        }
+        return null;
+    }
 }

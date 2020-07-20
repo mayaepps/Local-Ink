@@ -76,9 +76,9 @@ public class BookstoreProfileFragment extends Fragment {
         tvAddress.setText("Address: " + user.getLocation());
         tvName.setText(user.getName());
 
-        String profileImage = user.getProfileImage().getUrl();
+        ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
-            Glide.with(getContext()).load(profileImage).circleCrop().into(ivProfileImage);
+            Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
         }
 
         fabSave.setOnClickListener(new View.OnClickListener() {

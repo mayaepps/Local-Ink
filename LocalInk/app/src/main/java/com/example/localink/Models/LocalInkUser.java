@@ -5,6 +5,7 @@ import android.util.Log;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
@@ -23,6 +24,7 @@ public class LocalInkUser {
     public static final String KEY_AGE_PREFERENCE = "agePreference";
     public static final String KEY_NAME = "name";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
+    public static final String KEY_GEO_LOCATION = "geoLocation";
 
     public LocalInkUser() { }
 
@@ -91,5 +93,13 @@ public class LocalInkUser {
 
     public void setProfileImage(ParseFile profileImage) {
         user.put(KEY_PROFILE_IMAGE, profileImage);
+    }
+
+    public ParseGeoPoint getGeoLocation() {
+        return user.getParseGeoPoint(KEY_GEO_LOCATION);
+    }
+
+    public void setGeoLocation(ParseGeoPoint point) {
+        user.put(KEY_GEO_LOCATION, point);
     }
 }
