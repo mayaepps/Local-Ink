@@ -23,6 +23,7 @@ import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -75,7 +76,7 @@ public class ProfileFragment extends Fragment {
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        populateViews();
+        populateViews(ParseUser.getCurrentUser());
 
         // Go to edit profile screen when the floating action button (edit button) is tapped
         fabEdit.setOnClickListener(new View.OnClickListener() {
@@ -102,18 +103,18 @@ public class ProfileFragment extends Fragment {
     }
 
     // Set views using info in user
-    private void populateViews() {
+    private void populateViews(ParseUser parseUser) {
 
-        final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+        final LocalInkUser user = new LocalInkUser(parseUser);
         tvName.setText(user.getName());
         tvUsername.setText(user.getUser().getUsername());
         tvLocation.setText("Location: " + user.getLocation());
         tvAgeRange.setText("Age Range: " + user.getAgePreference());
         tvGenre.setText("Genre: " + user.getGenrePreference());
 
-        String profileImage = user.getProfileImage().getUrl();
+        ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
-            Glide.with(getContext()).load(profileImage).circleCrop().into(ivProfileImage);
+            Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
         }
     }
 
@@ -123,7 +124,7 @@ public class ProfileFragment extends Fragment {
         ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                populateViews();
+                populateViews(user);
             }
         });
 

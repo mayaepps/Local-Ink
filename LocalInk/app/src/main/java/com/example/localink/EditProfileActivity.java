@@ -6,6 +6,8 @@ import androidx.core.content.FileProvider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,10 +35,7 @@ import java.io.File;
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "EditProfileActivity";
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 20;
     ActivityEditProfileBinding binding;
-    private File photoFile;
-    private String photoFileName = "photo.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Populate the current values into the views
         binding.etName.setText(user.getName());
-        Glide.with(this).load(user.getProfileImage()).into(binding.ivProfileImage);
+        ParseFile profileImage = user.getProfileImage();
+        if (profileImage != null) {
+            Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
+        }
         // TODO: change the way location is stored so all fields can be populated when the user edits the location
         binding.etStreetAddress.setText(user.getLocation());
         setSpinnerToValue(binding.spnrGenre, user.getGenrePreference());
@@ -75,8 +77,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setLocation(address);
                 user.setGenrePreference(genrePreference);
                 user.setAgePreference(agePreference);
-                if (photoFile != null) {
-                    user.setProfileImage(new ParseFile(photoFile));
+                if (ImageUtils.photoFile != null) {
+                    user.setProfileImage(new ParseFile(ImageUtils.photoFile));
                 }
 
                 // Save changes to user to Parse
@@ -98,41 +100,9 @@ public class EditProfileActivity extends AppCompatActivity {
         binding.btnChangeProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchCamera();
+                ImageUtils.launchCamera(EditProfileActivity.this, "photo.jpg");
             }
         });
-    }
-
-    // Launch the implicit intent to open the camera application, and provide the camera with a fileProvider
-    // to save the image
-    private  void launchCamera() {
-        // create implicit Intent to take a picture and return control to the calling application
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        // Create a File reference for future access
-        photoFile = EditProfileActivity.getPhotoFile(this, photoFileName);
-
-        // wrap File object into a content provider, required for API >= 24
-        Uri fileProvider = FileProvider.getUriForFile(this, "com.localink.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        // As long as the result is not null, it's safe to use the intent to go to the camera
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
-    }
-
-    // Returns the File for a photo stored on disk given the fileName
-    static File getPhotoFile(Context context, String photoFileName) {
-
-        // Get the photos storage directory
-        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.e(TAG, "Failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
     }
 
     //Per Codepath Spinner guide
@@ -152,9 +122,12 @@ public class EditProfileActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // When the camera activity comes back with the profile image
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == ImageUtils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Glide.with(this).load(photoFile).circleCrop().into(binding.ivProfileImage);
+                // by this point we have the camera photo on disk
+                Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.photoFile.getAbsolutePath());
+                // Load the taken image into a preview 
+                binding.ivProfileImage.setImageBitmap(takenImage);
                 // TODO: compress/shrink the file so it will take less time loading to/from Parse
                 Log.i(TAG, "Image successfully saved in the file provider");
 

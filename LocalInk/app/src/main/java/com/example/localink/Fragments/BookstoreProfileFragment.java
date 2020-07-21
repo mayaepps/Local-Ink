@@ -3,18 +3,15 @@ package com.example.localink.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.EditBookstoreProfileActivity;
@@ -23,16 +20,12 @@ import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
-
-import java.util.Objects;
 
 public class BookstoreProfileFragment extends Fragment {
 
@@ -73,13 +66,7 @@ public class BookstoreProfileFragment extends Fragment {
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
-        tvAddress.setText("Address: " + user.getLocation());
-        tvName.setText(user.getName());
-
-        ParseFile profileImage = user.getProfileImage();
-        if (profileImage != null) {
-            Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
-        }
+        populateViews(user);
 
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,5 +88,29 @@ public class BookstoreProfileFragment extends Fragment {
                 activity.finish();
             }
         });
+    }
+
+    private void populateViews(LocalInkUser user) {
+
+        tvAddress.setText("Address: " + user.getLocation());
+        tvName.setText(user.getName());
+
+        ParseFile profileImage = user.getProfileImage();
+        if (profileImage != null) {
+            Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                populateViews(new LocalInkUser(user));
+            }
+        });
+
     }
 }

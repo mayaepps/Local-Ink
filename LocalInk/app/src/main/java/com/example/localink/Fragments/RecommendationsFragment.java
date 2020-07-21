@@ -36,7 +36,7 @@ public class RecommendationsFragment extends Fragment {
     private static final String TAG = "RecommendationsFragment";
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
-    private List<Book> allBooks;
+    private List<Book> recommendedBooks;
     private LocalInkUser user;
 
     public RecommendationsFragment() {
@@ -69,7 +69,7 @@ public class RecommendationsFragment extends Fragment {
             public void onClick(int position) {
 
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
-                i.putExtra(Book.class.getSimpleName(), allBooks.get(position));
+                i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
                 startActivity(i);
             }
 
@@ -82,8 +82,8 @@ public class RecommendationsFragment extends Fragment {
 
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
-        allBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), allBooks, clickListener);
+        recommendedBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
+        adapter = new BooksAdapter(getContext(), recommendedBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -108,11 +108,24 @@ public class RecommendationsFragment extends Fragment {
                     return;
                 }
 
-                // TODO: implement whether/how to recommend the queried books here
-                allBooks.addAll(queriedBooks);
+                for (Book book : queriedBooks) {
+                    if (matchesPreferences(book)) {
+                        recommendedBooks.add(book);
+                    }
+                }
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private boolean matchesPreferences(Book book) {
+        try {
+            return (book.getAgeRange().equals(user.getAgePreference())
+                && book.getGenre().equals((user.getGenrePreference())));
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving the age range and genre of book " + book.getTitle());
+        }
+        return false;
     }
 
     // Get the bookstores that are near the currently logged in user
