@@ -26,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -39,12 +40,12 @@ public class RecommendationsFragment extends Fragment {
 
     private static final String TAG = "RecommendationsFragment";
     private static final int ACCESS_LOCATION_REQUEST_CODE = 15;
+    private static final int MINIMUM_RECS = 10;
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
     private List<Book> otherBooks;
     private LocalInkUser user;
-    private ParseGeoPoint currentLocation;
     private FusedLocationProviderClient fusedLocationClient;
 
     public RecommendationsFragment() {
@@ -55,7 +56,6 @@ public class RecommendationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        getLastKnownLocation();
     }
 
     @Override
@@ -68,6 +68,8 @@ public class RecommendationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getLastKnownLocation();
 
         user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -91,41 +93,10 @@ public class RecommendationsFragment extends Fragment {
 
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
-        recommendedBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
+        recommendedBooks = new ArrayList<>(); // Have to initialize recommendedBooks before passing it into the adapter
         adapter = new BooksAdapter(getContext(), recommendedBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        getRecommendations();
-
-    }
-
-    // New recommendation system (in progress)
-    private void getRecommendations() {
-        otherBooks = new ArrayList<>();
-        // Get the 5 closest stores and get their available books
-        List<ParseUser> nearbyBookstores = getNearbyStores(5);
-        for (ParseUser store : nearbyBookstores) {
-            queryBooks(store);
-        }
-
-        List<Book> booksToRemove = new ArrayList<>();
-        for (Book book : otherBooks) {
-            try {
-                if (book.getAgeRange().equals(user.getAgePreference())) {
-                    recommendedBooks.add(book);
-                    booksToRemove.add(book);
-                }
-            } catch (ParseException e) {
-                Log.e(TAG, "Error retrieving details from " + book.getTitle(), e);
-            }
-
-            if (recommendedBooks.size() > 10 || otherBooks.size() == 0) {
-                return;
-            }
-        }
-        otherBooks.removeAll(booksToRemove);
-
     }
 
     // Get all the books offered at the given store
@@ -133,61 +104,74 @@ public class RecommendationsFragment extends Fragment {
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
         query.include(Book.KEY_BOOKSTORE);
         query.whereEqualTo(Book.KEY_BOOKSTORE, store);
-        query.findInBackground(new FindCallback<Book>() {
-            @Override
-            public void done(List<Book> queriedBooks, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
-                    return;
-                }
-
-                otherBooks.addAll(queriedBooks);
-
-                for (Book book : queriedBooks) {
-                    if (matchesPreferences(book)) {
-                        recommendedBooks.add(book);
-                        otherBooks.remove(book);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
+        try {
+            List<Book> queriedBooks = query.find();
+            otherBooks.addAll(queriedBooks);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
+            return;
+        }
     }
 
-    private boolean matchesPreferences(Book book) {
-        try {
-            return (book.getAgeRange().equals(user.getAgePreference())
-                    && book.getGenre().equals((user.getGenrePreference())));
-        } catch (ParseException e) {
-            Log.e(TAG, "Error retrieving the age range and genre of book " + book.getTitle());
+    // New recommendation system (in progress)
+    private void getRecommendations(List<ParseUser> nearbyBookstores) {
+        otherBooks = new ArrayList<>();
+        // Get the books from the 5 closest stores and get their available books
+        for (ParseUser store : nearbyBookstores) {
+            queryBooks(store);
         }
-        return false;
+        // Get the books that perfectly match the user's preferences
+        List<Book> booksToRemove = new ArrayList<>();
+        for (Book book : otherBooks) {
+            if (matchesAge(book) && matchesGenre(book)) {
+                recommendedBooks.add(book);
+                booksToRemove.add(book);
+            }
+        }
+        otherBooks.removeAll(booksToRemove);
+        booksToRemove.clear();
+
+        // If there aren't enough books that fit the preferences,
+        // Get the books that match the user's age preferences, but show them other genres
+        if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
+            for (Book book : otherBooks) {
+                if (matchesAge(book)) {
+                    recommendedBooks.add(book);
+                    booksToRemove.add(book);
+                }
+            }
+        }
+        otherBooks.removeAll(booksToRemove);
+        booksToRemove.clear();
+
+        adapter.notifyDataSetChanged();
     }
 
     // Get the bookstores that are near the currently logged in user
     // Returns a list of bookstores of length limit (from nearest to farthest)
-    private List<ParseUser> getNearbyStores(int limit) {
-
+    private void getNearbyStores(ParseGeoPoint currentLocation, int limit) {
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         query.whereNear(LocalInkUser.KEY_GEO_LOCATION, currentLocation);
         // Only get the bookstores, not the readers
         query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, true);
-        // Top 10 for now
         query.setLimit(limit);
         final List<ParseUser> stores = new ArrayList<>();
-        try {
-            List<ParseUser> users = query.find();
-            stores.addAll(users);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error getting nearby bookstores: " + e.getMessage(), e);
-        }
-
-        return stores;
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error getting nearby bookstores: " + e.getMessage(), e);
+                    return;
+                }
+                stores.addAll(users);
+                getRecommendations(stores);
+            }
+        });
     }
 
     // Get the user's last known location
     private void getLastKnownLocation() {
-        currentLocation = new ParseGeoPoint();
+        final ParseGeoPoint currentLocation = new ParseGeoPoint();
 
         // Ask for permission to access current location if they aren't already granted
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -198,24 +182,35 @@ public class RecommendationsFragment extends Fragment {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                     @Override
-                    public synchronized void onSuccess(Location location) {
+                    public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             currentLocation.setLatitude(location.getLatitude());
                             currentLocation.setLongitude(location.getLongitude());
-                            Log.d(TAG, currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
+                            getNearbyStores(currentLocation, 5);
                         } else {
                             Log.e(TAG, "Current user's location could not be found!");
                         }
-
                     }
                 });
     }
 
-    // When the request for permission comes back, get the user's recommendations
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == ACCESS_LOCATION_REQUEST_CODE) {
-            getRecommendations();
+    private boolean matchesGenre(Book book) {
+        try {
+            return book.getGenre().equals(user.getGenrePreference());
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
         }
+        return false;
     }
+
+    private boolean matchesAge(Book book) {
+        try {
+            return book.getAgeRange().equals(user.getAgePreference());
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving the age range of book " + book.getTitle(), e);
+        }
+        return false;
+    }
+
 }
