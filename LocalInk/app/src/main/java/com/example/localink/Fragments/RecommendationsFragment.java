@@ -37,6 +37,7 @@ public class RecommendationsFragment extends Fragment {
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> allBooks;
+    private LocalInkUser user;
 
     public RecommendationsFragment() {
         // Required empty public constructor
@@ -57,6 +58,8 @@ public class RecommendationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        user = new LocalInkUser(ParseUser.getCurrentUser());
 
         //Instantiate my OnClickListener from the interface in BooksAdapter
         BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
@@ -84,33 +87,36 @@ public class RecommendationsFragment extends Fragment {
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Old way of populating feed; just here until I get the recommendations feature working
-        queryBooks();
-
         // New recommendation system (in progress)
-        List<ParseUser> nearbyBookstores = getNearbyStores(10);
+        // Get the 5 closest stores and get their available books
+        List<ParseUser> nearbyBookstores = getNearbyStores(5);
+        for (ParseUser store : nearbyBookstores) {
+            queryBooks(store);
+        }
     }
 
-    // Queries Parse for all the book objects and adds them to allBooks/the adapter
-    private void queryBooks() {
+    // Get all the books offered at the given store
+    private void queryBooks(final ParseUser store) {
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
         query.include(Book.KEY_BOOKSTORE);
+        query.whereEqualTo(Book.KEY_BOOKSTORE, store);
         query.findInBackground(new FindCallback<Book>() {
             @Override
-            public void done(List<Book> books, ParseException e) {
+            public void done(List<Book> queriedBooks, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Error getting books from Parse: " + e.getMessage());
+                    Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
                     return;
                 }
 
-                allBooks.clear();
-                allBooks.addAll(books);
+                // TODO: implement whether/how to recommend the queried books here
+                allBooks.addAll(queriedBooks);
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
-    // Get the bookstores that are near the currently logged in user (from nearest to farthest)
+    // Get the bookstores that are near the currently logged in user
+    // Returns a list of bookstores of length limit (from nearest to farthest)
     private List<ParseUser> getNearbyStores(int limit) {
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -122,16 +128,13 @@ public class RecommendationsFragment extends Fragment {
         // Top 10 for now
         query.setLimit(limit);
         final List<ParseUser> stores = new ArrayList<>();
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> users, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error getting nearby bookstores: " + e.getMessage(), e);
-                } else {
-                    stores.addAll(users);
-                }
-            }
-        });
+        try {
+            List<ParseUser> users = query.find();
+            stores.addAll(users);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error getting nearby bookstores: " + e.getMessage(), e);
+        }
+
         return stores;
     }
 }
