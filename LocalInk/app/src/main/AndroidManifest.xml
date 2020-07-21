@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
     <application
         android:name=".ParseApplication"
         android:usesCleartextTraffic="true"
@@ -18,12 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Required for Android 10 (API level 29). -->
+        <service
+            android:name=".ParseApplication"
+            android:foregroundServiceType="location">
+        </service>
+
         <activity android:name=".BookDetailsActivity" />
         <activity android:name=".EditBookstoreProfileActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".RegisterBookstoreActivity" />
         <activity android:name=".RegisterReaderActivity" />
-        <activity android:name=".BookstoreMainActivity" />
+        <activity android:name=".BookstoreMainActivity"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
