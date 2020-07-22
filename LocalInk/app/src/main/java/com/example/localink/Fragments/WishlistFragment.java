@@ -89,21 +89,23 @@ public class WishlistFragment extends Fragment {
     // Goes through each of the books in the wishlist and makes sure they still exist in Parse
     // If they do not, it removes the bad book(s) from the wishlist
     private void checkWishlistBooksExist() {
-        List<Integer> booksToRemove = new ArrayList<>();
+        List<Book> booksToRemove = new ArrayList<>();
         for (int i = 0; i < wishlistBooks.size(); i++) {
-            if (wishlistBooks.get(i).getTitle() == null) {
-                booksToRemove.add(i);
+            Book book = wishlistBooks.get(i);
+            if (book.getTitle() == null) {
+                booksToRemove.add(book);
             }
         }
 
-        for (Integer position : booksToRemove) {
-            removeBookFromWishlist(position);
+        for (Book book : booksToRemove) {
+            removeBookFromWishlist(book);
         }
+        adapter.notifyDataSetChanged();
     }
 
     // Removes a single book from the current wishlist and saves the changes to Parse
-    private void removeBookFromWishlist(final int position) {
-        wishlistBooks.remove(position);
+    private void removeBookFromWishlist(final Book book) {
+        wishlistBooks.remove(book);
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
         user.setWishlist(wishlistBooks);
         user.getUser().saveInBackground(new SaveCallback() {
@@ -114,8 +116,7 @@ public class WishlistFragment extends Fragment {
                     return;
                 }
                 Log.i(TAG, "New wishlist saved to Parse.");
-                wishlistBooks.remove(position);
-                adapter.notifyItemChanged(position);
+
             }
         });
     }
