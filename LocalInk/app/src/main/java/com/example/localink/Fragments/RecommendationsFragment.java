@@ -26,7 +26,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -34,7 +33,6 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class RecommendationsFragment extends Fragment {
 
@@ -99,21 +97,8 @@ public class RecommendationsFragment extends Fragment {
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    // Get all the books offered at the given store
-    private void queryBooks(final ParseUser store) {
-        ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
-        query.include(Book.KEY_BOOKSTORE);
-        query.whereEqualTo(Book.KEY_BOOKSTORE, store);
-        try {
-            List<Book> queriedBooks = query.find();
-            otherBooks.addAll(queriedBooks);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
-            return;
-        }
-    }
-
-    // New recommendation system (in progress)
+    // Recommends books from the nearby bookstores param that fit the user's preferences
+    // if there aren't enough perfect matches, it gets partial matches (that fit the age, not the genre)
     private void getRecommendations(List<ParseUser> nearbyBookstores) {
         otherBooks = new ArrayList<>();
         // Get the books from the 5 closest stores and get their available books
@@ -145,6 +130,20 @@ public class RecommendationsFragment extends Fragment {
         booksToRemove.clear();
 
         adapter.notifyDataSetChanged();
+    }
+
+    // Get all the books offered at the given store
+    private void queryBooks(final ParseUser store) {
+        ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
+        query.include(Book.KEY_BOOKSTORE);
+        query.whereEqualTo(Book.KEY_BOOKSTORE, store);
+        try {
+            List<Book> queriedBooks = query.find();
+            otherBooks.addAll(queriedBooks);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
+            return;
+        }
     }
 
     // Get the bookstores that are near the currently logged in user

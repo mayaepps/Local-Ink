@@ -1,5 +1,10 @@
 package com.example.localink;
 
+import android.view.View;
+
+import com.example.localink.Fragments.RecommendationsFragment;
+import com.parse.ParseException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
