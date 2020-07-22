@@ -12,15 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,11 +77,45 @@ public class WishlistFragment extends Fragment {
                     List<Book> wishlist = localInkuser.getWishlist();
                     wishlistBooks.clear();
                     wishlistBooks.addAll(wishlist);
+                    checkWishlistBooksExist();
                     adapter.notifyDataSetChanged();
                 } else {
                     Log.e(TAG, "Error getting wishlist: " + e.getMessage());
                 }
+            }
+        });
+    }
 
+    // Goes through each of the books in the wishlist and makes sure they still exist in Parse
+    // If they do not, it removes the bad book(s) from the wishlist
+    private void checkWishlistBooksExist() {
+        List<Integer> booksToRemove = new ArrayList<>();
+        for (int i = 0; i < wishlistBooks.size(); i++) {
+            if (wishlistBooks.get(i).getTitle() == null) {
+                booksToRemove.add(i);
+            }
+        }
+
+        for (Integer position : booksToRemove) {
+            removeBookFromWishlist(position);
+        }
+    }
+
+    // Removes a single book from the current wishlist and saves the changes to Parse
+    private void removeBookFromWishlist(final int position) {
+        wishlistBooks.remove(position);
+        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+        user.setWishlist(wishlistBooks);
+        user.getUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Could not save wishlist in background: " + e.getMessage(), e);
+                    return;
+                }
+                Log.i(TAG, "New wishlist saved to Parse.");
+                wishlistBooks.remove(position);
+                adapter.notifyItemChanged(position);
             }
         });
     }

@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // If coming from BookDetailsActivity, go to the wishlist (a book was just added to the wishlist)
         int layoutId = R.id.action_home;
         Intent i = getIntent();
         if (i.hasExtra(Integer.class.getSimpleName())) {

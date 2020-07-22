@@ -21,6 +21,7 @@ import com.example.localink.BookDetailsActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -69,15 +70,21 @@ public class BookshelfFragment extends Fragment {
 
             // Delete book from Parse if it is long clicked
             @Override
-            public void onLongClick(int position) {
-                Book book = storeBooks.get(position);
-                // This method would remove all pointers to the removed book from all the wishlists
-                // But it doesn't quite work yet
-                removeBookfromAllWishlists(book);
-                storeBooks.remove(position);
-                adapter.notifyItemChanged(position);
-                book.deleteInBackground();
-                Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+            public void onLongClick(final int position) {
+                final Book book = storeBooks.get(position);
+                book.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Could not delete book: " + e.getMessage(), e);
+                        } else {
+                            Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+                        }
+                        storeBooks.remove(position);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
+
             }
         };
 
@@ -120,31 +127,4 @@ public class BookshelfFragment extends Fragment {
         });
     }
 
-    // Removes all pointers to a specific book from every wishlist
-    private synchronized void removeBookfromAllWishlists(final Book book) {
-        // specify what type of data to query - Book.class
-        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.include(LocalInkUser.KEY_WISHLIST);
-        // Get only the reader users
-        query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, false);
-
-        // start an asynchronous call for users
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> users, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting users: " + e.getMessage(), e);
-                    return;
-                }
-                // For each of the users, check if the book to be removed is in the wishlist
-                // If it is, remove the pointer to the removed book
-                LocalInkUser localInkUser;
-                for (final ParseUser user : users) {
-                    localInkUser = new LocalInkUser(user);
-                    List<Book> books = localInkUser.getWishlist();
-                    Log.i(TAG, user.getUsername() + ": " + books.toString());
-                }
-            }
-        });
-    }
 }

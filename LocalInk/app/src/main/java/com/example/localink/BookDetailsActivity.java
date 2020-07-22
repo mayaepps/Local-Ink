@@ -134,7 +134,6 @@ public class BookDetailsActivity extends AppCompatActivity {
         stores.add(store);
         bundle.putParcelableArrayList(ParseUser.class.getSimpleName(), stores);
         mapsFragment.setArguments(bundle);
-
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.mapView, mapsFragment).commit();
     }
