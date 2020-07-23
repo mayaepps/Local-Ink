@@ -105,9 +105,15 @@ public class RecommendationsFragment extends Fragment {
         for (ParseUser store : nearbyBookstores) {
             queryBooks(store);
         }
+
         // Get the books that perfectly match the user's preferences
         List<Book> booksToRemove = new ArrayList<>();
         for (Book book : otherBooks) {
+            // Don't recommend books that are already in the wishlist
+            if (inWishlist(book)) {
+                booksToRemove.add(book);
+                continue;
+            }
             if (matchesAge(book) && matchesGenre(book)) {
                 recommendedBooks.add(book);
                 booksToRemove.add(book);
@@ -130,6 +136,20 @@ public class RecommendationsFragment extends Fragment {
         booksToRemove.clear();
 
         adapter.notifyDataSetChanged();
+    }
+
+    private boolean inWishlist(Book book) {
+        List<Book> wishlist = user.getWishlist();
+        try {
+            for (Book wishbook : wishlist) {
+                if (wishbook.getIsbn().equals(book.getIsbn())) {
+                    return true;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // Get all the books offered at the given store
@@ -199,10 +219,10 @@ public class RecommendationsFragment extends Fragment {
             List<String> genres = user.getGenrePreferences();
             for (String genre : genres) {
                 if (genre.equals(book.getGenre())) {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
         }
@@ -211,7 +231,13 @@ public class RecommendationsFragment extends Fragment {
 
     private boolean matchesAge(Book book) {
         try {
-            return book.getAgeRange().equals(user.getAgePreference());
+            List<String> ageRanges = user.getAgePreferences();
+            for (String ageRange : ageRanges) {
+                if (ageRange.equals(book.getAgeRange())) {
+                    return true;
+                }
+            }
+            return false;
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving the age range of book " + book.getTitle(), e);
         }

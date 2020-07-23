@@ -54,12 +54,10 @@ public class EditProfileActivity extends AppCompatActivity {
             Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
         }
 
-        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), true);
+        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), false);
         ChipUtils.setUpChips(this, binding.genreChips, getResources().getStringArray(R.array.genres_array), false);
         ChipUtils.selectChips(user.getGenrePreferences(), binding.genreChips);
-        List<String> agePreference = new ArrayList<String>();
-        agePreference.add(user.getAgePreference());
-        ChipUtils.selectChips(agePreference, binding.ageRangeChips);
+        ChipUtils.selectChips(user.getAgePreferences(), binding.ageRangeChips);
 
         // When the save button is pressed, save all the selections to Parse and go back to profile activity
         binding.fabSave.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +80,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 List<String> ageRange = ChipUtils.getChipSelections(binding.ageRangeChips);
                 if (ageRange.size() > 0) {
-                    user.setAgePreference(ageRange.get(0));
+                    user.setAgePreferences(ageRange);
                 } else {
                     Toast.makeText(EditProfileActivity.this, "You must select an age range!", Toast.LENGTH_SHORT).show();
                     return;

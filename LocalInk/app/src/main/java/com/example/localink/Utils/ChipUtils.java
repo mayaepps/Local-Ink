@@ -39,6 +39,7 @@ public class ChipUtils {
         }
     }
 
+    // Select the chips that have text that matches the given list of strings
     public static void selectChips(List<String> selections, ChipGroup chipGroup) {
         Chip chip;
         for (int i = 0; i < chipGroup.getChildCount(); i++){

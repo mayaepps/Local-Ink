@@ -106,14 +106,17 @@ public class ProfileFragment extends Fragment {
         final LocalInkUser user = new LocalInkUser(parseUser);
         tvName.setText(user.getName());
         tvUsername.setText("Username: " + user.getUser().getUsername());
-        tvAgeRange.setText("Age Range: " + user.getAgePreference());
-        String genres = null;
+
+        String genres, ageRanges = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             genres = String.join(", ", user.getGenrePreferences());
+            ageRanges = String.join(", ", user.getAgePreferences());
         } else {
             genres = user.getGenrePreferences().toString();
+            ageRanges = user.getAgePreferences().toString();
         }
         tvGenre.setText("Genre(s): " + genres);
+        tvAgeRange.setText("Reading Levels(s): " + ageRanges);
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {

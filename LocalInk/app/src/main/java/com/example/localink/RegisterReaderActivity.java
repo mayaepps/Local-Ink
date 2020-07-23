@@ -65,7 +65,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
 
         List<String> ageRange = ChipUtils.getChipSelections(binding.ageRangeChips);
         if (ageRange.size() > 0) {
-            newUser.setAgePreference(ageRange.get(0));
+            newUser.setAgePreferences(ageRange);
         } else {
             Toast.makeText(this, "You must select an age range!", Toast.LENGTH_SHORT).show();
             return;
