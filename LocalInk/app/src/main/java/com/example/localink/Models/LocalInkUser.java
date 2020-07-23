@@ -1,24 +1,19 @@
 package com.example.localink.Models;
 
-import android.util.Log;
-
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.List;
+
 
 @Parcel
 public class LocalInkUser {
     ParseUser user;
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
-    public static final String KEY_LOCATION = "location";
+    public static final String KEY_ADDRESS = "address";
     public static final String KEY_WISHLIST = "wishlist";
     public static final String KEY_GENRE_PREFERENCE = "genrePreference";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
@@ -36,12 +31,12 @@ public class LocalInkUser {
         return user;
     }
 
-    public String getLocation() {
-        return user.getString(KEY_LOCATION);
+    public String getAddress() {
+        return user.getString(KEY_ADDRESS);
     }
 
-    public void setLocation(String address) {
-        user.put(KEY_LOCATION, address);
+    public void setAddress(String address) {
+        user.put(KEY_ADDRESS, address);
     }
 
     public Boolean isBookstore() {

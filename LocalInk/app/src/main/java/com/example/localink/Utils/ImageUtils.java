@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,11 +19,11 @@ public class ImageUtils {
     private static final String TAG = "ImageUtils";
     static File photoFile;
     static String photoFileName;
-    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 20;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 20;
 
     // Launch the implicit intent to open the camera application, and provide the camera with a fileProvider
     // to save the image
-    protected static void launchCamera(Context context, String fileName) {
+    public static void launchCamera(Context context, String fileName) {
 
         photoFileName = fileName;
         photoFile = null;
@@ -44,7 +44,7 @@ public class ImageUtils {
     }
 
     // Returns the File for a photo stored on disk given the fileName
-    static File getPhotoFile(Context context, String photoFileName) {
+    public static File getPhotoFile(Context context, String photoFileName) {
 
         // Get the photos storage directory
         File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
@@ -54,5 +54,13 @@ public class ImageUtils {
 
         // Return the file target for the photo based on filename
         return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
+    }
+
+    public static File getPhotoFile() {
+        return photoFile;
+    }
+
+    public static String getPhotoFileName() {
+        return photoFileName;
     }
 }

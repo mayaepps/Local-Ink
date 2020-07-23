@@ -51,9 +51,6 @@ public class RegisterReaderActivity extends AppCompatActivity {
         newUser.setIsBookstore(false);
         newUser.setGenrePreference(binding.spnrGenre.getSelectedItem().toString());
         newUser.setAgePreference(binding.spnrAgeRange.getSelectedItem().toString());
-        newUser.setLocation(binding.etStreetAddress.getText().toString() + ", "
-                + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
-                + binding.etZipCode.getText().toString());
         newUser.setWishlist(new ArrayList<Book>());
         // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {

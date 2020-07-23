@@ -2,16 +2,11 @@ package com.example.localink;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
@@ -20,17 +15,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.Utils.ImageUtils;
 import com.example.localink.databinding.ActivityEditProfileBinding;
-import com.example.localink.databinding.ActivityLoginBinding;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
-
-import java.io.File;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -56,8 +48,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (profileImage != null) {
             Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
         }
-        // TODO: change the way location is stored so all fields can be populated when the user edits the location
-        binding.etStreetAddress.setText(user.getLocation());
+
         setSpinnerToValue(binding.spnrGenre, user.getGenrePreference());
         setSpinnerToValue(binding.spnrAgeRange, user.getAgePreference());
 
@@ -67,18 +58,16 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Get values
-                String address = binding.etStreetAddress.getText().toString();
                 String name = binding.etName.getText().toString();
                 String genrePreference = binding.spnrGenre.getSelectedItem().toString();
                 String agePreference = binding.spnrAgeRange.getSelectedItem().toString();
 
                 //Save new values to Parse
                 user.setName(name);
-                user.setLocation(address);
                 user.setGenrePreference(genrePreference);
                 user.setAgePreference(agePreference);
-                if (ImageUtils.photoFile != null) {
-                    user.setProfileImage(new ParseFile(ImageUtils.photoFile));
+                if (ImageUtils.getPhotoFile() != null) {
+                    user.setProfileImage(new ParseFile(ImageUtils.getPhotoFile()));
                 }
 
                 // Save changes to user to Parse
@@ -125,7 +114,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (requestCode == ImageUtils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.photoFile.getAbsolutePath());
+                Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.getPhotoFile().getAbsolutePath());
                 // Load the taken image into a preview 
                 binding.ivProfileImage.setImageBitmap(takenImage);
                 // TODO: compress/shrink the file so it will take less time loading to/from Parse

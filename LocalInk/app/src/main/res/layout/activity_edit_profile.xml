@@ -42,32 +42,11 @@
         android:layout_below="@id/btnChangeProfileImage"
         android:layout_marginTop="8dp" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etStreetAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/street_address"
-        android:layout_below="@id/etName" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/city"
-        android:layout_below="@id/etStreetAddress" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etZipCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/zip_code"
-        android:layout_below="@id/etCity" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etZipCode"
+        android:layout_below="@id/etName"
         android:layout_marginTop="16dp"
         android:text="@string/preferences"
         android:textSize="16sp"

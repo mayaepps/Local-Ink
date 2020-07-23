@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.Utils.GeocoderUtils;
 import com.example.localink.databinding.ActivityRegisterBookstoreBinding;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -53,11 +54,11 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
 
         // Set new user's custom values from views
         newUser.setName(binding.etName.getText().toString());
-        newUser.setLocation(binding.etStreetAddress.getText().toString() + ", "
+        newUser.setAddress(binding.etStreetAddress.getText().toString() + ", "
                 + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
                 + binding.etZipCode.getText().toString());
         newUser.setIsBookstore(true);
-        ParseGeoPoint point = getGeoLocationFromAddress();
+        ParseGeoPoint point = GeocoderUtils.getGeoLocationFromAddress(this, newUser.getAddress());
         if (point != null) {
             newUser.setGeoLocation(point);
         }
@@ -77,25 +78,5 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private ParseGeoPoint getGeoLocationFromAddress() {
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.US);
-            String address = binding.etStreetAddress.getText().toString() + ", " + binding.etState.getText().toString();
-            List<Address> addresses = geocoder.getFromLocationName(address, 5);
-
-            if (addresses.size() > 0) {
-                Double latitude = addresses.get(0).getLatitude();
-                Double longitude = addresses.get(0).getLongitude();
-                ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-                return point;
-            } else {
-                Toast.makeText(this, "Sorry, invalid address!", Toast.LENGTH_SHORT).show();
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error creating GeoPoint for this address", e);
-        }
-        return null;
     }
 }

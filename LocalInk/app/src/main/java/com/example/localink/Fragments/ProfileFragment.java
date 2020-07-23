@@ -41,7 +41,6 @@ public class ProfileFragment extends Fragment {
     ImageView ivProfileImage;
     TextView tvName;
     TextView tvUsername;
-    TextView tvLocation;
     TextView tvGenre;
     TextView tvAgeRange;
     MaterialButton btnLogout;
@@ -71,7 +70,6 @@ public class ProfileFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvName = view.findViewById(R.id.tvName);
         tvUsername = view.findViewById(R.id.tvUsername);
-        tvLocation = view.findViewById(R.id.tvLocation);
         tvGenre = view.findViewById(R.id.tvGenre);
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
         btnLogout = view.findViewById(R.id.btnLogout);
@@ -107,8 +105,7 @@ public class ProfileFragment extends Fragment {
 
         final LocalInkUser user = new LocalInkUser(parseUser);
         tvName.setText(user.getName());
-        tvUsername.setText(user.getUser().getUsername());
-        tvLocation.setText("Location: " + user.getLocation());
+        tvUsername.setText("Username: " + user.getUser().getUsername());
         tvAgeRange.setText("Age Range: " + user.getAgePreference());
         tvGenre.setText("Genre: " + user.getGenrePreference());
 

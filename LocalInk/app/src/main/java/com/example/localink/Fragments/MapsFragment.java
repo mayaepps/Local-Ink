@@ -33,6 +33,7 @@ public class MapsFragment extends Fragment {
     private static final int PADDING = 100;
     private static final float ZOOM = 14F;
     private List<ParseUser> stores;
+    private View map;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -48,6 +49,7 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             stores = getStores();
             setMarkers(googleMap);
+            disallowParentScroll(googleMap);
 
             // If there is only one store on the map, let the user tap the map to see the store in the Google Maps app
             if (stores.size() == 1) {
@@ -63,10 +65,28 @@ public class MapsFragment extends Fragment {
         }
     };
 
+    private void disallowParentScroll(GoogleMap googleMap) {
+        googleMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int i) {
+                map = getView().findViewById(R.id.map);
+                map.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+        });
+
+        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                map = getView().findViewById(R.id.map);
+                map.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+        });
+    }
+
     // Open google maps and search for the bookstore
     private void goGoogleMaps(LocalInkUser store) {
          // Create a Uri from an intent string. Use the result to create an Intent.
-        Uri mapsIntentUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(store.getName() + ", " + store.getLocation()));
+        Uri mapsIntentUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(store.getName() + ", " + store.getAddress()));
 
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsIntentUri);
         // Make sure there is an app that can handle this intent
@@ -115,7 +135,10 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
 
+
     }
+
+
 
     //get stores from BookDetailsActivity 
     private List<ParseUser> getStores() {

@@ -106,7 +106,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     store = user;
                     startMap();
 
-                    String address = localInkUser.getLocation();
+                    String address = localInkUser.getAddress();
                     binding.tvStoreLocation.setText("At " + localInkUser.getName() + ": " + address);
                 }
             });

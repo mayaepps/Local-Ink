@@ -2,29 +2,27 @@ package com.example.localink;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.Utils.GeocoderUtils;
+import com.example.localink.Utils.ImageUtils;
 import com.example.localink.databinding.ActivityEditBookstoreProfileBinding;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
-
-import java.io.File;
 
 public class EditBookstoreProfileActivity extends AppCompatActivity {
 
@@ -45,7 +43,7 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         final LocalInkUser user = Parcels.unwrap(i.getParcelableExtra(ParseUser.class.getSimpleName()));
 
         // TODO: change the way location is stored so all fields can be populated when the user edits the location
-        binding.etStreetAddress.setText(user.getLocation());
+        binding.etStreetAddress.setText(user.getAddress());
         binding.etName.setText(user.getName());
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
@@ -73,10 +71,14 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         String name = binding.etName.getText().toString();
         String address = binding.etStreetAddress.getText().toString();
 
-        user.setLocation(address);
+        user.setAddress(address);
         user.setName(name);
-        if (ImageUtils.photoFile != null) {
-            user.setProfileImage(new ParseFile(ImageUtils.photoFile));
+        if (ImageUtils.getPhotoFile() != null) {
+            user.setProfileImage(new ParseFile(ImageUtils.getPhotoFile()));
+        }
+        ParseGeoPoint point = GeocoderUtils.getGeoLocationFromAddress(this, user.getAddress());
+        if (point != null) {
+            user.setGeoLocation(point);
         }
         user.getUser().saveInBackground(new SaveCallback() {
             @Override
@@ -96,7 +98,7 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         if (requestCode == ImageUtils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.photoFile.getAbsolutePath());
+                Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.getPhotoFile().getAbsolutePath());
                 // TODO: compress/shrink the file so it will take less time loading to/from Parse
                 // Load the taken image into a preview 
                 binding.ivProfileImage.setImageBitmap(takenImage);

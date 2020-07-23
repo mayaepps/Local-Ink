@@ -92,7 +92,7 @@ public class BookstoreProfileFragment extends Fragment {
 
     private void populateViews(LocalInkUser user) {
 
-        tvAddress.setText("Address: " + user.getLocation());
+        tvAddress.setText("Address: " + user.getAddress());
         tvName.setText(user.getName());
 
         ParseFile profileImage = user.getProfileImage();
