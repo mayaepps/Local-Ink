@@ -24,6 +24,9 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "EditProfileActivity";
@@ -49,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
             Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
         }
 
-        setSpinnerToValue(binding.spnrGenre, user.getGenrePreference());
+        //setSpinnerToValue(binding.spnrGenre, user.getGenrePreferences());
         setSpinnerToValue(binding.spnrAgeRange, user.getAgePreference());
 
         // When the save button is pressed, save all the selections to Parse and go back to profile activity
@@ -59,12 +62,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 // Get values
                 String name = binding.etName.getText().toString();
-                String genrePreference = binding.spnrGenre.getSelectedItem().toString();
+                List<String> genrePreferences = new ArrayList<>();
+                genrePreferences.add(binding.spnrGenre.getSelectedItem().toString());
                 String agePreference = binding.spnrAgeRange.getSelectedItem().toString();
 
                 //Save new values to Parse
                 user.setName(name);
-                user.setGenrePreference(genrePreference);
+                user.setGenrePreferences(genrePreferences);
                 user.setAgePreference(agePreference);
                 if (ImageUtils.getPhotoFile() != null) {
                     user.setProfileImage(new ParseFile(ImageUtils.getPhotoFile()));

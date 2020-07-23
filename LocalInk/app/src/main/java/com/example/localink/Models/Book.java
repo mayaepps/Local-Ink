@@ -1,10 +1,14 @@
 package com.example.localink.Models;
 
+import android.content.res.Resources;
+
+import com.example.localink.R;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import java.util.HashMap;
 
 @ParseClassName("Book")
 public class Book extends ParseObject {
@@ -19,6 +23,7 @@ public class Book extends ParseObject {
     private static final String KEY_GENRE = "genre";
     private static final String KEY_AGE_RANGE = "age_range";
     public static final String KEY_CREATED_AT = "createdAt";
+
 
     public String getTitle() {
         // Method getString() is defined in the Parse object class, is like a getter for the key

@@ -107,7 +107,7 @@ public class ProfileFragment extends Fragment {
         tvName.setText(user.getName());
         tvUsername.setText("Username: " + user.getUser().getUsername());
         tvAgeRange.setText("Age Range: " + user.getAgePreference());
-        tvGenre.setText("Genre: " + user.getGenrePreference());
+        tvGenre.setText("Genre: " + user.getGenrePreferences().toString());
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {

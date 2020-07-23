@@ -196,7 +196,13 @@ public class RecommendationsFragment extends Fragment {
 
     private boolean matchesGenre(Book book) {
         try {
-            return book.getGenre().equals(user.getGenrePreference());
+            List<String> genres = user.getGenrePreferences();
+            for (String genre : genres) {
+                if (genre.equals(book.getGenre())) {
+                    return false;
+                }
+            }
+            return true;
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
         }

@@ -15,7 +15,7 @@ public class LocalInkUser {
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_WISHLIST = "wishlist";
-    public static final String KEY_GENRE_PREFERENCE = "genrePreference";
+    public static final String KEY_GENRE_PREFERENCES = "genrePreferences";
     public static final String KEY_AGE_PREFERENCE = "agePreference";
     public static final String KEY_NAME = "name";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
@@ -56,13 +56,13 @@ public class LocalInkUser {
         user.put(KEY_WISHLIST, wishlist);
     }
 
-    public String getGenrePreference() {
-        return user.getString(KEY_GENRE_PREFERENCE);
+    public List<String> getGenrePreferences() {
+        return user.getList(KEY_GENRE_PREFERENCES);
     }
 
     // TODO: make sure param is valid
-    public void setGenrePreference(String genrePreference) {
-        user.put(KEY_GENRE_PREFERENCE, genrePreference);
+    public void setGenrePreferences(List<String> genrePreferences) {
+        user.put(KEY_GENRE_PREFERENCES, genrePreferences);
     }
 
     public String getAgePreference() {
