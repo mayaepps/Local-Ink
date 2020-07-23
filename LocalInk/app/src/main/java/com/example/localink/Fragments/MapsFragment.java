@@ -25,15 +25,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
 
     private static final String TAG = "MapsFragment";
     private static final int PADDING = 100;
-    private static final float ZOOM = 12F;
+    private static final float ZOOM = 14F;
     private List<ParseUser> stores;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {

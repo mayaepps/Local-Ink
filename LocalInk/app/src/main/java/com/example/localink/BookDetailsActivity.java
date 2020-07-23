@@ -1,43 +1,29 @@
 package com.example.localink;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
 import com.example.localink.Fragments.MapsFragment;
-import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
-import com.example.localink.databinding.ActivityEditBookstoreProfileBinding;
-import com.example.localink.databinding.ActivityEditProfileBinding;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class BookDetailsActivity extends AppCompatActivity {
 
@@ -45,13 +31,14 @@ public class BookDetailsActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private Book book;
     private ParseUser store;
+    ActivityBookDetailsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // view binding
-        final ActivityBookDetailsBinding binding = ActivityBookDetailsBinding.inflate(getLayoutInflater());
+        binding = ActivityBookDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         setContentView(view);
@@ -101,6 +88,10 @@ public class BookDetailsActivity extends AppCompatActivity {
             }
         });
 
+        populateViews();
+    }
+
+    private void populateViews() {
         // Populate the views in the detail activity with the information from the book object
         try {
             binding.tvTitle.setText(book.getTitle());
@@ -112,9 +103,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 @Override
                 public void done(ParseUser user, ParseException e) {
                     LocalInkUser localInkUser = new LocalInkUser((user));
-
                     store = user;
-
                     startMap();
 
                     String address = localInkUser.getLocation();

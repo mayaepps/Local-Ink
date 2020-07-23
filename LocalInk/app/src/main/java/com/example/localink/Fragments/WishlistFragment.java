@@ -1,10 +1,14 @@
 package com.example.localink.Fragments;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,7 +68,26 @@ public class WishlistFragment extends Fragment {
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Set up swipe listener that removes the swiped book
+        ItemTouchHelper touchHelper = createTouchHelper();
+        touchHelper.attachToRecyclerView(rvBooks);
+
         getWishlistBooks();
+    }
+
+    private void saveNewWishlist(List<Book> wishlist) {
+        LocalInkUser localInkUser = new LocalInkUser(ParseUser.getCurrentUser());
+        localInkUser.setWishlist(wishlist);
+        localInkUser.getUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Could not save wishlist to Parse: " + e.getMessage(), e);
+                } else {
+                    Toast.makeText(getContext(), "New wishlist saved!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     // Gets the wishlist list stored in ParseUser and save the list to wishlistBooks
@@ -119,5 +142,25 @@ public class WishlistFragment extends Fragment {
 
             }
         });
+    }
+
+    // Creates and returns a new ItemTouchHelper that listens for left swipes and removes the book that has been swiped
+    private ItemTouchHelper createTouchHelper() {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // When the book is swiped, remove it from the wishlist, notify the adapter of the change,
+            // and save the changes to the list in Parse
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                wishlistBooks.remove(viewHolder.getAdapterPosition());
+                saveNewWishlist(wishlistBooks);
+                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            }
+        });
+        return helper;
     }
 }

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,42 +62,18 @@ public class BookshelfFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Instantiate my OnClickListener from the interface in BooksAdapter
-        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
-            @Override
-            public void onClick(int position) {
-                return;
-            }
-
-            // Delete book from Parse if it is long clicked
-            @Override
-            public void onLongClick(final int position) {
-                final Book book = storeBooks.get(position);
-                book.deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Could not delete book: " + e.getMessage(), e);
-                        } else {
-                            Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
-                        }
-                        storeBooks.remove(position);
-                        adapter.notifyItemChanged(position);
-                    }
-                });
-
-            }
-        };
-
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         storeBooks = new ArrayList<>(); // Have to initialize storeBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), storeBooks, clickListener);
+        adapter = new BooksAdapter(getContext(), storeBooks, null);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        queryBooks();
+        // Set up swipe listener that removes the swiped book
+        ItemTouchHelper touchHelper = createTouchHelper();
+        touchHelper.attachToRecyclerView(rvBooks);
 
+        queryBooks();
     }
 
     // Query all the books whose bookstore is the same as the currently logged in bookstore (current user)
@@ -125,6 +102,36 @@ public class BookshelfFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    // Creates and returns an ItemTouchHelper that listens for swipes and deletes the book that has been swiped
+    private ItemTouchHelper createTouchHelper() {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // When the user swipes to the left, delete the book from Parse and remove it from the screen
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                final Book book = storeBooks.get(position);
+                book.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Could not delete book: " + e.getMessage(), e);
+                        } else {
+                            Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+                        }
+                        storeBooks.remove(position);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
+            }
+        });
+        return helper;
     }
 
 }
