@@ -107,7 +107,13 @@ public class ProfileFragment extends Fragment {
         tvName.setText(user.getName());
         tvUsername.setText("Username: " + user.getUser().getUsername());
         tvAgeRange.setText("Age Range: " + user.getAgePreference());
-        tvGenre.setText("Genre: " + user.getGenrePreferences().toString());
+        String genres = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            genres = String.join(", ", user.getGenrePreferences());
+        } else {
+            genres = user.getGenrePreferences().toString();
+        }
+        tvGenre.setText("Genre(s): " + genres);
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {

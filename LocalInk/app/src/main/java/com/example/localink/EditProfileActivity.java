@@ -1,20 +1,19 @@
 package com.example.localink;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.Utils.ChipUtils;
 import com.example.localink.Utils.ImageUtils;
 import com.example.localink.databinding.ActivityEditProfileBinding;
 import com.parse.ParseException;
@@ -24,8 +23,11 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -52,8 +54,12 @@ public class EditProfileActivity extends AppCompatActivity {
             Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
         }
 
-        //setSpinnerToValue(binding.spnrGenre, user.getGenrePreferences());
-        setSpinnerToValue(binding.spnrAgeRange, user.getAgePreference());
+        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), true);
+        ChipUtils.setUpChips(this, binding.genreChips, getResources().getStringArray(R.array.genres_array), false);
+        ChipUtils.selectChips(user.getGenrePreferences(), binding.genreChips);
+        List<String> agePreference = new ArrayList<String>();
+        agePreference.add(user.getAgePreference());
+        ChipUtils.selectChips(agePreference, binding.ageRangeChips);
 
         // When the save button is pressed, save all the selections to Parse and go back to profile activity
         binding.fabSave.setOnClickListener(new View.OnClickListener() {
@@ -62,14 +68,25 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 // Get values
                 String name = binding.etName.getText().toString();
-                List<String> genrePreferences = new ArrayList<>();
-                genrePreferences.add(binding.spnrGenre.getSelectedItem().toString());
-                String agePreference = binding.spnrAgeRange.getSelectedItem().toString();
 
                 //Save new values to Parse
                 user.setName(name);
-                user.setGenrePreferences(genrePreferences);
-                user.setAgePreference(agePreference);
+
+                List<String> genres = ChipUtils.getChipSelections(binding.genreChips);
+                if (genres.size() > 0) {
+                    user.setGenrePreferences(genres);
+                } else {
+                    Toast.makeText(EditProfileActivity.this, "You must select at least one genre!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<String> ageRange = ChipUtils.getChipSelections(binding.ageRangeChips);
+                if (ageRange.size() > 0) {
+                    user.setAgePreference(ageRange.get(0));
+                } else {
+                    Toast.makeText(EditProfileActivity.this, "You must select an age range!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (ImageUtils.getPhotoFile() != null) {
                     user.setProfileImage(new ParseFile(ImageUtils.getPhotoFile()));
                 }
@@ -96,20 +113,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 ImageUtils.launchCamera(EditProfileActivity.this, "photo.jpg");
             }
         });
-    }
-
-    //Per Codepath Spinner guide
-    // Takes a spinner and the value the spinner should be set to and sets the spinner to that value
-    public void setSpinnerToValue(Spinner spinner, String value) {
-        int index = 0;
-        SpinnerAdapter adapter = spinner.getAdapter();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            if (adapter.getItem(i).equals(value)) {
-                index = i;
-                break;
-            }
-        }
-        spinner.setSelection(index);
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

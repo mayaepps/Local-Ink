@@ -1,18 +1,16 @@
 package com.example.localink;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
-import com.example.localink.Utils.GeocoderUtils;
+import com.example.localink.Utils.ChipUtils;
 import com.example.localink.databinding.ActivityRegisterReaderBinding;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -35,8 +33,8 @@ public class RegisterReaderActivity extends AppCompatActivity {
 
         setContentView(view);
 
-        setUpChips(binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), true);
-        setUpChips(binding.genreChips, getResources().getStringArray(R.array.genres_array), false);
+        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), true);
+        ChipUtils.setUpChips(this, binding.genreChips, getResources().getStringArray(R.array.genres_array), false);
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +55,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
         newUser.setName(binding.etName.getText().toString());
         newUser.setIsBookstore(false);
 
-        List<String> genres = getChipSelections(binding.genreChips);
+        List<String> genres = ChipUtils.getChipSelections(binding.genreChips);
         if (genres.size() > 0) {
             newUser.setGenrePreferences(genres);
         } else {
@@ -65,7 +63,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
             return;
         }
 
-        List<String> ageRange = getChipSelections(binding.ageRangeChips);
+        List<String> ageRange = ChipUtils.getChipSelections(binding.ageRangeChips);
         if (ageRange.size() > 0) {
             newUser.setAgePreference(ageRange.get(0));
         } else {
@@ -90,31 +88,5 @@ public class RegisterReaderActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    // Get a string of the selected chips from the given chipGroup
-    private List<String> getChipSelections(ChipGroup chipGroup) {
-
-        List<String> selections = new ArrayList<>();
-
-        for (int i=0; i < chipGroup.getChildCount(); i++){
-            Chip chip = (Chip) chipGroup.getChildAt(i);
-            if (chip.isChecked()){
-                selections.add((String) chip.getText());
-            }
-        }
-        return selections;
-    }
-
-    // Put a chip in the chipGroup for each element in the choices string
-    private void setUpChips(ChipGroup chipGroup, String[] choices, boolean singleSelection) {
-
-        chipGroup.setSingleSelection(singleSelection);
-        for (String choice : choices) {
-            Chip chip = new Chip(RegisterReaderActivity.this);
-            chip.setText(choice);
-            chip.setCheckable(true);
-            chipGroup.addView(chip);
-        }
     }
 }
