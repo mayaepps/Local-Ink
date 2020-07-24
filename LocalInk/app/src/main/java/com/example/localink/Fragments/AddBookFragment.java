@@ -73,8 +73,10 @@ public class AddBookFragment extends Fragment {
                 Book book = new Book();
                 book.setTitle(etTitle.getText().toString());
                 book.setAuthor(etAuthor.getText().toString());
-                if (!etIsbn.getText().toString().isEmpty()) {
-                    book.setIsbn(Integer.parseInt(etIsbn.getText().toString()));
+                if (isValidISBN(etIsbn.getText().toString())) {
+                    book.setIsbn(etIsbn.getText().toString());
+                } else {
+                    Toast.makeText(getContext(), "Invalid ISBN", Toast.LENGTH_SHORT).show();
                 }
                 book.setSynopsis(etSynopsis.getText().toString());
                 book.setCover(etCover.getText().toString());
@@ -106,5 +108,9 @@ public class AddBookFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private boolean isValidISBN(String isbn) {
+        return (!isbn.isEmpty() && isbn.length() >= 10 && isbn.length() <= 13);
     }
 }

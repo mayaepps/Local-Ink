@@ -12,6 +12,7 @@ import com.example.localink.Models.LocalInkUser;
 import com.example.localink.Utils.ChipUtils;
 import com.example.localink.databinding.ActivityRegisterReaderBinding;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -33,7 +34,7 @@ public class RegisterReaderActivity extends AppCompatActivity {
 
         setContentView(view);
 
-        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), true);
+        ChipUtils.setUpChips(this, binding.ageRangeChips, getResources().getStringArray(R.array.age_ranges_array), false);
         ChipUtils.setUpChips(this, binding.genreChips, getResources().getStringArray(R.array.genres_array), false);
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +64,9 @@ public class RegisterReaderActivity extends AppCompatActivity {
             return;
         }
 
-        List<String> ageRange = ChipUtils.getChipSelections(binding.ageRangeChips);
-        if (ageRange.size() > 0) {
-            newUser.setAgePreferences(ageRange);
+        List<String> ageRanges = ChipUtils.getChipSelections(binding.ageRangeChips);
+        if (ageRanges.size() > 0) {
+            newUser.setAgePreferences(ageRanges);
         } else {
             Toast.makeText(this, "You must select an age range!", Toast.LENGTH_SHORT).show();
             return;

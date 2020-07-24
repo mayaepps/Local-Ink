@@ -64,11 +64,11 @@ public class Book extends ParseObject {
         put(KEY_SYNOPSIS, synopsis);
     }
 
-    public Number getIsbn() throws ParseException {
-        return fetchIfNeeded().getNumber(KEY_ISBN);
+    public String getIsbn() throws ParseException {
+        return fetchIfNeeded().getString(KEY_ISBN);
     }
 
-    public void setIsbn(Number isbn) {
+    public void setIsbn(String isbn) {
         put(KEY_ISBN, isbn);
     }
 

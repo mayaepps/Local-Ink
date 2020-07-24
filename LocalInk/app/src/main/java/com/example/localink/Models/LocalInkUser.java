@@ -11,7 +11,9 @@ import java.util.List;
 
 @Parcel
 public class LocalInkUser {
+
     ParseUser user;
+
     public static final String KEY_IS_BOOKSTORE = "isBookstore";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_WISHLIST = "wishlist";
@@ -48,8 +50,7 @@ public class LocalInkUser {
     }
 
     public List<Book> getWishlist() {
-        List<Book> wishlist = user.getList(KEY_WISHLIST);
-        return wishlist;
+        return user.getList(KEY_WISHLIST);
     }
 
     public void setWishlist(List<Book> wishlist) {

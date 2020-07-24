@@ -1,14 +1,20 @@
 package com.example.localink.Fragments;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +29,10 @@ import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -39,6 +48,7 @@ public class RecommendationsFragment extends Fragment {
     private static final String TAG = "RecommendationsFragment";
     private static final int ACCESS_LOCATION_REQUEST_CODE = 15;
     private static final int MINIMUM_RECS = 10;
+    private static final int LOCATION_UPDATE_REQUEST_CODE = 10;
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
@@ -106,14 +116,16 @@ public class RecommendationsFragment extends Fragment {
             queryBooks(store);
         }
 
-        // Get the books that perfectly match the user's preferences
         List<Book> booksToRemove = new ArrayList<>();
+
         for (Book book : otherBooks) {
+
             // Don't recommend books that are already in the wishlist
             if (inWishlist(book)) {
                 booksToRemove.add(book);
                 continue;
             }
+            // Add books that perfectly match the user's preferences to the recommendation list
             if (matchesAge(book) && matchesGenre(book)) {
                 recommendedBooks.add(book);
                 booksToRemove.add(book);
@@ -123,7 +135,8 @@ public class RecommendationsFragment extends Fragment {
         booksToRemove.clear();
 
         // If there aren't enough books that fit the preferences,
-        // Get the books that match the user's age preferences, but show them other genres
+        // get the books that match the user's age preferences, but show them other genres
+        // TODO: start with related genres
         if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
             for (Book book : otherBooks) {
                 if (matchesAge(book)) {
@@ -138,6 +151,7 @@ public class RecommendationsFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    // Returns whether or not the given book is already in this user's wishlist
     private boolean inWishlist(Book book) {
         List<Book> wishlist = user.getWishlist();
         try {
@@ -208,12 +222,15 @@ public class RecommendationsFragment extends Fragment {
                             currentLocation.setLongitude(location.getLongitude());
                             getNearbyStores(currentLocation, 5);
                         } else {
+                            Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
+                            //TODO: Try a saved location in Parse
                             Log.e(TAG, "Current user's location could not be found!");
                         }
                     }
                 });
     }
 
+    // Returns whether or not the book fits any of the user's preferred genres
     private boolean matchesGenre(Book book) {
         try {
             List<String> genres = user.getGenrePreferences();
@@ -229,6 +246,7 @@ public class RecommendationsFragment extends Fragment {
         return false;
     }
 
+    // Returns whether or not the book fits any of the user's preferred reading levels
     private boolean matchesAge(Book book) {
         try {
             List<String> ageRanges = user.getAgePreferences();
@@ -243,5 +261,4 @@ public class RecommendationsFragment extends Fragment {
         }
         return false;
     }
-
 }
