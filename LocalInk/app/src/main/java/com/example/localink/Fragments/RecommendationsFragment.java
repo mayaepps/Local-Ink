@@ -14,11 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.app.SharedElementCallback;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,10 +90,21 @@ public class RecommendationsFragment extends Fragment {
 
             // If clicked, the book item should open  a detail view activity for the book
             @Override
-            public void onClick(int position) {
+            public void onClick(int position, View view) {
+                // Fire an intent when a contact is selected
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
                 i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
-                startActivity(i);
+
+                // Create Pairs to match the transition name to the
+                Pair<View, String> pCover = Pair.create(view.findViewById(R.id.ivCover), "cover");
+                Pair<View, String> pTitle = Pair.create(view.findViewById(R.id.tvBookTitle), "title");
+                Pair<View, String> pAuthor = Pair.create(view.findViewById(R.id.tvAuthor), "author");
+                Pair<View, String> pSynopsis= Pair.create(view.findViewById(R.id.tvSynopsis), "synopsis");
+
+                // Create transition animation between recommendations screen to details screen
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(getActivity(), pCover, pTitle, pAuthor, pSynopsis);
+                startActivity(i, options.toBundle());
             }
 
             // Required by the interface

@@ -1,6 +1,8 @@
 package com.example.localink.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +28,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     private static final String TAG = "BooksAdapter";
 
     public interface OnClickListener {
-        void onClick(int position);
+        void onClick(int position, View view);
         void onLongClick(int position);
     }
 
@@ -62,25 +66,25 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivCover;
-        private TextView tvTitle;
+        private TextView tvBookTitle;
         private TextView tvAuthor;
-        private TextView tvDescription;
+        private TextView tvSynopsis;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             // Find all the of the relevant views in item_book
             ivCover = itemView.findViewById(R.id.ivCover);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvSynopsis = itemView.findViewById(R.id.tvSynopsis);
 
             // If a clickListener was passed into the adapter, set the methods on the itemView
             if (clickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        clickListener.onClick(getAdapterPosition());
+                        clickListener.onClick(getAdapterPosition(), itemView);
                     }
                 });
 
@@ -101,9 +105,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                     Glide.with(context).load(book.getCover()).into(ivCover);
 
                 }
-                tvTitle.setText(book.getTitle());
+                tvBookTitle.setText(book.getTitle());
                 tvAuthor.setText(book.getAuthor());
-                tvDescription.setText(book.getSynopsis());
+                tvSynopsis.setText(book.getSynopsis());
             } catch (ParseException e) {
                 Log.e("ViewHolder", "Error fetching book fields from Parse " + e.getMessage());
             }
