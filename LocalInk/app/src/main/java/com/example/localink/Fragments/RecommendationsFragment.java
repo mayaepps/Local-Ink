@@ -102,8 +102,9 @@ public class RecommendationsFragment extends Fragment {
                 Pair<View, String> pSynopsis= Pair.create(view.findViewById(R.id.tvSynopsis), "synopsis");
 
                 // Create transition animation between recommendations screen to details screen
+                // TODO: Figure out why adding pTitle and pAuthor makes the animation so uneven
                 ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(getActivity(), pCover, pTitle, pAuthor, pSynopsis);
+                        makeSceneTransitionAnimation(getActivity(), pCover, pSynopsis);
                 startActivity(i, options.toBundle());
             }
 
@@ -141,17 +142,38 @@ public class RecommendationsFragment extends Fragment {
                 continue;
             }
             // Add books that perfectly match the user's preferences to the recommendation list
-            if (matchesAge(book) && matchesGenre(book)) {
+            if (matchesAge(book) && matchesGenre(book, user.getGenrePreferences())) {
                 recommendedBooks.add(book);
                 booksToRemove.add(book);
             }
         }
         otherBooks.removeAll(booksToRemove);
         booksToRemove.clear();
+        adapter.notifyDataSetChanged();
 
         // If there aren't enough books that fit the preferences,
-        // get the books that match the user's age preferences, but show them other genres
-        // TODO: start with related genres
+        // get the books that match the user's age preferences, but show them other genres:
+
+        // start with related genres (defined in Book class)
+        if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
+            List<String> relatedGenres = new ArrayList<>();
+            for (String genre : user.getGenrePreferences()) {
+                if (Book.similarGenres.containsKey(genre)){
+                    relatedGenres.addAll(Book.similarGenres.get(genre));
+                }
+            }
+
+            for (Book book : otherBooks) {
+                if (matchesAge(book) && matchesGenre(book, relatedGenres)) {
+                    recommendedBooks.add(book);
+                    booksToRemove.add(book);
+                }
+            }
+        }
+        otherBooks.removeAll(booksToRemove);
+        booksToRemove.clear();
+        adapter.notifyDataSetChanged();
+
         if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
             for (Book book : otherBooks) {
                 if (matchesAge(book)) {
@@ -159,6 +181,7 @@ public class RecommendationsFragment extends Fragment {
                     booksToRemove.add(book);
                 }
             }
+
         }
         otherBooks.removeAll(booksToRemove);
         booksToRemove.clear();
@@ -246,9 +269,8 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Returns whether or not the book fits any of the user's preferred genres
-    private boolean matchesGenre(Book book) {
+    private boolean matchesGenre(Book book, List<String> genres) {
         try {
-            List<String> genres = user.getGenrePreferences();
             for (String genre : genres) {
                 if (genre.equals(book.getGenre())) {
                     return true;

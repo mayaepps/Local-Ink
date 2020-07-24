@@ -8,7 +8,11 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ParseClassName("Book")
 public class Book extends ParseObject {
@@ -24,6 +28,19 @@ public class Book extends ParseObject {
     private static final String KEY_AGE_RANGE = "age_range";
     public static final String KEY_CREATED_AT = "createdAt";
 
+    public static final Map<String, List<String>> similarGenres = new HashMap<String, List<String>>() {
+        {
+            put("Fantasy", Arrays.asList("Science Fiction"));
+            put("Science Fiction", Arrays.asList("Fantasy"));
+            put("Horror", Arrays.asList("Thriller", "Mystery"));
+            put("Mystery", Arrays.asList("Thriller", "Horror"));
+            put("Thriller", Arrays.asList("Mystery", "Horror"));
+            put("History", Arrays.asList("Historical Fiction", "Biography/Autobiography"));
+            put("Historical Fiction", Arrays.asList("Biography/Autobiography", "History"));
+            put("Chic lit", Arrays.asList("Romance"));
+            put("Romance", Arrays.asList("Chic lit"));
+        }
+    };
 
     public String getTitle() {
         // Method getString() is defined in the Parse object class, is like a getter for the key

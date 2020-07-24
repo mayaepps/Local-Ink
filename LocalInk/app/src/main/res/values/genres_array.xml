@@ -6,11 +6,15 @@
         <item>Comic/Graphic novel</item>
         <item>Historical Fiction</item>
         <item>Horror</item>
+        <item>Mystery</item>
+        <item>Thriller</item>
         <item>Literary Fiction</item>
         <item>Romance</item>
         <item>Science Fiction</item>
         <item>Biography/Autobiography</item>
         <item>Self Help</item>
         <item>Cookbooks</item>
+        <item>History</item>
+        <item>Chic lit</item>
     </string-array>
 </resources>

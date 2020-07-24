@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookDetailsActivity">
+    tools:context=".BookDetailsActivity"
+    style="@style/AppTheme">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -44,14 +46,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/title"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:transitionName="title"/>
 
             <TextView
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/author"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:transitionName="author"/>
 
             <TextView
                 android:id="@+id/tvGenre"
@@ -123,7 +127,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="-2dp"
         android:src="@drawable/ic_baseline_add_24"
-        app:useCompatPadding="true"/>
+        app:useCompatPadding="true" />
 
 </RelativeLayout>
