@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
@@ -45,24 +46,21 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        fragment = recommendationsFragment;
-                        break;
+                        displayFragment(recommendationsFragment, wishlistFragment, profileFragment);
+                        return true;
                     case R.id.action_wishlist:
-                        fragment = wishlistFragment;
-                        break;
+                        displayFragment(wishlistFragment, recommendationsFragment, profileFragment);
+                        return true;
                     case R.id.action_profile:
-                        fragment = profileFragment;
-                        break;
+                        displayFragment(profileFragment, wishlistFragment, recommendationsFragment);
+                        return true;
                     default:
-                        fragment = recommendationsFragment;
-                        break;
+                        displayFragment(recommendationsFragment, wishlistFragment, profileFragment);
+                        return true;
                 }
-                // Switch out the frame layout with the specified fragment
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
+
             }
         });
 
@@ -75,5 +73,25 @@ public class MainActivity extends AppCompatActivity {
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(layoutId);
 
+    }
+
+    // Show fragmentA and hide all the other fragments
+    private void displayFragment(Fragment fragmentA, Fragment fragmentB, Fragment fragmentC) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (fragmentA.isAdded()) { // if the fragment is already in container
+            ft.show(fragmentA);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.flContainer, fragmentA, fragmentA.getClass().getSimpleName());
+        }
+
+        if (fragmentB.isAdded()) {
+            ft.hide(fragmentB);
+        }
+
+        if (fragmentC.isAdded()) {
+            ft.hide(fragmentC);
+        }
+
+        ft.commit();
     }
 }

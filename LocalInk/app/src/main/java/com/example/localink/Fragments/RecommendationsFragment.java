@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -357,5 +358,28 @@ public class RecommendationsFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // When the user goes back to the recommendations screen
+    // Check whether the user has made any changes to their profile or wishlist while on other tabs
+    // if they have made changes, refresh the recommendations to match those changes
+    // TODO: bug - this method is not called after a book is deleted from the wishlist
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
+                @Override
+                public void done(ParseUser nUser, ParseException e) {
+                    LocalInkUser newUser = new LocalInkUser(nUser);
+                    if (!newUser.getAgePreferences().equals(user.getAgePreferences())
+                            || !newUser.getGenrePreferences().equals(user.getGenrePreferences())
+                            || newUser.getWishlist().size() != user.getWishlist().size()) {
+                        user = newUser;
+                        getLastKnownLocation(NUM_INITIAL_STORES);
+                    }
+                }
+            });
+        }
     }
 }
