@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

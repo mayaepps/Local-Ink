@@ -40,20 +40,20 @@
             android:name=".ParseApplication"
             android:foregroundServiceType="location" />
 
-        <activity android:name=".BookDetailsActivity" />
-        <activity android:name=".EditBookstoreProfileActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".RegisterBookstoreActivity" />
-        <activity android:name=".RegisterReaderActivity" />
-        <activity android:name=".BookstoreMainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activities.BookDetailsActivity" />
+        <activity android:name=".Activities.EditBookstoreProfileActivity" />
+        <activity android:name=".Activities.EditProfileActivity" />
+        <activity android:name=".Activities.RegisterBookstoreActivity" />
+        <activity android:name=".Activities.RegisterReaderActivity" />
+        <activity android:name=".Activities.BookstoreMainActivity" />
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activities.MainActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

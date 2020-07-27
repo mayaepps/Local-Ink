@@ -2,14 +2,11 @@ package com.example.localink.Utils;
 
 import android.content.Context;
 
-import com.example.localink.RegisterReaderActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class ChipUtils {
 

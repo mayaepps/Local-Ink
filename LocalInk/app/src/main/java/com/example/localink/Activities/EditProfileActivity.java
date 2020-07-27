@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
 import com.example.localink.Utils.ImageUtils;
 import com.example.localink.databinding.ActivityEditProfileBinding;
@@ -23,11 +24,7 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class EditProfileActivity extends AppCompatActivity {
 

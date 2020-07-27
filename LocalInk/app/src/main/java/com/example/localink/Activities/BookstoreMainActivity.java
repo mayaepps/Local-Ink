@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.view.View;
 import com.example.localink.Fragments.AddBookFragment;
 import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Fragments.BookstoreProfileFragment;
+import com.example.localink.R;
 import com.example.localink.databinding.ActivityBookstoreMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

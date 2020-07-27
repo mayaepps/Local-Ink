@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/ivCover"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+        android:id="@+id/llBookInfo">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvBookTitle"
@@ -46,7 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Madeline Miller"
-            android:transitionName="author"/>
+            android:transitionName="author"
+            android:textSize="13sp"
+            android:paddingBottom="8dp"/>
 
         <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvSynopsis"
@@ -54,10 +57,37 @@
         android:layout_height="wrap_content"
         tools:text="In the house of Helios, god of the sun and mightiest of the Titans, a daughter is born. But Circe is a strange child—not powerful, like her father, nor viciously alluring like her mother..."
         android:ellipsize="end"
-        android:maxLines="7"
+        android:maxLines="6"
         android:transitionName="synopsis"/>
 
     </LinearLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/llBookInfo"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="8dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Genre"
+            app:chipMinHeight="24dp"
+            app:chipMinTouchTargetSize="0dp"
+            app:chipBackgroundColor="@color/paleColorAccent"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAgeRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Reading level"
+            app:chipMinHeight="24dp"
+            app:chipMinTouchTargetSize="0dp"
+            app:chipBackgroundColor="@color/paleColorAccent"/>
+
+    </com.google.android.material.chip.ChipGroup>
 
 </RelativeLayout>
 

@@ -1,12 +1,9 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,10 +14,6 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class RegisterBookstoreActivity extends AppCompatActivity {
 

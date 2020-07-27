@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.localink.Fragments.MapsFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.R;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
 import com.parse.GetCallback;
 import com.parse.ParseException;

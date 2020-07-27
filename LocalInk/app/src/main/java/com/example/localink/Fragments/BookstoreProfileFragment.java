@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.localink.EditBookstoreProfileActivity;
-import com.example.localink.LoginActivity;
+import com.example.localink.Activities.EditBookstoreProfileActivity;
+import com.example.localink.Activities.LoginActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;

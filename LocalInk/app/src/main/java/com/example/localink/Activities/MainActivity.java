@@ -1,9 +1,11 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.WishlistFragment;
+import com.example.localink.R;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -72,7 +75,5 @@ public class MainActivity extends AppCompatActivity {
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(layoutId);
 
-
     }
-
 }

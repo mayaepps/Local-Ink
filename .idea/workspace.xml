@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="93c735f8-296e-4119-ae5a-fbc91ca467f3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/BookDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/BookDetailsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/Fragments/RecommendationsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/Fragments/RecommendationsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/activity_book_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/activity_book_details.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/item_book.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/item_book.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/values/styles.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1f9EZS4bCYMT9tnBFjhOcfs78bD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="93c735f8-296e-4119-ae5a-fbc91ca467f3" name="Default Changelist" comment="" />
+      <created>1595621963824</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1595621963824</updated>
+    </task>
+    <servers />
+  </component>
+</project>

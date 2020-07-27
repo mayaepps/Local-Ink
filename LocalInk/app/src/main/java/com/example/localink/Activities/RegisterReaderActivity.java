@@ -1,4 +1,4 @@
-package com.example.localink;
+package com.example.localink.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
 import com.example.localink.databinding.ActivityRegisterReaderBinding;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 

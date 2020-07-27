@@ -1,43 +1,43 @@
 package com.example.localink.Fragments;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.app.SharedElementCallback;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localink.Adapters.BooksAdapter;
-import com.example.localink.BookDetailsActivity;
+import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -53,11 +53,13 @@ public class RecommendationsFragment extends Fragment {
     private static final int ACCESS_LOCATION_REQUEST_CODE = 15;
     private static final int MINIMUM_RECS = 10;
     private static final int LOCATION_UPDATE_REQUEST_CODE = 10;
+    private static final int NUM_INITIAL_STORES = 5;
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
     private List<Book> otherBooks;
     private LocalInkUser user;
+    private BottomSheetBehavior bottomSheetBehavior;
     private FusedLocationProviderClient fusedLocationClient;
 
     public RecommendationsFragment() {
@@ -68,6 +70,7 @@ public class RecommendationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -81,7 +84,12 @@ public class RecommendationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getLastKnownLocation();
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        setUpBottomSheet(view, NUM_INITIAL_STORES);
+
+        getLastKnownLocation(NUM_INITIAL_STORES);
 
         user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -123,9 +131,45 @@ public class RecommendationsFragment extends Fragment {
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    // Set up the initial views and click listener for the bottom sheet that will pop up when the recommendations settings is tapped
+    private void setUpBottomSheet(View view, int progress) {
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.recSettingsBottomSheet));
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        // Set initial values for the seek bar (scrolling bar to select # of stores)
+        final SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        seekBar.setProgress(progress);
+        final TextView seekBarValue = (TextView) view.findViewById(R.id.tvSeekBarValue);
+        seekBarValue.setText(String.valueOf(progress));
+
+        // Change the text view next to the seek bar to reflect the numeric value of the seek bar when it is changed
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBarValue.setText(String.valueOf(progress));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
+        // Get all the recommendations again when the save button is pressed
+        MaterialButton btnSave = view.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                getLastKnownLocation(seekBar.getProgress());
+            }
+        });
+
+    }
+
     // Recommends books from the nearby bookstores param that fit the user's preferences
     // if there aren't enough perfect matches, it gets partial matches (that fit the age, not the genre)
     private void getRecommendations(List<ParseUser> nearbyBookstores) {
+        recommendedBooks.clear();
         otherBooks = new ArrayList<>();
         // Get the books from the 5 closest stores and get their available books
         for (ParseUser store : nearbyBookstores) {
@@ -241,7 +285,7 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Get the user's last known location
-    private void getLastKnownLocation() {
+    private void getLastKnownLocation(final int limit) {
         final ParseGeoPoint currentLocation = new ParseGeoPoint();
 
         // Ask for permission to access current location if they aren't already granted
@@ -258,7 +302,7 @@ public class RecommendationsFragment extends Fragment {
                         if (location != null) {
                             currentLocation.setLatitude(location.getLatitude());
                             currentLocation.setLongitude(location.getLongitude());
-                            getNearbyStores(currentLocation, 5);
+                            getNearbyStores(currentLocation, limit);
                         } else {
                             Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
                             //TODO: Try a saved location in Parse
@@ -297,5 +341,21 @@ public class RecommendationsFragment extends Fragment {
             Log.e(TAG, "Error retrieving the age range of book " + book.getTitle(), e);
         }
         return false;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.recommendations_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.miRecSettings) {
+            // Recommendation settings icon has been tapped
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

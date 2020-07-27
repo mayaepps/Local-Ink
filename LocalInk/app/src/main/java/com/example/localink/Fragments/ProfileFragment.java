@@ -11,28 +11,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.localink.EditProfileActivity;
-import com.example.localink.LoginActivity;
+import com.example.localink.Activities.EditProfileActivity;
+import com.example.localink.Activities.LoginActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
-
-import java.io.File;
 
 
 public class ProfileFragment extends Fragment {
@@ -52,6 +46,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
     }
 
     @Override
