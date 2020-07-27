@@ -1,12 +1,12 @@
 package com.example.localink.Fragments;
 
+import android.content.ClipData;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -33,7 +31,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
 public class WishlistFragment extends Fragment {
@@ -148,11 +149,22 @@ public class WishlistFragment extends Fragment {
     }
 
     // Creates and returns a new ItemTouchHelper that listens for left swipes and removes the book that has been swiped
+    // Touch helper also allows the user to drag and drop recycler view items to rearrange the list
     private ItemTouchHelper createTouchHelper() {
-        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP
+                | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END,
+                ItemTouchHelper.LEFT) {
+
+            // When an item is dragged somewhere new, swap them in the list, notify the adapter, and save the change to Parse
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
+            public boolean onMove(@NonNull final RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                final int fromPosition = viewHolder.getAdapterPosition();
+                final int toPosition = target.getAdapterPosition();
+
+                Collections.swap(wishlistBooks, fromPosition, toPosition);
+                saveNewWishlist(wishlistBooks);
+                recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+                return true;
             }
 
             // When the book is swiped, remove it from the wishlist, notify the adapter of the change,
@@ -162,6 +174,19 @@ public class WishlistFragment extends Fragment {
                 wishlistBooks.remove(viewHolder.getAdapterPosition());
                 saveNewWishlist(wishlistBooks);
                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+            }
+
+            // Add background color and icon when the view is swiped
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                        .addActionIcon(R.drawable.ic_baseline_delete_24)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
     }

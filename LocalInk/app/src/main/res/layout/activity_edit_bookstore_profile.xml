@@ -65,5 +65,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_baseline_done_24"
-        app:useCompatPadding="true"/>
+        app:useCompatPadding="true"
+        app:backgroundTint="@color/colorAccent"/>
 </RelativeLayout>

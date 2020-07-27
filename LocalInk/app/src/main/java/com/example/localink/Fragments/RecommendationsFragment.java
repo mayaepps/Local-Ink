@@ -48,6 +48,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
 public class RecommendationsFragment extends Fragment {
 
     private static final String TAG = "RecommendationsFragment";
@@ -130,6 +132,7 @@ public class RecommendationsFragment extends Fragment {
         adapter = new BooksAdapter(getContext(), recommendedBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvBooks.setItemAnimator(new SlideInUpAnimator());
     }
 
     // Set up the initial views and click listener for the bottom sheet that will pop up when the recommendations settings is tapped

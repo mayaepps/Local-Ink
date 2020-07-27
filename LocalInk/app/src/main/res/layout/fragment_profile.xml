@@ -21,7 +21,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_baseline_edit_24"
-        app:useCompatPadding="true" />
+        app:useCompatPadding="true"
+        app:backgroundTint="@color/colorAccent"/>
 
     <ImageView
         android:id="@+id/ivProfileImage"

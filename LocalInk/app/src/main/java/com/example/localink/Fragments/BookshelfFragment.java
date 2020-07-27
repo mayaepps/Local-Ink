@@ -28,6 +28,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
 
 public class BookshelfFragment extends Fragment {
 
@@ -62,6 +64,7 @@ public class BookshelfFragment extends Fragment {
         adapter = new BooksAdapter(getContext(), storeBooks, null);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvBooks.setItemAnimator(new SlideInUpAnimator());
 
         // Set up swipe listener that removes the swiped book
         ItemTouchHelper touchHelper = createTouchHelper();
