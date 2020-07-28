@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,14 +54,16 @@ public class RecommendationsFragment extends Fragment {
     private static final String TAG = "RecommendationsFragment";
     private static final int ACCESS_LOCATION_REQUEST_CODE = 15;
     private static final int MINIMUM_RECS = 10;
-    private static final int LOCATION_UPDATE_REQUEST_CODE = 10;
     private static final int NUM_INITIAL_STORES = 5;
+    private static final int NUM_INITIAL_MILES = 20;
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
     private List<Book> otherBooks;
     private LocalInkUser user;
     private BottomSheetBehavior bottomSheetBehavior;
+    private SeekBar seekbarRadiusStores;
+    private SeekBar seekbarNumStores;
     private FusedLocationProviderClient fusedLocationClient;
 
     public RecommendationsFragment() {
@@ -90,9 +91,9 @@ public class RecommendationsFragment extends Fragment {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        setUpBottomSheet(view, NUM_INITIAL_STORES);
+        setUpBottomSheet(view);
 
-        getLastKnownLocation(NUM_INITIAL_STORES);
+        getLastKnownLocation(NUM_INITIAL_STORES, NUM_INITIAL_MILES);
 
         user = new LocalInkUser(ParseUser.getCurrentUser());
 
@@ -121,9 +122,7 @@ public class RecommendationsFragment extends Fragment {
 
             // Required by the interface
             @Override
-            public void onLongClick(int position) {
-                return;
-            }
+            public void onLongClick(int position) { }
         };
 
         // Set up recycler view with the adapter and linear layout
@@ -136,14 +135,30 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Set up the initial views and click listener for the bottom sheet that will pop up when the recommendations settings is tapped
-    private void setUpBottomSheet(View view, int progress) {
+    private void setUpBottomSheet(View view) {
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.recSettingsBottomSheet));
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        seekbarNumStores = view.findViewById(R.id.numStoresSeekBar);
+        setSeekBar(view, seekbarNumStores, R.id.tvNumStoresSeekBarValue, NUM_INITIAL_STORES);
+        seekbarRadiusStores = view.findViewById(R.id.seekBarRadiusStores);
+        setSeekBar(view, seekbarRadiusStores, R.id.tvRadiusStoresSeekBarValue, NUM_INITIAL_MILES);
+
+        // Get all the recommendations again when the save button is pressed
+        MaterialButton btnSave = view.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                getLastKnownLocation(seekbarNumStores.getProgress(), seekbarRadiusStores.getProgress());
+            }
+        });
+    }
+
+    private void setSeekBar(View view, SeekBar seekBar, int seekBarValueId, int progress) {
         // Set initial values for the seek bar (scrolling bar to select # of stores)
-        final SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         seekBar.setProgress(progress);
-        final TextView seekBarValue = (TextView) view.findViewById(R.id.tvSeekBarValue);
+        final TextView seekBarValue = view.findViewById(seekBarValueId);
         seekBarValue.setText(String.valueOf(progress));
 
         // Change the text view next to the seek bar to reflect the numeric value of the seek bar when it is changed
@@ -157,18 +172,8 @@ public class RecommendationsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
-
-        // Get all the recommendations again when the save button is pressed
-        MaterialButton btnSave = view.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                getLastKnownLocation(seekBar.getProgress());
-            }
-        });
-
     }
+
 
     // Recommends books from the nearby bookstores param that fit the user's preferences
     // if there aren't enough perfect matches, it gets partial matches (that fit the age, not the genre)
@@ -268,12 +273,13 @@ public class RecommendationsFragment extends Fragment {
 
     // Get the bookstores that are near the currently logged in user
     // Returns a list of bookstores of length limit (from nearest to farthest)
-    private void getNearbyStores(ParseGeoPoint currentLocation, int limit) {
+    private void getNearbyStores(ParseGeoPoint currentLocation, int numLimit, int radiusLimit) {
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         query.whereNear(LocalInkUser.KEY_GEO_LOCATION, currentLocation);
         // Only get the bookstores, not the readers
         query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, true);
-        query.setLimit(limit);
+        query.whereWithinMiles(LocalInkUser.KEY_GEO_LOCATION, currentLocation, radiusLimit);
+        query.setLimit(numLimit);
         final List<ParseUser> stores = new ArrayList<>();
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -289,7 +295,7 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Get the user's last known location
-    private void getLastKnownLocation(final int limit) {
+    private void getLastKnownLocation(final int numLimit, final int radiusLimit) {
         final ParseGeoPoint currentLocation = new ParseGeoPoint();
 
         // Ask for permission to access current location if they aren't already granted
@@ -306,7 +312,7 @@ public class RecommendationsFragment extends Fragment {
                         if (location != null) {
                             currentLocation.setLatitude(location.getLatitude());
                             currentLocation.setLongitude(location.getLongitude());
-                            getNearbyStores(currentLocation, limit);
+                            getNearbyStores(currentLocation, numLimit, radiusLimit);
                         } else {
                             Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
                             //TODO: Try a saved location in Parse
@@ -379,7 +385,11 @@ public class RecommendationsFragment extends Fragment {
                             || !newUser.getGenrePreferences().equals(user.getGenrePreferences())
                             || newUser.getWishlist().size() != user.getWishlist().size()) {
                         user = newUser;
-                        getLastKnownLocation(NUM_INITIAL_STORES);
+
+
+                        getLastKnownLocation(NUM_INITIAL_STORES, NUM_INITIAL_MILES);
+                        setSeekBar(getView(), seekbarRadiusStores, R.id.tvRadiusStoresSeekBarValue, NUM_INITIAL_MILES);
+                        setSeekBar(getView(), seekbarNumStores, R.id.tvNumStoresSeekBarValue, NUM_INITIAL_STORES);
                     }
                 }
             });

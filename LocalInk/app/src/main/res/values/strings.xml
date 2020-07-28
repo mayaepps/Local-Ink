@@ -38,5 +38,6 @@
     <string name="recommendations_settings">Recommendations Settings</string>
     <string name="number_of_stores_near_you_to_recommend_books_from">How many stores near you should we search for books from?</string>
     <string name="save">Save</string>
+    <string name="what_is_the_maximum_distance_from_you">What is the maximum radius (in miles) from you that we should search for books/bookstores?</string>
 
 </resources>
