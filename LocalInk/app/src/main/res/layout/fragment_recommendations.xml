@@ -14,8 +14,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Recommendations"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"
+        android:elevation="8dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/local_ink_logo_inverted"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBooks"

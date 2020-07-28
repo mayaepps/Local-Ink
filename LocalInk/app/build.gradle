@@ -56,4 +56,5 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }
