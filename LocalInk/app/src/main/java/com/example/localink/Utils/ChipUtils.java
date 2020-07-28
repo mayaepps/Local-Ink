@@ -1,7 +1,9 @@
 package com.example.localink.Utils;
 
 import android.content.Context;
+import android.os.Build;
 
+import com.example.localink.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -27,11 +29,25 @@ public class ChipUtils {
     // Put a chip in the chipGroup for each element in the choices string
     public static void setUpChips(Context context, ChipGroup chipGroup, String[] choices, boolean singleSelection) {
 
+        chipGroup.removeAllViews();
         chipGroup.setSingleSelection(singleSelection);
         for (String choice : choices) {
             Chip chip = new Chip(context);
             chip.setText(choice);
             chip.setCheckable(true);
+            chip.setChipBackgroundColorResource(R.color.paleColorAccent);
+            chipGroup.addView(chip);
+        }
+    }
+
+    // Put a chip in the chipGroup for each element in the choices string, cannot be checked
+    public static void setUpChips(Context context, ChipGroup chipGroup, List<String> choices) {
+
+        chipGroup.removeAllViews();
+        for (String choice : choices) {
+            Chip chip = new Chip(context);
+            chip.setText(choice);
+            chip.setChipBackgroundColorResource(R.color.paleColorAccent);
             chipGroup.addView(chip);
         }
     }

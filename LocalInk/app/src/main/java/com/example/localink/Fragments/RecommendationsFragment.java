@@ -174,7 +174,6 @@ public class RecommendationsFragment extends Fragment {
         });
     }
 
-
     // Recommends books from the nearby bookstores param that fit the user's preferences
     // if there aren't enough perfect matches, it gets partial matches (that fit the age, not the genre)
     private void getRecommendations(List<ParseUser> nearbyBookstores) {
@@ -385,7 +384,6 @@ public class RecommendationsFragment extends Fragment {
                             || !newUser.getGenrePreferences().equals(user.getGenrePreferences())
                             || newUser.getWishlist().size() != user.getWishlist().size()) {
                         user = newUser;
-
 
                         getLastKnownLocation(NUM_INITIAL_STORES, NUM_INITIAL_MILES);
                         setSeekBar(getView(), seekbarRadiusStores, R.id.tvRadiusStoresSeekBarValue, NUM_INITIAL_MILES);

@@ -7,12 +7,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.ProfileFragment">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="Profile"/>
+        android:layout_height="120dp"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEdit"
@@ -24,21 +24,34 @@
         app:useCompatPadding="true"
         app:backgroundTint="@color/colorAccent"/>
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_below="@+id/toolbar"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_baseline_person_24" />
+        android:layout_marginTop="-60dp"
+        android:layout_below="@id/toolbar"
+        android:elevation="10dp"
+        app:cardCornerRadius="80dp"
+        app:cardElevation="10dp">
+
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_baseline_person_24" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfileImage"
+        android:layout_below="@+id/cvProfile"
         android:layout_centerHorizontal="true"
         android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_margin="8dp"
         tools:text="Maya Epps" />
 
     <TextView
@@ -47,41 +60,50 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvName"
         android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimary"
         tools:text="\@maya" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tvUsername"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginVertical="16dp"
+        android:background="@color/paleColorAccent" />
+
     <TextView
         android:id="@+id/tvPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvUsername"
-        android:paddingTop="16dp"
         android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/preferences" />
+        android:text="@string/preferences"
+        android:layout_below="@id/line"
+        android:paddingBottom="8dp"
+        android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/tvGenre"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvPreferences"
-        android:layout_centerHorizontal="true"
-        tools:text="@string/genre"
-        android:padding="8dp"/>
+        android:layout_marginHorizontal="16dp"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/tvAgeRange"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgAgeRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvGenre"
-        android:layout_centerHorizontal="true"
-        tools:text="@string/age_range"
-        android:padding="8dp"/>
+        android:layout_below="@+id/cgGenre"
+        android:layout_marginHorizontal="16dp"
+        android:layout_centerHorizontal="true"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/log_out"
-        android:layout_below="@id/tvAgeRange"
+        android:layout_below="@id/cgAgeRange"
         android:layout_margin="16dp"/>
 
 

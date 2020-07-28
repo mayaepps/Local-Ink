@@ -24,6 +24,7 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {

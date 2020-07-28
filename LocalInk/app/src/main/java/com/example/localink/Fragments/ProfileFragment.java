@@ -19,7 +19,9 @@ import com.example.localink.Activities.EditProfileActivity;
 import com.example.localink.Activities.LoginActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.example.localink.Utils.ChipUtils;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -27,6 +29,9 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class ProfileFragment extends Fragment {
@@ -102,16 +107,20 @@ public class ProfileFragment extends Fragment {
         tvName.setText(user.getName());
         tvUsername.setText("Username: " + user.getUser().getUsername());
 
-        String genres, ageRanges = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            genres = String.join(", ", user.getGenrePreferences());
-            ageRanges = String.join(", ", user.getAgePreferences());
-        } else {
-            genres = user.getGenrePreferences().toString();
-            ageRanges = user.getAgePreferences().toString();
-        }
-        tvGenre.setText("Genre(s): " + genres);
-        tvAgeRange.setText("Reading Levels(s): " + ageRanges);
+//        String genres, ageRanges = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            genres = String.join(", ", user.getGenrePreferences());
+//            ageRanges = String.join(", ", user.getAgePreferences());
+//        } else {
+//            genres = user.getGenrePreferences().toString();
+//            ageRanges = user.getAgePreferences().toString();
+//        }
+
+        ChipGroup cgAgeRange = getActivity().findViewById(R.id.cgAgeRange);
+        ChipGroup cgGenre = getActivity().findViewById(R.id.cgGenre);
+
+        ChipUtils.setUpChips(getContext(), cgAgeRange, user.getAgePreferences());
+        ChipUtils.setUpChips(getContext(), cgGenre, user.getGenrePreferences());
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
