@@ -58,4 +58,6 @@ dependencies {
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    compile 'com.wang.avi:library:2.1.3'
 }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
@@ -96,6 +97,7 @@ public class WishlistFragment extends Fragment {
 
     // Gets the wishlist list stored in ParseUser and save the list to wishlistBooks
     private void getWishlistBooks() {
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
         ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser user, ParseException e) {
@@ -106,6 +108,7 @@ public class WishlistFragment extends Fragment {
                     wishlistBooks.addAll(wishlist);
                     checkWishlistBooksExist();
                     adapter.notifyDataSetChanged();
+                    ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToHide();
                 } else {
                     Log.e(TAG, "Error getting wishlist: " + e.getMessage());
                 }

@@ -19,6 +19,7 @@ import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -93,5 +94,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ft.commit();
+    }
+
+    public AVLoadingIndicatorView getAVLoadingIndivatorView() {
+        return binding.avi;
     }
 }

@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
 
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@style/AVLoadingIndicatorView"
+        android:visibility="invisible"
+        app:indicatorName="SemiCircleSpinIndicator"
+        app:indicatorColor="@color/colorPrimary" />
+
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"

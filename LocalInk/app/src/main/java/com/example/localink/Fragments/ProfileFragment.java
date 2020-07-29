@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.localink.Activities.EditProfileActivity;
 import com.example.localink.Activities.LoginActivity;
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
@@ -103,18 +104,11 @@ public class ProfileFragment extends Fragment {
     // Set views using info in user
     private void populateViews(ParseUser parseUser) {
 
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
+
         final LocalInkUser user = new LocalInkUser(parseUser);
         tvName.setText(user.getName());
         tvUsername.setText("Username: " + user.getUser().getUsername());
-
-//        String genres, ageRanges = null;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            genres = String.join(", ", user.getGenrePreferences());
-//            ageRanges = String.join(", ", user.getAgePreferences());
-//        } else {
-//            genres = user.getGenrePreferences().toString();
-//            ageRanges = user.getAgePreferences().toString();
-//        }
 
         ChipGroup cgAgeRange = getActivity().findViewById(R.id.cgAgeRange);
         ChipGroup cgGenre = getActivity().findViewById(R.id.cgGenre);
@@ -126,6 +120,8 @@ public class ProfileFragment extends Fragment {
         if (profileImage != null) {
             Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfileImage);
         }
+
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToHide();
     }
 
     @Override

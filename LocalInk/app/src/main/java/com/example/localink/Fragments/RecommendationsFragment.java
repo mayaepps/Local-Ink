@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Models.Book;
@@ -43,6 +44,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,6 +244,7 @@ public class RecommendationsFragment extends Fragment {
         booksToRemove.clear();
 
         adapter.notifyDataSetChanged();
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToHide();
     }
 
     // Returns whether or not the given book is already in this user's wishlist
@@ -298,6 +301,8 @@ public class RecommendationsFragment extends Fragment {
 
     // Get the user's last known location
     private void getLastKnownLocation(final int numLimit, final int radiusLimit) {
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
+
         final ParseGeoPoint currentLocation = new ParseGeoPoint();
 
         // Ask for permission to access current location if they aren't already granted
