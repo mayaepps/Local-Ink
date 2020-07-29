@@ -98,8 +98,8 @@ public class BookDetailsActivity extends AppCompatActivity {
             binding.tvTitle.setText(book.getTitle());
             binding.tvAuthor.setText(book.getAuthor());
             binding.tvSynopsis.setText(book.getSynopsis());
-            binding.tvGenre.setText(book.getGenre());
-            binding.tvAgeRange.setText(book.getAgeRange());
+            binding.cGenre.setText(book.getGenre());
+            binding.cAgeRange.setText(book.getAgeRange());
             book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
@@ -107,8 +107,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                     store = user;
                     startMap();
 
-                    String address = localInkUser.getAddress();
-                    binding.tvStoreLocation.setText("At " + localInkUser.getName() + ": " + address);
+                    binding.tvStoreName.setText("At " + localInkUser.getName());
+                    binding.tvStoreLocation.setText(localInkUser.getAddress());
                 }
             });
             Glide.with(this).load(book.getCover()).into(binding.ivCover);

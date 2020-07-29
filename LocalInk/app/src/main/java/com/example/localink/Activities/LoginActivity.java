@@ -2,6 +2,7 @@ package com.example.localink.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,12 +77,12 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error", e);
-                    
+
+                    // Add shaking animation to the username and password fields
                     YoYo.with(Techniques.Shake)
                             .duration(500)
                             .repeat(1)
                             .playOn(binding.etUsername);
-
                     YoYo.with(Techniques.Shake)
                             .duration(500)
                             .repeat(1)

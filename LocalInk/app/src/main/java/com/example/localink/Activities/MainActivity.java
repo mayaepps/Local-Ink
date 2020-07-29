@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        supportPostponeEnterTransition();
+
         // view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();

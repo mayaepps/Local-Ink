@@ -12,7 +12,20 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/local_ink_logo_inverted"/>
+
+        </RelativeLayout>
+
+    </Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -54,6 +67,7 @@
                 android:layout_height="wrap_content"
                 tools:text="@string/title"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 android:transitionName="title"/>
 
             <TextView
@@ -61,22 +75,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/author"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:transitionName="author"/>
 
-            <TextView
-                android:id="@+id/tvGenre"
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/genre"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:chipBackgroundColor="@color/paleColorAccent"/>
 
-            <TextView
-                android:id="@+id/tvAgeRange"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cAgeRange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Age Range"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:chipBackgroundColor="@color/paleColorAccent"/>
+
+            </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
 
@@ -96,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSynopsis"
-        android:elevation="2dp"
+        app:cardElevation="8dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="70dp">
 
@@ -106,19 +128,28 @@
             android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvStoreName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            tools:text="Bookstore name"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/tvStoreLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            tools:text="Store Location: Downtown Sunnyvale"
-            android:textStyle="bold"/>
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            tools:text="12345 Street Road, Los Angeles 90013"/>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_centerHorizontal="true"/>
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
         </LinearLayout>
 

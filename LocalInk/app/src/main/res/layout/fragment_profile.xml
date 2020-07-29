@@ -14,10 +14,18 @@
         android:background="@color/colorPrimary"
         android:elevation="8dp">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/local_ink_logo_inverted"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/local_ink_logo_inverted" />
+
+        </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
