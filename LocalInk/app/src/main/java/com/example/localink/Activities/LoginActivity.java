@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.localink.Models.LocalInkUser;
+import com.example.localink.R;
 import com.example.localink.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -73,6 +76,17 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error", e);
+                    
+                    YoYo.with(Techniques.Shake)
+                            .duration(500)
+                            .repeat(1)
+                            .playOn(binding.etUsername);
+
+                    YoYo.with(Techniques.Shake)
+                            .duration(500)
+                            .repeat(1)
+                            .playOn(binding.etPassword);
+
                     Toast.makeText(LoginActivity.this, "Error logging in: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     return;
                 } else if (user != null) {
