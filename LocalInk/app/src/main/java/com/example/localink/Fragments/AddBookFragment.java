@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.localink.Activities.BookstoreMainActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
@@ -103,6 +104,9 @@ public class AddBookFragment extends Fragment {
                             spnrGenre.setPrompt("Select your favorite genre!");
                             spnrAgeRange.setSelection(0);
                             spnrAgeRange.setPrompt("Select your favorite age range!");
+
+                            // Go to the bookshelf fragment to see the book you just created
+                            ((BookstoreMainActivity) getActivity()).getBottomNavigation().setSelectedItemId(R.id.action_bookshelf);
                         }
                     }
                 });

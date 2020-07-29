@@ -63,4 +63,8 @@ public class BookstoreMainActivity extends AppCompatActivity {
         // Set default selection so when the app loads for the first time, it will have the bookshelf fragment loaded
         binding.bottomNavigation.setSelectedItemId(R.id.action_bookshelf);
     }
+
+    public BottomNavigationView getBottomNavigation() {
+        return binding.bottomNavigation;
+    }
 }

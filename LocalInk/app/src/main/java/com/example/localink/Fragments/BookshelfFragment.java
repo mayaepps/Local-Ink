@@ -121,9 +121,9 @@ public class BookshelfFragment extends Fragment {
                             Log.e(TAG, "Could not delete book: " + e.getMessage(), e);
                         } else {
                             Toast.makeText(getContext(), "Removing " + book.getTitle() + " from bookshelf", Toast.LENGTH_SHORT).show();
+                            storeBooks.remove(position);
+                            adapter.notifyItemRemoved(position);
                         }
-                        storeBooks.remove(position);
-                        adapter.notifyItemChanged(position);
                     }
                 });
             }

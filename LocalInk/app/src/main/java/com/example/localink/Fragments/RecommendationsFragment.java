@@ -115,9 +115,11 @@ public class RecommendationsFragment extends Fragment {
                 Pair<View, String> pSynopsis= Pair.create(view.findViewById(R.id.tvSynopsis), "synopsis");
 
                 // Create transition animation between recommendations screen to details screen
-                // TODO: Figure out why adding pTitle and pAuthor makes the animation so uneven
+
+                // why does adding pTitle and pAuthor makes the animation so uneven?
                 ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(getActivity(), pCover, pSynopsis);
+                        //makeSceneTransitionAnimation(getActivity(), pCover, pSynopsis);
+                        makeSceneTransitionAnimation(getActivity(), pTitle, pAuthor, pCover, pSynopsis);
                 startActivity(i, options.toBundle());
             }
 
