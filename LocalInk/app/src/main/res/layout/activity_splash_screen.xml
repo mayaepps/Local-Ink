@@ -7,9 +7,10 @@
     tools:context=".Activities.SplashScreenActivity">
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/givLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:padding="72dp"
         android:src="@drawable/logo_gif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

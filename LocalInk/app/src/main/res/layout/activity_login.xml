@@ -5,55 +5,83 @@
     android:layout_height="match_parent"
     tools:context=".Activities.LoginActivity">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etUsername"
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/etPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="0dp"
-        android:hint="@string/username" />
+        android:layout_height="match_parent"
+        android:src="@drawable/login_book_background"
+        android:scaleType="fitXY"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPassword"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_above="@id/tilUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/local_ink_logo"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnLogin"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/password"
         android:layout_marginHorizontal="24dp"
-        android:inputType="textPassword"/>
+        android:layout_above="@+id/tilPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/username" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="8dp"
+        android:layout_centerInParent="true"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tilPassword"
         android:text="@string/log_in"
-        android:layout_centerInParent="true"
         android:layout_marginHorizontal="24dp"
         />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReaderRegister"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnBookstoreRegister"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="@string/sign_up_as_a_reader"
-        android:backgroundTint="@android:color/white"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginHorizontal="24dp"/>
+        android:textColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBookstoreRegister"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/btnReaderRegister"
         android:layout_centerHorizontal="true"
         android:text="@string/sign_up_as_a_bookstore"
-        android:backgroundTint="@android:color/white"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
 </RelativeLayout>

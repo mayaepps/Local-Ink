@@ -54,6 +54,8 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
         ParseGeoPoint point = GeocoderUtils.getGeoLocationFromAddress(this, newUser.getAddress());
         if (point != null) {
             newUser.setGeoLocation(point);
+        } else {
+            return;
         }
 
         // Invoke signUpInBackground
@@ -63,6 +65,7 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
                     // Sign up didn't succeed
                     Toast.makeText(RegisterBookstoreActivity.this, "Could not sign up new user: "
                             + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
                     // Sign up successful, go to login activity
                     Intent i = new Intent(RegisterBookstoreActivity.this, LoginActivity.class);
