@@ -39,6 +39,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -68,6 +69,7 @@ public class RecommendationsFragment extends Fragment {
     private SeekBar seekbarRadiusStores;
     private SeekBar seekbarNumStores;
     private FusedLocationProviderClient fusedLocationClient;
+    private boolean alreadyAddedExploreBooks = false;
 
     public RecommendationsFragment() {
         // Required empty public constructor
@@ -110,7 +112,7 @@ public class RecommendationsFragment extends Fragment {
                 // Fire an intent when a contact is selected
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
                 i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
-//
+
 //                // Create Pairs to match the transition name to the
 //                Pair<View, String> pCover = Pair.create(view.findViewById(R.id.ivCover), "cover");
 //                Pair<View, String> pTitle = Pair.create(view.findViewById(R.id.tvBookTitle), "title");
@@ -182,39 +184,55 @@ public class RecommendationsFragment extends Fragment {
         });
     }
 
-    // Recommends books from the nearby bookstores param that fit the user's preferences
+    // Recommends books from the nearby bookstores that fit the user's preferences
     // if there aren't enough perfect matches, it gets partial matches (that fit the age, not the genre)
     private void getRecommendations(List<ParseUser> nearbyBookstores) {
         recommendedBooks.clear();
         otherBooks = new ArrayList<>();
+
         // Get the books from the 5 closest stores and get their available books
         for (ParseUser store : nearbyBookstores) {
             queryBooks(store);
         }
 
-        List<Book> booksToRemove = new ArrayList<>();
-
-        for (Book book : otherBooks) {
-
-            // Don't recommend books that are already in the wishlist
-            if (inWishlist(book)) {
-                booksToRemove.add(book);
-                continue;
-            }
-            // Add books that perfectly match the user's preferences to the recommendation list
-            if (matchesAge(book) && matchesGenre(book, user.getGenrePreferences())) {
-                recommendedBooks.add(book);
-                booksToRemove.add(book);
-            }
-        }
-        otherBooks.removeAll(booksToRemove);
-        booksToRemove.clear();
+        // Add books that perfectly match the user's preferences to the recommendation list
+        List<Book> perfectMatches = getPerfectMatchBooks();
+        recommendedBooks.addAll(perfectMatches);
         adapter.notifyDataSetChanged();
 
-        // If there aren't enough books that fit the preferences,
-        // get the books that match the user's age preferences, but show them other genres:
+        // Get books that don't perfectly match the user's preferences but may still interest them
+        final List<Book> exploreBooks = getExploreBooks();
 
-        // start with related genres (defined in Book class)
+        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToHide();
+
+        // Show a snackbar with the option to see other recommended (but not perfect match) books
+        rvBooks.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && !alreadyAddedExploreBooks) {
+                    Snackbar.make(getView(), R.string.get_more_books_snackbar, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.get_more_books_snackbar_action, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    recommendedBooks.addAll(exploreBooks);
+                                    otherBooks.removeAll(exploreBooks);
+                                    adapter.notifyDataSetChanged();
+                                    alreadyAddedExploreBooks = true;
+                                }
+                            }).show();
+                }
+            }
+        });
+    }
+
+    // If there aren't enough books that fit the preferences,
+    // get the books that match the user's age preferences, but show them other genres
+    private List<Book> getExploreBooks() {
+        final List<Book> exploreBooks = new ArrayList<>();
+
+        // start with "exploring" related genres (similar genres are defined in Book class)
         if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
             List<String> relatedGenres = new ArrayList<>();
             for (String genre : user.getGenrePreferences()) {
@@ -225,29 +243,42 @@ public class RecommendationsFragment extends Fragment {
 
             for (Book book : otherBooks) {
                 if (matchesAge(book) && matchesGenre(book, relatedGenres)) {
-                    recommendedBooks.add(book);
-                    booksToRemove.add(book);
+                    exploreBooks.add(book);
                 }
             }
         }
-        otherBooks.removeAll(booksToRemove);
-        booksToRemove.clear();
-        adapter.notifyDataSetChanged();
 
-        if (recommendedBooks.size() < MINIMUM_RECS && otherBooks.size() > 0) {
+        // If there would still not be enough books even with the current explore books
+        // and there would be more books left at the store, get all books at the preferred reading level
+        if (recommendedBooks.size() + exploreBooks.size() < MINIMUM_RECS && otherBooks.size() - exploreBooks.size() > 0) {
             for (Book book : otherBooks) {
                 if (matchesAge(book)) {
-                    recommendedBooks.add(book);
-                    booksToRemove.add(book);
+                    exploreBooks.add(book);
                 }
             }
+        }
 
+        return exploreBooks;
+    }
+
+    private List<Book> getPerfectMatchBooks() {
+        final List<Book> perfectMatches = new ArrayList<>();
+        List<Book> booksToRemove = new ArrayList<>();
+
+        for (Book book : otherBooks) {
+            // (But don't recommend books that are already in the wishlist)
+            if (inWishlist(book)) {
+                booksToRemove.add(book);
+                continue;
+            }
+            if (matchesAge(book) && matchesGenre(book, user.getGenrePreferences())) {
+                perfectMatches.add(book);
+                booksToRemove.add(book);
+            }
         }
         otherBooks.removeAll(booksToRemove);
-        booksToRemove.clear();
 
-        adapter.notifyDataSetChanged();
-        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToHide();
+        return  perfectMatches;
     }
 
     // Returns whether or not the given book is already in this user's wishlist
@@ -275,7 +306,6 @@ public class RecommendationsFragment extends Fragment {
             otherBooks.addAll(queriedBooks);
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving books from " + store.getUsername(), e);
-            return;
         }
     }
 

@@ -40,5 +40,7 @@
     <string name="save">Save</string>
     <string name="what_is_the_maximum_distance_from_you">What is the maximum radius (in miles) from you that we should search for books/bookstores?</string>
     <string name="recommendations">Recommendations</string>
+    <string name="get_more_books_snackbar">No more perfect matches. Explore other books you may like?</string>
+    <string name="get_more_books_snackbar_action">Show</string>
 
 </resources>

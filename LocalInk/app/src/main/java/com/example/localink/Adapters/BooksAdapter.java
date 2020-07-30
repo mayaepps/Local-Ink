@@ -55,6 +55,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Book book = books.get(position);
+
         // Bind the view at this position to the book in the list at this position
         holder.bind(book);
     }
@@ -63,6 +64,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     public int getItemCount() {
         return books.size();
     }
+
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
