@@ -97,29 +97,41 @@
         android:paddingBottom="8dp"
         android:layout_centerHorizontal="true"/>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPreferences"
-        android:layout_marginHorizontal="16dp"
-        android:layout_centerHorizontal="true" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgAgeRange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cgGenre"
-        android:layout_marginHorizontal="16dp"
-        android:layout_centerHorizontal="true"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/log_out"
-        android:layout_below="@id/cgAgeRange"
-        android:layout_margin="16dp"/>
+        android:layout_below="@+id/tvPreferences">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerHorizontal="true" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgAgeRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cgGenre"
+                android:layout_marginHorizontal="16dp"
+                android:layout_centerHorizontal="true"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/log_out"
+                android:layout_below="@id/cgAgeRange"
+                android:layout_margin="16dp"/>
+
+        </RelativeLayout>
+
+        </ScrollView>
 
 
 </RelativeLayout>

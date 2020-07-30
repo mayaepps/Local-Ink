@@ -119,7 +119,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(ImageUtils.getPhotoFile().getAbsolutePath());
                 // Load the taken image into a preview 
-                binding.ivProfileImage.setImageBitmap(takenImage);
+                Glide.with(this).load(takenImage).circleCrop().into(binding.ivProfileImage);
+                //binding.ivProfileImage.setImageBitmap(takenImage);
                 // TODO: compress/shrink the file so it will take less time loading to/from Parse
                 Log.i(TAG, "Image successfully saved in the file provider");
 

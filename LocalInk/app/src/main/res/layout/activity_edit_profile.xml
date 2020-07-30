@@ -35,20 +35,31 @@
         android:layout_centerHorizontal="true"
         android:text="@string/change_image" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/name"
         android:layout_below="@id/btnChangeProfileImage"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:layout_below="@id/btnChangeProfileImage" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etName"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/tilName"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         android:text="@string/preferences"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -58,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPreferences"
+        android:layout_marginStart="8dp"
         android:text="@string/genre"
         android:textSize="16sp"
         android:layout_marginVertical="16dp"
@@ -86,6 +98,7 @@
         android:layout_height="wrap_content"
         android:text="@string/age_range"
         android:textSize="16sp"
+        android:layout_marginStart="16dp"
         android:layout_below="@+id/scrollGenreChips" />
 
     <HorizontalScrollView

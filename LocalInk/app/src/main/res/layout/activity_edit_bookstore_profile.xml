@@ -24,39 +24,42 @@
         android:text="@string/change_image"
         android:layout_centerHorizontal="true"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnChangeProfileImage"
-        android:hint="@string/name"
+        android:layout_below="@id/btnChangeProfileImage"
         android:layout_marginTop="8dp"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_marginHorizontal="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etStreetAddress"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnChangeProfileImage"
+            android:hint="@string/name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilStreetAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/street_address"
-        android:layout_below="@id/etName"
-        android:layout_marginTop="8dp"
-        android:layout_marginHorizontal="16dp"/>
+        android:layout_below="@id/tilName"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/city"
-        android:layout_below="@id/etStreetAddress"
-        android:layout_marginHorizontal="16dp"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etStreetAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/street_address"
+            android:layout_below="@id/tilName" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etZipCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/zip_code"
-        android:layout_below="@id/etCity"
-        android:layout_marginHorizontal="16dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSave"
