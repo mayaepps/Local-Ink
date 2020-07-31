@@ -79,7 +79,10 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         ParseGeoPoint point = GeocoderUtils.getGeoLocationFromAddress(this, user.getAddress());
         if (point != null) {
             user.setGeoLocation(point);
+        } else {
+            return;
         }
+
         user.getUser().saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

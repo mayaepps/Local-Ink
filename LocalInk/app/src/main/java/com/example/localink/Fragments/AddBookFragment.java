@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localink.Activities.BookstoreMainActivity;
+import com.example.localink.Clients.BookClient;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
@@ -22,9 +24,20 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import okhttp3.Headers;
+
 public class AddBookFragment extends Fragment {
 
     private static final String TAG = "AddBookFragment";
+
+    private BookClient client;
+
     EditText etTitle;
     EditText etAuthor;
     EditText etIsbn;
@@ -75,9 +88,11 @@ public class AddBookFragment extends Fragment {
                 book.setTitle(etTitle.getText().toString());
                 book.setAuthor(etAuthor.getText().toString());
                 if (isValidISBN(etIsbn.getText().toString())) {
+                    queryBook(etIsbn.getText().toString());
                     book.setIsbn(etIsbn.getText().toString());
                 } else {
                     Toast.makeText(getContext(), "Invalid ISBN", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 book.setSynopsis(etSynopsis.getText().toString());
                 book.setCover(etCover.getText().toString());
@@ -110,6 +125,37 @@ public class AddBookFragment extends Fragment {
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void queryBook(String isbn) {
+        client = new BookClient();
+        client.getBookByIsbn(isbn, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON response) {
+                try {
+                    if (response != null) {
+
+                        JSONArray items = response.jsonObject.getJSONArray("items");
+                        JSONObject volumeInfo = items.getJSONObject(0).getJSONObject("volumeInfo");
+
+                        Book book = Book.fromJSON(volumeInfo);
+
+                        Log.d(TAG, String.valueOf(book));
+                    }
+                } catch (JSONException e) {
+                    // Invalid JSON format, show appropriate error.
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String responseString, Throwable throwable) {
+                // Handle failed request here
+                Log.e(TAG,
+                        "Request failed with code " + statusCode + ". Response message: " + responseString);
             }
         });
     }

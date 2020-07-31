@@ -8,6 +8,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,6 +45,27 @@ public class Book extends ParseObject {
             put("Romance", Arrays.asList("Chic lit"));
         }
     };
+
+    // Takes a JSON Book and returns a Book object
+    public static Book fromJSON(JSONObject json) throws JSONException {
+        Book book = new Book();
+        book.setTitle(json.getString("title"));
+        JSONArray authors = json.getJSONArray("authors");
+        if (authors.length() == 1) {
+            book.setAuthor(authors.getString(0));
+        } else if (authors.length() > 1) {
+            book.setAuthor(authors.join(", "));
+        }
+        book.setSynopsis(json.getString("description"));
+        //ISBN 13
+        book.setIsbn(json.getJSONArray("industryIdentifiers").getJSONObject(0).getString("identifier"));
+
+        JSONObject imageLinks = json.getJSONObject("imageLinks");
+        JSONArray keys = imageLinks.names();
+        book.setCover(imageLinks.getString(keys.getString(keys.length() - 1)));
+
+        return book;
+    }
 
     public String getTitle() {
         // Method getString() is defined in the Parse object class, is like a getter for the key
