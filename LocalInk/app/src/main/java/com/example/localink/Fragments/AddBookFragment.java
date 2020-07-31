@@ -38,6 +38,8 @@ public class AddBookFragment extends Fragment {
 
     private BookClient client;
 
+    EditText etSearchIsbn;
+    MaterialButton btnSearchIsbn;
     EditText etTitle;
     EditText etAuthor;
     EditText etIsbn;
@@ -67,6 +69,9 @@ public class AddBookFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        etSearchIsbn = view.findViewById(R.id.etSearchIsbn);
+        btnSearchIsbn = view.findViewById(R.id.btnSearchIsbn);
+
         etTitle = view.findViewById(R.id.etTitle);
         etAuthor = view.findViewById(R.id.etAuthor);
         etIsbn = view.findViewById(R.id.etIsbn);
@@ -79,6 +84,18 @@ public class AddBookFragment extends Fragment {
         spnrAgeRange.setPrompt("Select your favorite age range!");
         btnCreate = view.findViewById(R.id.btnCreate);
 
+        btnSearchIsbn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isValidISBN(etSearchIsbn.getText().toString())) {
+                    queryBook(etSearchIsbn.getText().toString());
+                    etSearchIsbn.setText("");
+                } else {
+                    Toast.makeText(getContext(), "Invalid ISBN", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +105,6 @@ public class AddBookFragment extends Fragment {
                 book.setTitle(etTitle.getText().toString());
                 book.setAuthor(etAuthor.getText().toString());
                 if (isValidISBN(etIsbn.getText().toString())) {
-                    queryBook(etIsbn.getText().toString());
                     book.setIsbn(etIsbn.getText().toString());
                 } else {
                     Toast.makeText(getContext(), "Invalid ISBN", Toast.LENGTH_SHORT).show();
@@ -129,6 +145,22 @@ public class AddBookFragment extends Fragment {
         });
     }
 
+    // Populate the edit text views so the user can make any changes to Google Books' response
+    private void populateViews(Book book) {
+        try {
+            etTitle.setText(book.getTitle());
+            etAuthor.setText(book.getAuthor());
+            etSynopsis.setText(book.getSynopsis());
+            etCover.setText(book.getCover());
+            etIsbn.setText(book.getIsbn());
+            etCover.setText(book.getCover());
+            Toast.makeText(getContext(), "Please set the genre and age range and confirm the " +
+                    "filled in fields are correct", Toast.LENGTH_SHORT).show();
+        } catch (ParseException e) {
+            Log.e(TAG, "Could not populate views with book object: " + e.getMessage());
+        }
+    }
+
     private void queryBook(String isbn) {
         client = new BookClient();
         client.getBookByIsbn(isbn, new JsonHttpResponseHandler() {
@@ -136,14 +168,15 @@ public class AddBookFragment extends Fragment {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON response) {
                 try {
-                    if (response != null) {
+                    if (response != null && statusCode == 200 && response.jsonObject.getInt("totalItems") > 0) {
 
                         JSONArray items = response.jsonObject.getJSONArray("items");
                         JSONObject volumeInfo = items.getJSONObject(0).getJSONObject("volumeInfo");
 
                         Book book = Book.fromJSON(volumeInfo);
-
-                        Log.d(TAG, String.valueOf(book));
+                        populateViews(book);
+                    } else {
+                        Toast.makeText(getContext(), "Error finding a book with that ISBN", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // Invalid JSON format, show appropriate error.

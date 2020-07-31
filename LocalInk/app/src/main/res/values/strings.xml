@@ -42,5 +42,7 @@
     <string name="recommendations">Recommendations</string>
     <string name="get_more_books_snackbar">No more perfect matches. Explore other books you may like?</string>
     <string name="get_more_books_snackbar_action">Show</string>
+    <string name="search_by_isbn">Find book by ISBN</string>
+    <string name="enter_book_information_manually">Enter book information manually:</string>
 
 </resources>

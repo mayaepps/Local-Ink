@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.AddBookFragment">
 
     <ScrollView
@@ -24,12 +25,66 @@
                 android:textStyle="bold"
                 android:layout_margin="16dp"/>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvByIsbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvHeader"
+                android:text="@string/search_by_isbn"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/llIsbnSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvByIsbn"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilSearchIsbn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.85"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSearchIsbn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/isbn"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSearchIsbn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.15"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_baseline_search_24" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvManually"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llIsbnSearch"
+                android:text="@string/enter_book_information_manually"
+                android:layout_marginHorizontal="16dp" />
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_below="@+id/tvHeader"
+                android:layout_below="@id/tvManually"
                 android:hint="@string/title" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -44,10 +99,9 @@
                 android:id="@+id/etIsbn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/etAuthor"
                 android:layout_marginHorizontal="16dp"
-                android:hint="@string/isbn"
-                android:inputType="number" />
+                android:layout_below="@+id/etAuthor"
+                android:hint="@string/synopsis" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSynopsis"
@@ -55,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_below="@+id/etIsbn"
-                android:hint="@string/synopsis" />
+                android:hint="@string/isbn"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCover"
@@ -100,6 +154,13 @@
                 android:layout_toEndOf="@+id/tvAgeRange"
                 android:layout_below="@+id/spnrGenre"
                 android:entries="@array/age_ranges_array"/>
+
+            <View
+                android:layout_height="64dp"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/spnrAgeRange">
+
+            </View>
 
         </RelativeLayout>
 

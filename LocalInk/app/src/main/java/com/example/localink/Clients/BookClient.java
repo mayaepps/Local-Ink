@@ -14,7 +14,8 @@ public class BookClient {
         this.client = new AsyncHttpClient();
     }
 
-    // Method for accessing the search API
+    // Method for accessing the Google Books API
+    // Searches for a book (Google calls books "volumes") with the given isbn
     public void getBookByIsbn(final String isbn, JsonHttpResponseHandler handler) {
         try {
             String url = getApiUrl("volumes?q=isbn:");

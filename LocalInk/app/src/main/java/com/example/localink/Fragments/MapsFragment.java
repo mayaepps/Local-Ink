@@ -56,7 +56,6 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng arg0) {
-                        android.util.Log.i("onMapClick", "Horray!");
                         LocalInkUser store = new LocalInkUser(stores.get(0));
                         goGoogleMaps(store);
                     }
@@ -86,7 +85,7 @@ public class MapsFragment extends Fragment {
     // Open google maps and search for the bookstore
     private void goGoogleMaps(LocalInkUser store) {
          // Create a Uri from an intent string. Use the result to create an Intent.
-        Uri mapsIntentUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(store.getName() + ", " + store.getAddress()));
+        final Uri mapsIntentUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(store.getName() + ", " + store.getAddress()));
 
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsIntentUri);
         // Make sure there is an app that can handle this intent
