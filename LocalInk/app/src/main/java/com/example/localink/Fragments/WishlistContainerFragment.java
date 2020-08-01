@@ -1,0 +1,110 @@
+package com.example.localink.Fragments;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.localink.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+
+public class WishlistContainerFragment extends Fragment {
+
+    private FragmentManager childFragmentManager;
+
+    public WishlistContainerFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_wishlist_container, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setupTabs();
+    }
+
+    // Set up the logic for switching between the wishlist and map fragment when their tabs are selected
+    private void setupTabs() {
+
+        TabLayout tabLayout = getView().findViewById(R.id.tabLayoutWishlist);
+
+        childFragmentManager = getChildFragmentManager();
+
+        // Create the different fragments the user can see
+        final Fragment wishlistFragment = new WishlistFragment();
+        final Fragment mapsFragment = new MapsFragment();
+
+        // Add an on tab selected listener to switch the fragments when the tabs are selected
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        displayFragment(wishlistFragment, mapsFragment);
+                        break;
+                    case 1:
+                        displayFragment(mapsFragment, wishlistFragment);
+                        break;
+                    default:
+                        displayFragment(wishlistFragment, mapsFragment);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        // TODO: bug - doesn't work on first load (it shows no fragment), but works if I go to the other tab and back
+        tabLayout.getTabAt(0).select();
+
+    }
+
+    // Display the given fragment and hide the other fragment
+    private void displayFragment(Fragment fragmentA, Fragment fragmentB) {
+        FragmentTransaction ft = childFragmentManager.beginTransaction();
+        if (fragmentA.isAdded()) { // if the fragment is already in container
+            ft.show(fragmentA);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.flContainer, fragmentA, fragmentA.getClass().getSimpleName());
+        }
+
+        if (fragmentB.isAdded()) {
+            ft.hide(fragmentB);
+        }
+
+        ft.commit();
+    }
+
+}

@@ -48,11 +48,14 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             stores = getStores();
-            setMarkers(googleMap);
+
+            if (stores != null) {
+                setMarkers(googleMap);
+            }
             disallowParentScroll(googleMap);
 
             // If there is only one store on the map, let the user tap the map to see the store in the Google Maps app
-            if (stores.size() == 1) {
+            if (stores != null && stores.size() == 1) {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng arg0) {
@@ -98,6 +101,7 @@ public class MapsFragment extends Fragment {
     private void setMarkers(GoogleMap map) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         LatLng currentLatLng = null;
+
         for (ParseUser store : stores) {
             LocalInkUser bookstore = new LocalInkUser(store);
             ParseGeoPoint location = bookstore.getGeoLocation();

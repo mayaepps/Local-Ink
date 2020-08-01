@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
+import com.example.localink.Fragments.WishlistContainerFragment;
 import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
 import com.example.localink.databinding.ActivityMainBinding;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the different fragments the user can see
         final Fragment recommendationsFragment = new RecommendationsFragment();
-        final Fragment wishlistFragment = new WishlistFragment();
+        final Fragment wishlistContainerFragment = new WishlistContainerFragment();
         final Fragment profileFragment = new ProfileFragment();
 
         // The user can tap on the icons/items in the bottom navigation view to switch fragments
@@ -49,16 +50,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        displayFragment(recommendationsFragment, wishlistFragment, profileFragment);
+                        displayFragment(recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                     case R.id.action_wishlist:
-                        displayFragment(wishlistFragment, recommendationsFragment, profileFragment);
+                        displayFragment(wishlistContainerFragment, recommendationsFragment, profileFragment);
                         return true;
                     case R.id.action_profile:
-                        displayFragment(profileFragment, wishlistFragment, recommendationsFragment);
+                        displayFragment(profileFragment, wishlistContainerFragment, recommendationsFragment);
                         return true;
                     default:
-                        displayFragment(recommendationsFragment, wishlistFragment, profileFragment);
+                        displayFragment(recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                 }
 

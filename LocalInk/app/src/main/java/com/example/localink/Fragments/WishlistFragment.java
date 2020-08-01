@@ -1,6 +1,5 @@
 package com.example.localink.Fragments;
 
-import android.content.ClipData;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -23,11 +22,8 @@ import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
-import com.parse.DeleteCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -193,5 +189,4 @@ public class WishlistFragment extends Fragment {
             }
         });
     }
-
 }
