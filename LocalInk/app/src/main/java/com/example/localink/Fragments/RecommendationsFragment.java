@@ -429,6 +429,7 @@ public class RecommendationsFragment extends Fragment {
                         getLastKnownLocation(NUM_INITIAL_STORES, NUM_INITIAL_MILES);
                         setSeekBar(getView(), seekbarRadiusStores, R.id.tvRadiusStoresSeekBarValue, NUM_INITIAL_MILES);
                         setSeekBar(getView(), seekbarNumStores, R.id.tvNumStoresSeekBarValue, NUM_INITIAL_STORES);
+                        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
                     }
                 }
             });

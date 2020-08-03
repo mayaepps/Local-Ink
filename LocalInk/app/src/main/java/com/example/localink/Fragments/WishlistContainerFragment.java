@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.localink.Models.Book;
 import com.example.localink.R;
+import com.example.localink.databinding.FragmentRecommendationsBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.ParseUser;
@@ -24,6 +25,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.example.localink.Utils.FragmentUtils.displayFragment;
 
 
 public class WishlistContainerFragment extends Fragment {
@@ -73,15 +76,18 @@ public class WishlistContainerFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                FragmentManager cfm = getChildFragmentManager();
+
                 switch (tab.getPosition()) {
                     case 0:
-                        displayFragment(wishlistFragment, mapsFragment);
+                        displayFragment(cfm, wishlistFragment, mapsFragment);
                         break;
                     case 1:
-                        displayFragment(mapsFragment, wishlistFragment);
+                        displayFragment(cfm, mapsFragment, wishlistFragment);
                         break;
                     default:
-                        displayFragment(wishlistFragment, mapsFragment);
+                        displayFragment(cfm, wishlistFragment, mapsFragment);
                 }
             }
 
@@ -100,21 +106,4 @@ public class WishlistContainerFragment extends Fragment {
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
     }
-
-
-    // Display the given fragment and hide the other fragment
-    private void displayFragment(Fragment fragmentA, Fragment fragmentB) {
-
-        FragmentTransaction ft = childFragmentManager.beginTransaction();
-        if (fragmentA.isAdded()) { // if the fragment is already in container
-            ft.show(fragmentA);
-        } else { // fragment needs to be added to frame container
-            ft.add(R.id.flContainer, fragmentA);
-        }
-        // Hide fragment B
-        if (fragmentB.isAdded()) { ft.hide(fragmentB); }
-
-        ft.commit();
-    }
-
 }

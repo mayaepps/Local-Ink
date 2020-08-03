@@ -16,6 +16,7 @@ import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.WishlistContainerFragment;
 import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
+import com.example.localink.Utils.FragmentUtils;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -48,18 +49,21 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                FragmentManager fm = getSupportFragmentManager();
+
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        displayFragment(recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        FragmentUtils.displayFragment(fm, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                     case R.id.action_wishlist:
-                        displayFragment(wishlistContainerFragment, recommendationsFragment, profileFragment);
+                        FragmentUtils.displayFragment(fm, wishlistContainerFragment, recommendationsFragment, profileFragment);
                         return true;
                     case R.id.action_profile:
-                        displayFragment(profileFragment, wishlistContainerFragment, recommendationsFragment);
+                        FragmentUtils.displayFragment(fm, profileFragment, wishlistContainerFragment, recommendationsFragment);
                         return true;
                     default:
-                        displayFragment(recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        FragmentUtils.displayFragment(fm, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                 }
 
@@ -75,26 +79,6 @@ public class MainActivity extends AppCompatActivity {
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(layoutId);
 
-    }
-
-    // Show fragmentA and hide all the other fragments
-    private void displayFragment(Fragment fragmentA, Fragment fragmentB, Fragment fragmentC) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (fragmentA.isAdded()) { // if the fragment is already in container
-            ft.show(fragmentA);
-        } else { // fragment needs to be added to frame container
-            ft.add(R.id.flContainer, fragmentA, fragmentA.getClass().getSimpleName());
-        }
-
-        if (fragmentB.isAdded()) {
-            ft.hide(fragmentB);
-        }
-
-        if (fragmentC.isAdded()) {
-            ft.hide(fragmentC);
-        }
-
-        ft.commit();
     }
 
     public AVLoadingIndicatorView getAVLoadingIndivatorView() {

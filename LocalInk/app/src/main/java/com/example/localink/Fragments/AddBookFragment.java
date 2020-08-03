@@ -21,6 +21,7 @@ import com.example.localink.Activities.MainActivity;
 import com.example.localink.Clients.BookClient;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
@@ -112,12 +113,14 @@ public class AddBookFragment extends Fragment {
                         .withPermission(Manifest.permission.CAMERA)
                         .withListener(new PermissionListener() {
                             @Override
-                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                            public void onPermissionGranted(final PermissionGrantedResponse response) {
+
                                 scannerView.setVisibility(View.VISIBLE);
                                 scannerView.startCamera();
                                 scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
                                     @Override
                                     public void handleResult(Result rawResult) {
+
                                         Toast.makeText(getContext(), "Scanned ISBN: " + rawResult.getText(), Toast.LENGTH_SHORT).show();
                                         etSearchIsbn.setText(rawResult.getText());
                                     }
