@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,18 @@ import android.widget.Toast;
 
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localink.Activities.BookstoreMainActivity;
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Clients.BookClient;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.zxing.Result;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -30,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import okhttp3.Headers;
 
 public class AddBookFragment extends Fragment {
@@ -37,6 +47,8 @@ public class AddBookFragment extends Fragment {
     private static final String TAG = "AddBookFragment";
 
     private BookClient client;
+
+    private ZXingScannerView scannerView;
 
     EditText etSearchIsbn;
     MaterialButton btnSearchIsbn;
@@ -87,12 +99,45 @@ public class AddBookFragment extends Fragment {
         spnrAgeRange.setPrompt("Select your favorite age range!");
         btnCreate = view.findViewById(R.id.btnCreate);
 
+        scannerView = view.findViewById(R.id.zxing);
+
+        scannerView.setVisibility(View.GONE);
+
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Tapped scan button", Toast.LENGTH_SHORT).show();
+
+                Dexter.withActivity(getActivity())
+                        .withPermission(Manifest.permission.CAMERA)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                                scannerView.setVisibility(View.VISIBLE);
+                                scannerView.startCamera();
+                                scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
+                                    @Override
+                                    public void handleResult(Result rawResult) {
+                                        Toast.makeText(getContext(), "Scanned ISBN: " + rawResult.getText(), Toast.LENGTH_SHORT).show();
+                                        etSearchIsbn.setText(rawResult.getText());
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                            }
+                        })
+                        .check();
             }
         });
+
 
         btnSearchIsbn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +200,7 @@ public class AddBookFragment extends Fragment {
         });
     }
 
+
     // Populate the edit text views so the user can make any changes to Google Books' response
     private void populateViews(Book book) {
         try {
@@ -205,5 +251,17 @@ public class AddBookFragment extends Fragment {
 
     private boolean isValidISBN(String isbn) {
         return (!isbn.isEmpty() && isbn.length() >= 10 && isbn.length() <= 13);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        scannerView.stopCamera();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        scannerView.stopCamera();
     }
 }

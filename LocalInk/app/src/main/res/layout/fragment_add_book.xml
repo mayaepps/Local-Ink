@@ -33,11 +33,17 @@
                 android:layout_below="@+id/tvHeader"
                 android:layout_centerHorizontal="true"/>
 
+            <me.dm7.barcodescanner.zxing.ZXingScannerView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/zxing"
+                android:layout_below="@+id/btnScan"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvByIsbn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnScan"
+                android:layout_below="@id/zxing"
                 android:text="@string/search_by_isbn"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="8dp" />
