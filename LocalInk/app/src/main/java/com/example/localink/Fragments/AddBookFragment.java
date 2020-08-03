@@ -48,6 +48,7 @@ public class AddBookFragment extends Fragment {
     Spinner spnrGenre;
     Spinner spnrAgeRange;
     MaterialButton btnCreate;
+    MaterialButton btnScan;
 
     public AddBookFragment() {
         // Required empty public constructor
@@ -72,6 +73,8 @@ public class AddBookFragment extends Fragment {
         etSearchIsbn = view.findViewById(R.id.etSearchIsbn);
         btnSearchIsbn = view.findViewById(R.id.btnSearchIsbn);
 
+        btnScan = view.findViewById(R.id.btnScan);
+
         etTitle = view.findViewById(R.id.etTitle);
         etAuthor = view.findViewById(R.id.etAuthor);
         etIsbn = view.findViewById(R.id.etIsbn);
@@ -83,6 +86,13 @@ public class AddBookFragment extends Fragment {
         spnrAgeRange = view.findViewById(R.id.spnrAgeRange);
         spnrAgeRange.setPrompt("Select your favorite age range!");
         btnCreate = view.findViewById(R.id.btnCreate);
+
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Tapped scan button", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnSearchIsbn.setOnClickListener(new View.OnClickListener() {
             @Override

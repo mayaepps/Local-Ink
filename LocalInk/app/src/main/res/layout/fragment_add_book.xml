@@ -25,14 +25,22 @@
                 android:textStyle="bold"
                 android:layout_margin="16dp"/>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnScan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scan barcode"
+                android:layout_below="@+id/tvHeader"
+                android:layout_centerHorizontal="true"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvByIsbn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvHeader"
+                android:layout_below="@id/btnScan"
                 android:text="@string/search_by_isbn"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"/>
+                android:layout_marginVertical="8dp" />
 
             <LinearLayout
                 android:id="@+id/llIsbnSearch"
