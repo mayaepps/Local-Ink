@@ -24,6 +24,7 @@ import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 

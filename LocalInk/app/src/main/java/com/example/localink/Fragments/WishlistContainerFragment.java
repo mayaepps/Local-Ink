@@ -15,9 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class WishlistContainerFragment extends Fragment {
@@ -59,6 +65,10 @@ public class WishlistContainerFragment extends Fragment {
         final Fragment wishlistFragment = new WishlistFragment();
         final Fragment mapsFragment = new MapsFragment();
 
+        FragmentTransaction ft = childFragmentManager.beginTransaction();
+        ft.add(R.id.flContainer, wishlistFragment, wishlistFragment.getClass().getSimpleName());
+        ft.add(R.id.flContainer, mapsFragment, mapsFragment.getClass().getSimpleName());
+
         // Add an on tab selected listener to switch the fragments when the tabs are selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -87,22 +97,22 @@ public class WishlistContainerFragment extends Fragment {
         });
 
         // TODO: bug - doesn't work on first load (it shows no fragment), but works if I go to the other tab and back
+        tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
-
     }
+
 
     // Display the given fragment and hide the other fragment
     private void displayFragment(Fragment fragmentA, Fragment fragmentB) {
+
         FragmentTransaction ft = childFragmentManager.beginTransaction();
         if (fragmentA.isAdded()) { // if the fragment is already in container
             ft.show(fragmentA);
         } else { // fragment needs to be added to frame container
-            ft.add(R.id.flContainer, fragmentA, fragmentA.getClass().getSimpleName());
+            ft.add(R.id.flContainer, fragmentA);
         }
-
-        if (fragmentB.isAdded()) {
-            ft.hide(fragmentB);
-        }
+        // Hide fragment B
+        if (fragmentB.isAdded()) { ft.hide(fragmentB); }
 
         ft.commit();
     }

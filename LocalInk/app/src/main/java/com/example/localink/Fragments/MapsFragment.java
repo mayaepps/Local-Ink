@@ -22,9 +22,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
@@ -47,11 +51,16 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            stores = getStores();
 
-            if (stores != null) {
+            // If there are stores passed in using a bundle, get them, otherwise just query Parse for the stores.
+            Bundle bundle = getArguments();
+            if (bundle != null && !bundle.isEmpty()) {
+                stores = getStores();
                 setMarkers(googleMap);
+            } else {
+                queryStores(googleMap);
             }
+
             disallowParentScroll(googleMap);
 
             // If there is only one store on the map, let the user tap the map to see the store in the Google Maps app
@@ -137,11 +146,7 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
-
     }
-
-
 
     //get stores from BookDetailsActivity 
     private List<ParseUser> getStores() {
@@ -150,6 +155,35 @@ public class MapsFragment extends Fragment {
             Log.e(TAG, "Bundle of stores to maps fragment is null");
             return null;
         }
+
         return bundle.getParcelableArrayList(ParseUser.class.getSimpleName());
+    }
+
+    // Query Parse for the stores on the user's wishlist
+    private void queryStores(final GoogleMap googleMap) {
+        stores = new ArrayList<>();
+
+        // For now, get all the stores
+        // TODO: Just get the stores on this user's wishlist
+        // Create the query for books
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+
+        // Only get the bookstores
+        query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, true);
+
+        // Make the query
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> bookstores, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error getting books from Parse: " + e.getMessage());
+                    return;
+                }
+
+                stores.addAll(bookstores);
+
+                setMarkers(googleMap);
+            }
+        });
     }
 }
