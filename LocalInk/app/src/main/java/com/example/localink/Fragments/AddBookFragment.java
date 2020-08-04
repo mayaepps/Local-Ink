@@ -117,6 +117,8 @@ public class AddBookFragment extends Fragment {
                             @Override
                             public void onPermissionGranted(final PermissionGrantedResponse response) {
 
+                                // If the scanner is already on, tapping the button should close/hide the camera/scanner
+                                // and change the button icon to the collapsed up-arrow icon
                                 if (isScannerOn) {
                                     btnScan.setIcon(getContext().getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24));
                                     scannerView.stopCamera();
@@ -124,6 +126,9 @@ public class AddBookFragment extends Fragment {
                                     scannerView.setVisibility(View.GONE);
                                     isScannerOn = false;
                                 } else {
+
+                                    // If the scanner is not already on, tapping the button should open/show the camera/scanner
+                                    // and change the button icon to the expanded down-arrow icon
                                     btnScan.setIcon(getContext().getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24));
                                     isScannerOn = true;
 
@@ -135,6 +140,7 @@ public class AddBookFragment extends Fragment {
 
                                             Toast.makeText(getContext(), "Scanned ISBN: " + rawResult.getText(), Toast.LENGTH_SHORT).show();
                                             etSearchIsbn.setText(rawResult.getText());
+                                            // Don't just freeze after scanning one barcode
                                             scannerView.startCamera();
                                         }
                                     });
@@ -156,7 +162,8 @@ public class AddBookFragment extends Fragment {
         });
 
 
-
+        // When the search isbn button is tapped, make sure the isbn is valid (10 or 13 chars)
+        // and query Google Books API for that isbn
         btnSearchIsbn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,6 +242,7 @@ public class AddBookFragment extends Fragment {
         }
     }
 
+    // Make call to Google Books API searching for a book with the given ISBN
     private void queryBook(String isbn) {
         client = new BookClient();
         client.getBookByIsbn(isbn, new JsonHttpResponseHandler() {
@@ -267,8 +275,10 @@ public class AddBookFragment extends Fragment {
         });
     }
 
+    // Simple check that the ISBN value is valid
+    // Old ISBNs (before 2008) were 10 digits, but since then ISBNs are 13 digits
     private boolean isValidISBN(String isbn) {
-        return (!isbn.isEmpty() && isbn.length() >= 10 && isbn.length() <= 13);
+        return (!isbn.isEmpty() && (isbn.length() == 10 || isbn.length() == 13));
     }
 
     @Override
