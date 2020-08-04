@@ -132,11 +132,12 @@ public class MapsFragment extends Fragment {
             builder = new LatLngBounds.Builder();
         }
 
+        // Get the latitude/longitude of the bookstore
         LocalInkUser bookstore = new LocalInkUser(store);
-
         ParseGeoPoint location = bookstore.getGeoLocation();
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        // Add a marker at that point
         builder.include(currentLatLng);
         map.addMarker(new MarkerOptions()
                 .position(currentLatLng)
@@ -186,9 +187,8 @@ public class MapsFragment extends Fragment {
         return bundle.getParcelableArrayList(ParseUser.class.getSimpleName());
     }
 
-    // Query Parse for the stores on the user's wishlist
+    // Query Parse for the stores on the user's wishlist and put a marker on the map for each
     private void queryWishlistStores() {
-        // Get the stores for the books in the wishlist
         List<Book> wishlist = (new LocalInkUser(ParseUser.getCurrentUser())).getWishlist();
 
         try {
@@ -197,9 +197,7 @@ public class MapsFragment extends Fragment {
                     @Override
                     public void done(ParseUser user, ParseException e) {
                         stores.add(user);
-
                         setMarker(user);
-
                     }
                 });
             }
