@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -23,8 +24,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -37,7 +40,9 @@ public class MapsFragment extends Fragment {
     private static final int PADDING = 100;
     private static final float ZOOM = 14F;
     private List<ParseUser> stores;
-    private View map;
+    private View mapView;
+    private GoogleMap map;
+    private LatLngBounds.Builder builder;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -52,13 +57,19 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
+            map = googleMap;
+
             // If there are stores passed in using a bundle, get them, otherwise just query Parse for the stores.
             Bundle bundle = getArguments();
             if (bundle != null && !bundle.isEmpty()) {
                 stores = getStores();
-                setMarkers(googleMap);
+
+                for (ParseUser user : stores) {
+                    setMarker(user);
+                }
+
             } else {
-                queryStores(googleMap);
+                queryWishlistStores();
             }
 
             disallowParentScroll(googleMap);
@@ -76,20 +87,22 @@ public class MapsFragment extends Fragment {
         }
     };
 
+    // When used in the BookDetailView, this disallows the parent scroll view from intepreting the
+    // scroll event as scrolling up and down in the scroll view, and allows the map to be dragged/panned around
     private void disallowParentScroll(GoogleMap googleMap) {
         googleMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
             @Override
             public void onCameraMoveStarted(int i) {
-                map = getView().findViewById(R.id.map);
-                map.getParent().requestDisallowInterceptTouchEvent(true);
+                mapView = getView().findViewById(R.id.map);
+                mapView.getParent().requestDisallowInterceptTouchEvent(true);
             }
         });
 
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                map = getView().findViewById(R.id.map);
-                map.getParent().requestDisallowInterceptTouchEvent(false);
+                mapView = getView().findViewById(R.id.map);
+                mapView.getParent().requestDisallowInterceptTouchEvent(false);
             }
         });
     }
@@ -107,27 +120,29 @@ public class MapsFragment extends Fragment {
     }
 
     // Put a marker on the map at each of the stores
-    private void setMarkers(GoogleMap map) {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        LatLng currentLatLng = null;
-
-        for (ParseUser store : stores) {
-            LocalInkUser bookstore = new LocalInkUser(store);
-            ParseGeoPoint location = bookstore.getGeoLocation();
-            currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            builder.include(currentLatLng);
-            map.addMarker(new MarkerOptions().position(currentLatLng).title(bookstore.getName()));
-            map.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+    private void setMarker(ParseUser store) {
+        if (builder == null) {
+            builder = new LatLngBounds.Builder();
         }
+
+        LocalInkUser bookstore = new LocalInkUser(store);
+        ParseGeoPoint location = bookstore.getGeoLocation();
+        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        builder.include(currentLatLng);
+        map.addMarker(new MarkerOptions().position(currentLatLng).title(bookstore.getName()));
+        map.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
 
         // Zoom map in to fit the markers
         LatLngBounds bounds = builder.build();
         CameraUpdate cameraUpdate;
-        if (stores.size() == 1 && currentLatLng != null) {
+
+        if (stores.size() == 1) {
             cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, ZOOM);
         } else {
             cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, PADDING);
         }
+
         map.moveCamera(cameraUpdate);
     }
 
@@ -160,30 +175,24 @@ public class MapsFragment extends Fragment {
     }
 
     // Query Parse for the stores on the user's wishlist
-    private void queryStores(final GoogleMap googleMap) {
+    private void queryWishlistStores() {
         stores = new ArrayList<>();
 
-        // For now, get all the stores
-        // TODO: Just get the stores on this user's wishlist
-        // Create the query for books
-        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        // Get the stores for the books in the wishlist
+        List<Book> wishlist = (new LocalInkUser(ParseUser.getCurrentUser())).getWishlist();
 
-        // Only get the bookstores
-        query.whereEqualTo(LocalInkUser.KEY_IS_BOOKSTORE, true);
-
-        // Make the query
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> bookstores, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error getting books from Parse: " + e.getMessage());
-                    return;
-                }
-
-                stores.addAll(bookstores);
-
-                setMarkers(googleMap);
+        try {
+            for (Book book : wishlist) {
+                book.getBookstore().fetchIfNeededInBackground(new GetCallback<ParseUser>() {
+                    @Override
+                    public void done(ParseUser user, ParseException e) {
+                        stores.add(user);
+                        setMarker(user);
+                    }
+                });
             }
-        });
+        } catch (ParseException e) {
+            Log.e(TAG, "Could not get wishlist bookstores: " + e.getLocalizedMessage());
+        }
     }
 }
