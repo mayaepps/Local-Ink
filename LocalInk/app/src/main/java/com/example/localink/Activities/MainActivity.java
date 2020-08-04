@@ -50,23 +50,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                FragmentManager fm = getSupportFragmentManager();
 
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        FragmentUtils.displayFragment(fm, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        FragmentUtils.displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                     case R.id.action_wishlist:
-                        FragmentUtils.displayFragment(fm, wishlistContainerFragment, recommendationsFragment, profileFragment);
+                        FragmentUtils.displayFragment(fragmentManager, wishlistContainerFragment, recommendationsFragment, profileFragment);
                         return true;
                     case R.id.action_profile:
-                        FragmentUtils.displayFragment(fm, profileFragment, wishlistContainerFragment, recommendationsFragment);
+                        FragmentUtils.displayFragment(fragmentManager, profileFragment, wishlistContainerFragment, recommendationsFragment);
                         return true;
                     default:
-                        FragmentUtils.displayFragment(fm, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        FragmentUtils.displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                 }
-
             }
         });
 
@@ -84,4 +82,5 @@ public class MainActivity extends AppCompatActivity {
     public AVLoadingIndicatorView getAVLoadingIndivatorView() {
         return binding.avi;
     }
+
 }

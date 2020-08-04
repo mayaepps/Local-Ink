@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.localink.Activities.BookstoreMainActivity;
 import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Activities.BookDetailsActivity;
@@ -194,6 +195,8 @@ public class RecommendationsFragment extends Fragment {
         for (ParseUser store : nearbyBookstores) {
             queryBooks(store);
         }
+
+        removeDuplicateBooks();
 
         // Add books that perfectly match the user's preferences to the recommendation list
         List<Book> perfectMatches = getPerfectMatchBooks();
@@ -416,6 +419,9 @@ public class RecommendationsFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+
+        final MainActivity mainActivity = (MainActivity) getActivity();
+
         if (!hidden) {
             ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override
@@ -429,10 +435,29 @@ public class RecommendationsFragment extends Fragment {
                         getLastKnownLocation(NUM_INITIAL_STORES, NUM_INITIAL_MILES);
                         setSeekBar(getView(), seekbarRadiusStores, R.id.tvRadiusStoresSeekBarValue, NUM_INITIAL_MILES);
                         setSeekBar(getView(), seekbarNumStores, R.id.tvNumStoresSeekBarValue, NUM_INITIAL_STORES);
-                        ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
+                        mainActivity.getAVLoadingIndivatorView().smoothToShow();
                     }
                 }
             });
+        }
+    }
+
+
+    // Searches through the list of books and checks
+    // if there are any duplicate books (i.e. the same book sold at different stores)
+    // Removes the latter duplicates (the books further away in distance from the user)
+    private void removeDuplicateBooks() {
+        try {
+            for (int i = 0; i < otherBooks.size(); i++) {
+                for (int j = i + 1; j < otherBooks.size(); j++) {
+                    if (otherBooks.get(i).getIsbn().equals(otherBooks.get(j).getIsbn())) {
+                        otherBooks.remove(j);
+                        j--;
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "Could not get ISBN for books from Parse ", e);
         }
     }
 }

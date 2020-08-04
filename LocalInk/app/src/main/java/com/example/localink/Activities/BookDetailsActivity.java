@@ -82,10 +82,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-                // Go to MainActivity
-                Intent i = new Intent(BookDetailsActivity.this, MainActivity.class);
-                i.putExtra(Integer.class.getSimpleName(), R.id.action_wishlist);
-                startActivity(i);
+                // Go back to MainActivity
+                finish();
             }
         });
 

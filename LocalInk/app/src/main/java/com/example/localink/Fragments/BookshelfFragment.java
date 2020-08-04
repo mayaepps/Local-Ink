@@ -141,8 +141,8 @@ public class BookshelfFragment extends Fragment {
         BookstoreMainActivity mainActivity = (BookstoreMainActivity) getActivity();
         if (!hidden && mainActivity.isBookshelfRefresh()) {
             // refresh the screen -- query parse again
+            queryBooks();
 
-            Toast.makeText(mainActivity, "Refresh now", Toast.LENGTH_SHORT).show();
             mainActivity.setBookshelfRefresh(false);
         }
     }
