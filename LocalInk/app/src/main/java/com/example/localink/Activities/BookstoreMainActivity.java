@@ -27,6 +27,8 @@ public class BookstoreMainActivity extends AppCompatActivity {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
+    private boolean bookshelfRefresh = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,14 @@ public class BookstoreMainActivity extends AppCompatActivity {
 
     public BottomNavigationView getBottomNavigation() {
         return binding.bottomNavigation;
+    }
+
+    public boolean isBookshelfRefresh() {
+        return bookshelfRefresh;
+    }
+
+    public void setBookshelfRefresh(boolean bookshelfRefresh) {
+        this.bookshelfRefresh = bookshelfRefresh;
     }
 
 

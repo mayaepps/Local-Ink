@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_below="@+id/etAuthor"
-                android:hint="@string/synopsis" />
+                android:hint="@string/isbn"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSynopsis"
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_below="@+id/etIsbn"
-                android:hint="@string/isbn"/>
+                android:hint="@string/synopsis"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCover"

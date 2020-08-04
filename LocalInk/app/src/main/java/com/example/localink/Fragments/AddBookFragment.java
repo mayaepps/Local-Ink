@@ -217,7 +217,10 @@ public class AddBookFragment extends Fragment {
                             spnrAgeRange.setPrompt("Select your favorite age range!");
 
                             // Go to the bookshelf fragment to see the book you just created
-                            ((BookstoreMainActivity) getActivity()).getBottomNavigation().setSelectedItemId(R.id.action_bookshelf);
+                            // (and let it know it should refresh to get newly created book)
+                            BookstoreMainActivity mainActivity = (BookstoreMainActivity) getActivity();
+                            mainActivity.getBottomNavigation().setSelectedItemId(R.id.action_bookshelf);
+                            mainActivity.setBookshelfRefresh(true);
                         }
                     }
                 });
@@ -261,8 +264,7 @@ public class AddBookFragment extends Fragment {
                         Toast.makeText(getContext(), "Error finding a book with that ISBN", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // Invalid JSON format, show appropriate error.
-                    e.printStackTrace();
+                    Log.e(TAG, "Invalid JSON format from Google Books ISBN search response ", e);
                 }
             }
 

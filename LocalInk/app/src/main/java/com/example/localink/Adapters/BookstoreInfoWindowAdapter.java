@@ -2,6 +2,7 @@ package com.example.localink.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
+    private static final String TAG = BookstoreInfoWindowAdapter.class.getSimpleName();
     private Context context;
     private boolean showWishlist;
 
@@ -58,7 +60,6 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         tvStoreName.setText(bookstore.getName());
         tvAddress.setText(bookstore.getAddress());
 
-        // TODO: Figure out how to get the books carried
         LocalInkUser currentUser = new LocalInkUser(ParseUser.getCurrentUser());
         List<Book> booksCarried = booksInWishlistCarried(bookstore, currentUser.getWishlist());
         tvBooksCarried.setText(join(booksCarried, "\n"));
@@ -66,7 +67,7 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return view;
     }
 
-    // Get a list of the books in the user's wishlist that this store carries
+    // Returns a list of the books in the user's wishlist that are sold at this store
     private List<Book> booksInWishlistCarried(LocalInkUser bookstore, List<Book> wishlist) {
 
         List<Book> booksCarried = new ArrayList<>();
@@ -77,9 +78,9 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 }
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Could not get the bookstore from the books in the wishlist for the Google Maps marker", e);
         }
-        
+
         return booksCarried;
     }
 

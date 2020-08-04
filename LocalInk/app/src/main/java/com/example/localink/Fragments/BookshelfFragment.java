@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.localink.Activities.BookstoreMainActivity;
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -131,4 +134,16 @@ public class BookshelfFragment extends Fragment {
         return helper;
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        BookstoreMainActivity mainActivity = (BookstoreMainActivity) getActivity();
+        if (!hidden && mainActivity.isBookshelfRefresh()) {
+            // refresh the screen -- query parse again
+
+            Toast.makeText(mainActivity, "Refresh now", Toast.LENGTH_SHORT).show();
+            mainActivity.setBookshelfRefresh(false);
+        }
+    }
 }
