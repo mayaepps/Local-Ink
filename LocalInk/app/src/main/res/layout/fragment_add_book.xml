@@ -31,7 +31,9 @@
                 android:layout_height="wrap_content"
                 android:text="Scan barcode"
                 android:layout_below="@+id/tvHeader"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                app:icon="@drawable/ic_baseline_keyboard_arrow_up_24"
+                app:iconGravity="end"/>
 
             <me.dm7.barcodescanner.zxing.ZXingScannerView
                 android:layout_width="match_parent"

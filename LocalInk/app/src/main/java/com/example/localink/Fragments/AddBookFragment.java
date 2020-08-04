@@ -51,6 +51,8 @@ public class AddBookFragment extends Fragment {
 
     private ZXingScannerView scannerView;
 
+    private boolean isScannerOn = false;
+
     EditText etSearchIsbn;
     MaterialButton btnSearchIsbn;
     EditText etTitle;
@@ -83,11 +85,10 @@ public class AddBookFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Find all views
         etSearchIsbn = view.findViewById(R.id.etSearchIsbn);
         btnSearchIsbn = view.findViewById(R.id.btnSearchIsbn);
-
         btnScan = view.findViewById(R.id.btnScan);
-
         etTitle = view.findViewById(R.id.etTitle);
         etAuthor = view.findViewById(R.id.etAuthor);
         etIsbn = view.findViewById(R.id.etIsbn);
@@ -95,19 +96,20 @@ public class AddBookFragment extends Fragment {
         btnCreate = view.findViewById(R.id.btnCreate);
         etCover = view.findViewById(R.id.etCover);
         spnrGenre = view.findViewById(R.id.spnrGenre);
-        spnrGenre.setPrompt("Select your favorite genre!");
         spnrAgeRange = view.findViewById(R.id.spnrAgeRange);
-        spnrAgeRange.setPrompt("Select your favorite age range!");
         btnCreate = view.findViewById(R.id.btnCreate);
-
         scannerView = view.findViewById(R.id.zxing);
 
         scannerView.setVisibility(View.GONE);
+        spnrGenre.setPrompt("Select your favorite genre!");
+        spnrAgeRange.setPrompt("Select your favorite age range!");
 
+        // When the scan button is tapped, request permission to use the camera
+        // If permission is granted, start the scanner and set the result handler so when the scanner
+        // finds a barcode, it enters the scanned value into the isbn search bar
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Tapped scan button", Toast.LENGTH_SHORT).show();
 
                 Dexter.withActivity(getActivity())
                         .withPermission(Manifest.permission.CAMERA)
@@ -115,16 +117,28 @@ public class AddBookFragment extends Fragment {
                             @Override
                             public void onPermissionGranted(final PermissionGrantedResponse response) {
 
-                                scannerView.setVisibility(View.VISIBLE);
-                                scannerView.startCamera();
-                                scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
-                                    @Override
-                                    public void handleResult(Result rawResult) {
+                                if (isScannerOn) {
+                                    btnScan.setIcon(getContext().getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24));
+                                    scannerView.stopCamera();
+                                    scannerView.stopCameraPreview();
+                                    scannerView.setVisibility(View.GONE);
+                                    isScannerOn = false;
+                                } else {
+                                    btnScan.setIcon(getContext().getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24));
+                                    isScannerOn = true;
 
-                                        Toast.makeText(getContext(), "Scanned ISBN: " + rawResult.getText(), Toast.LENGTH_SHORT).show();
-                                        etSearchIsbn.setText(rawResult.getText());
-                                    }
-                                });
+                                    scannerView.setVisibility(View.VISIBLE);
+                                    scannerView.startCamera();
+                                    scannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
+                                        @Override
+                                        public void handleResult(Result rawResult) {
+
+                                            Toast.makeText(getContext(), "Scanned ISBN: " + rawResult.getText(), Toast.LENGTH_SHORT).show();
+                                            etSearchIsbn.setText(rawResult.getText());
+                                            scannerView.startCamera();
+                                        }
+                                    });
+                                }
                             }
 
                             @Override
@@ -140,6 +154,7 @@ public class AddBookFragment extends Fragment {
                         .check();
             }
         });
+
 
 
         btnSearchIsbn.setOnClickListener(new View.OnClickListener() {

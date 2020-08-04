@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.WishlistContainerFragment" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.WishlistContainerFragment">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -24,7 +25,12 @@
         android:id="@+id/tabLayoutWishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:background="@color/colorPrimary"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/colorAccent"
+        app:tabIndicatorColor="@android:color/white"
+        android:elevation="8dp">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabWishlist"
