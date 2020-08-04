@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        tools:src="@tools:sample/avatars" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvStoreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:text="Store Name"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStoreName"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:text="12345 Street Road, CA 90000"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="12sp"
+        />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvBooksCarried"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAddress"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        tools:text="Wishlist books they carry here"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="12sp"
+        />
+
+</RelativeLayout>

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.localink.Adapters.BookstoreInfoWindowAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -37,12 +38,13 @@ import java.util.List;
 public class MapsFragment extends Fragment {
 
     private static final String TAG = "MapsFragment";
-    private static final int PADDING = 100;
+    private static final int PADDING = 150;
     private static final float ZOOM = 14F;
     private List<ParseUser> stores;
     private View mapView;
     private GoogleMap map;
     private LatLngBounds.Builder builder;
+    private BookstoreInfoWindowAdapter infoWindowAdapter;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -58,6 +60,11 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
 
             map = googleMap;
+
+            //Set the adapter for the marker custom info windows
+            stores = new ArrayList<>();
+            infoWindowAdapter = new BookstoreInfoWindowAdapter(getContext());
+            map.setInfoWindowAdapter(infoWindowAdapter);
 
             // If there are stores passed in using a bundle, get them, otherwise just query Parse for the stores.
             Bundle bundle = getArguments();
@@ -126,11 +133,16 @@ public class MapsFragment extends Fragment {
         }
 
         LocalInkUser bookstore = new LocalInkUser(store);
+
         ParseGeoPoint location = bookstore.getGeoLocation();
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         builder.include(currentLatLng);
-        map.addMarker(new MarkerOptions().position(currentLatLng).title(bookstore.getName()));
+        map.addMarker(new MarkerOptions()
+                .position(currentLatLng)
+                .title(bookstore.getName()))
+                .setTag(bookstore);
+
         map.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
 
         // Zoom map in to fit the markers
@@ -176,8 +188,6 @@ public class MapsFragment extends Fragment {
 
     // Query Parse for the stores on the user's wishlist
     private void queryWishlistStores() {
-        stores = new ArrayList<>();
-
         // Get the stores for the books in the wishlist
         List<Book> wishlist = (new LocalInkUser(ParseUser.getCurrentUser())).getWishlist();
 
@@ -187,7 +197,9 @@ public class MapsFragment extends Fragment {
                     @Override
                     public void done(ParseUser user, ParseException e) {
                         stores.add(user);
+
                         setMarker(user);
+
                     }
                 });
             }
