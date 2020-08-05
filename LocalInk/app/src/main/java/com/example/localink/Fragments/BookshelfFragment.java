@@ -155,7 +155,7 @@ public class BookshelfFragment extends Fragment {
 
         BookstoreMainActivity mainActivity = (BookstoreMainActivity) getActivity();
         if (!hidden && mainActivity.isBookshelfRefresh()) {
-            // refresh the screen -- query parse again
+            // refresh the screen -- query parse again to get the new book
             queryBooks();
 
             mainActivity.setBookshelfRefresh(false);

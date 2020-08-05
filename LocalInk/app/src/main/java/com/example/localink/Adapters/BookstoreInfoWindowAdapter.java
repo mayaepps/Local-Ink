@@ -70,6 +70,9 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     // Returns a list of the books in the user's wishlist that are sold at this store
     private List<Book> booksInWishlistCarried(LocalInkUser bookstore, List<Book> wishlist) {
 
+        if (wishlist == null || wishlist.size() == 0) {
+            return new ArrayList<>();
+        }
         List<Book> booksCarried = new ArrayList<>();
         try {
             for (Book book : wishlist) {
@@ -86,6 +89,12 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     // Join the list of books with the string given
     private String join(List<Book> list, String joinString) {
+        if (list.size() == 0) {
+            return "";
+        }
+        if (list.size() == 1) {
+            return list.get(0).getTitle();
+        }
         StringBuilder bookNames = new StringBuilder();
         for (int i = 0; i < list.size() - 1; i++) {
             bookNames.append(list.get(i).getTitle()).append(joinString);
