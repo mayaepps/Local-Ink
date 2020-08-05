@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Fragments.MapsFragment;
+import com.example.localink.Fragments.RecommendationsFragment;
+import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -23,6 +25,8 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +94,9 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-                // Go back to MainActivity
+                Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
+                intent.putExtra(RecommendationsFragment.ADDED_TO_WISHLIST, true);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

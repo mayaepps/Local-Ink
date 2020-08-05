@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
+    private boolean wishlistRefresh = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +70,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // If coming from BookDetailsActivity, go to the wishlist (a book was just added to the wishlist)
-        int layoutId = R.id.action_home;
-        Intent i = getIntent();
-        if (i.hasExtra(Integer.class.getSimpleName())) {
-            layoutId = i.getIntExtra(Integer.class.getSimpleName(), R.id.action_home);
-        }
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
-        binding.bottomNavigation.setSelectedItemId(layoutId);
+        binding.bottomNavigation.setSelectedItemId(R.id.action_home);
 
     }
 
@@ -83,4 +79,11 @@ public class MainActivity extends AppCompatActivity {
         return binding.avi;
     }
 
+    public boolean isWishlistRefresh() {
+        return wishlistRefresh;
+    }
+
+    public void setWishlistRefresh(boolean wishlistRefresh) {
+        this.wishlistRefresh = wishlistRefresh;
+    }
 }

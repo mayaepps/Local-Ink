@@ -188,7 +188,7 @@ public class MapsFragment extends Fragment {
     }
 
     // Query Parse for the stores on the user's wishlist and put a marker on the map for each
-    private void queryWishlistStores() {
+    protected void queryWishlistStores() {
         List<Book> wishlist = (new LocalInkUser(ParseUser.getCurrentUser())).getWishlist();
 
         try {

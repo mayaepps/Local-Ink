@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.example.localink.databinding.FragmentRecommendationsBinding;
@@ -32,6 +33,9 @@ import static com.example.localink.Utils.FragmentUtils.displayFragment;
 public class WishlistContainerFragment extends Fragment {
 
     private FragmentManager childFragmentManager;
+    // Create the different fragments the user can see
+    final Fragment wishlistFragment = new WishlistFragment();
+    final Fragment mapsFragment = new MapsFragment();
 
     public WishlistContainerFragment() {
         // Required empty public constructor
@@ -64,9 +68,6 @@ public class WishlistContainerFragment extends Fragment {
 
         childFragmentManager = getChildFragmentManager();
 
-        // Create the different fragments the user can see
-        final Fragment wishlistFragment = new WishlistFragment();
-        final Fragment mapsFragment = new MapsFragment();
 
         FragmentTransaction ft = childFragmentManager.beginTransaction();
         ft.add(R.id.flContainer, wishlistFragment, wishlistFragment.getClass().getSimpleName());
@@ -105,5 +106,18 @@ public class WishlistContainerFragment extends Fragment {
         // TODO: bug - doesn't work on first load (it shows no fragment), but works if I go to the other tab and back
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (!hidden && mainActivity.isWishlistRefresh()) {
+            // refresh the screen -- query parse again to get the new book
+            ((WishlistFragment) wishlistFragment).getWishlistBooks();
+            ((MapsFragment) mapsFragment).queryWishlistStores();
+            mainActivity.setWishlistRefresh(false);
+        }
     }
 }

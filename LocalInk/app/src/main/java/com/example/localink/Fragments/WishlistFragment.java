@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.localink.Activities.BookDetailsActivity;
+import com.example.localink.Activities.BookstoreMainActivity;
 import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
@@ -35,6 +36,8 @@ import java.util.Collections;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class WishlistFragment extends Fragment {
@@ -72,7 +75,6 @@ public class WishlistFragment extends Fragment {
             public void onClick(int position, View view) {
                 // Fire an intent when a contact is selected
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
-                i.putExtra(Book.class.getSimpleName(), wishlistBooks.get(position));
                 i.putExtra(BookshelfFragment.class.getSimpleName(), false);
                 startActivity(i);
             }
@@ -111,7 +113,7 @@ public class WishlistFragment extends Fragment {
     }
 
     // Gets the wishlist list stored in ParseUser and save the list to wishlistBooks
-    private void getWishlistBooks() {
+    protected void getWishlistBooks() {
         ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
         ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
             @Override

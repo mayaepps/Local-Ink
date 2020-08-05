@@ -54,6 +54,8 @@ import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
+import static android.app.Activity.RESULT_OK;
+
 public class RecommendationsFragment extends Fragment {
 
     private static final String TAG = "RecommendationsFragment";
@@ -61,6 +63,8 @@ public class RecommendationsFragment extends Fragment {
     private static final int MINIMUM_RECS = 10;
     private static final int NUM_INITIAL_STORES = 5;
     private static final int NUM_INITIAL_MILES = 20;
+    private static final int BOOK_DETAILS_INTENT_CODE = 17;
+    public static final String ADDED_TO_WISHLIST = "AddedToWishlist";
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
@@ -114,7 +118,7 @@ public class RecommendationsFragment extends Fragment {
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
                 i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
                 i.putExtra(BookshelfFragment.class.getSimpleName(), true);
-                startActivity(i);
+                startActivityForResult(i, BOOK_DETAILS_INTENT_CODE);
             }
 
             // Required by the interface
@@ -206,7 +210,6 @@ public class RecommendationsFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     recommendedBooks.addAll(exploreBooks);
-                                    otherBooks.removeAll(exploreBooks);
                                     adapter.notifyDataSetChanged();
                                     alreadyAddedExploreBooks = true;
                                 }
@@ -236,6 +239,7 @@ public class RecommendationsFragment extends Fragment {
                 }
             }
         }
+        otherBooks.removeAll(exploreBooks);
 
         // If there would still not be enough books even with the current explore books
         // and there would be more books left at the store, get all books at the preferred reading level
@@ -246,6 +250,7 @@ public class RecommendationsFragment extends Fragment {
                 }
             }
         }
+        otherBooks.removeAll(exploreBooks);
 
         return exploreBooks;
     }
@@ -444,6 +449,22 @@ public class RecommendationsFragment extends Fragment {
             }
         } catch (ParseException e) {
             Log.e(TAG, "Could not get ISBN for books from Parse ", e);
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == BOOK_DETAILS_INTENT_CODE && resultCode == RESULT_OK) {
+            boolean ifBookAddedToWishlist = data.getBooleanExtra(ADDED_TO_WISHLIST, false);
+            if (ifBookAddedToWishlist) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if (mainActivity != null) {
+                    mainActivity.setWishlistRefresh(true);
+                }
+            }
         }
     }
 }

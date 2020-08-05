@@ -29,6 +29,7 @@ public class BookstoreMainActivity extends AppCompatActivity {
 
     private boolean bookshelfRefresh = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
