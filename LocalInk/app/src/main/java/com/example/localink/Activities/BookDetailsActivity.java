@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Fragments.MapsFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
@@ -47,6 +48,13 @@ public class BookDetailsActivity extends AppCompatActivity {
         // Get the book to be detailed from the intent
         Intent i = getIntent();
         book = i.getParcelableExtra(Book.class.getSimpleName());
+        boolean showFabAdd = i.getBooleanExtra(BookshelfFragment.class.getSimpleName(), false);
+
+        if (showFabAdd) {
+            binding.fabAddToWishlist.setVisibility(view.VISIBLE);
+        } else {
+            binding.fabAddToWishlist.setVisibility(view.GONE);
+        }
 
         // When the add button is tapped, add the book to the user's wishlist
         binding.fabAddToWishlist.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +113,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     store = user;
                     startMap();
 
-                    binding.tvStoreName.setText("At " + localInkUser.getName());
+                    binding.tvStoreName.setText(String.format("At %s", localInkUser.getName()));
                     binding.tvStoreLocation.setText(localInkUser.getAddress());
                 }
             });

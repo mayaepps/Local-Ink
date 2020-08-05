@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
@@ -63,10 +65,26 @@ public class WishlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+
+            // If clicked, the book item should open  a detail view activity for the book
+            @Override
+            public void onClick(int position, View view) {
+                // Fire an intent when a contact is selected
+                Intent i = new Intent(getContext(), BookDetailsActivity.class);
+                i.putExtra(Book.class.getSimpleName(), wishlistBooks.get(position));
+                i.putExtra(BookshelfFragment.class.getSimpleName(), false);
+                startActivity(i);
+            }
+
+            @Override
+            public void onLongClick(int position) { }
+        };
+
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         wishlistBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), wishlistBooks, null);
+        adapter = new BooksAdapter(getContext(), wishlistBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
 

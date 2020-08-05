@@ -113,21 +113,7 @@ public class RecommendationsFragment extends Fragment {
                 // Fire an intent when a contact is selected
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
                 i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
-
-//                // Create Pairs to match the transition name to the
-//                Pair<View, String> pCover = Pair.create(view.findViewById(R.id.ivCover), "cover");
-//                Pair<View, String> pTitle = Pair.create(view.findViewById(R.id.tvBookTitle), "title");
-//                Pair<View, String> pAuthor = Pair.create(view.findViewById(R.id.tvAuthor), "author");
-//                Pair<View, String> pSynopsis= Pair.create(view.findViewById(R.id.tvSynopsis), "synopsis");
-//
-//                // Create transition animation between recommendations screen to details screen
-//
-//                // why does adding pTitle and pAuthor makes the animation so uneven?
-//                ActivityOptionsCompat options = ActivityOptionsCompat.
-//                        //makeSceneTransitionAnimation(getActivity(), pCover, pSynopsis);
-//                        makeSceneTransitionAnimation(getActivity(), pTitle, pAuthor, pCover, pSynopsis);
-//                startActivity(i, options.toBundle());
-
+                i.putExtra(BookshelfFragment.class.getSimpleName(), true);
                 startActivity(i);
             }
 
@@ -191,7 +177,7 @@ public class RecommendationsFragment extends Fragment {
         recommendedBooks.clear();
         otherBooks = new ArrayList<>();
 
-        // Get the books from the 5 closest stores and get their available books
+        // Get the books from the closest stores and get their available books
         for (ParseUser store : nearbyBookstores) {
             queryBooks(store);
         }

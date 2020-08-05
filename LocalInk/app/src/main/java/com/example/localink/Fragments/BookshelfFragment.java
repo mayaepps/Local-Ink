@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Activities.BookstoreMainActivity;
 import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BooksAdapter;
@@ -61,10 +63,26 @@ public class BookshelfFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+
+            // If clicked, the book item should open  a detail view activity for the book
+            @Override
+            public void onClick(int position, View view) {
+                // Fire an intent when a contact is selected
+                Intent i = new Intent(getContext(), BookDetailsActivity.class);
+                i.putExtra(Book.class.getSimpleName(), storeBooks.get(position));
+                i.putExtra(BookshelfFragment.class.getSimpleName(), false);
+                startActivity(i);
+            }
+
+            @Override
+            public void onLongClick(int position) { }
+        };
+
         // Set up recycler view with the adapter and linear layout
         rvBooks = view.findViewById(R.id.rvBooks);
         storeBooks = new ArrayList<>(); // Have to initialize storeBooks before passing it into the adapter
-        adapter = new BooksAdapter(getContext(), storeBooks, null);
+        adapter = new BooksAdapter(getContext(), storeBooks, clickListener);
         rvBooks.setAdapter(adapter);
         rvBooks.setLayoutManager(new LinearLayoutManager(getContext()));
         rvBooks.setItemAnimator(new SlideInUpAnimator());
@@ -76,18 +94,15 @@ public class BookshelfFragment extends Fragment {
         queryBooks();
     }
 
+
     // Query all the books whose bookstore is the same as the currently logged in bookstore (current user)
     private void queryBooks() {
         ParseUser.getCurrentUser().fetchInBackground();
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
-        // Create the query for books
+        // Query for books from this bookstore
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
-
-        // Only get the books from this bookstore
         query.whereEqualTo(Book.KEY_BOOKSTORE, user.getUser());
-
-        // Make the query
         query.findInBackground(new FindCallback<Book>() {
             @Override
             public void done(List<Book> books, ParseException e) {
