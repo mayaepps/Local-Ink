@@ -25,6 +25,7 @@ import com.example.localink.Adapters.BooksAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -44,6 +45,7 @@ public class WishlistFragment extends Fragment {
 
     private static final String TAG = "WishlistFragment";
     private RecyclerView rvBooks;
+    private FloatingActionButton fabSendWishlist;
     private List<Book> wishlistBooks;
     private BooksAdapter adapter;
 
@@ -68,13 +70,30 @@ public class WishlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
+        // Find views
+        rvBooks = view.findViewById(R.id.rvBooks);
+        fabSendWishlist = view.findViewById(R.id.fabSendWishlist);
 
+        fabSendWishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "My Local Ink wishlist!");
+                String emailString = buildEmailString(wishlistBooks);
+                intent.putExtra(Intent.EXTRA_TEXT, emailString);
+
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
+
+        BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
             // If clicked, the book item should open  a detail view activity for the book
             @Override
             public void onClick(int position, View view) {
                 // Fire an intent when a contact is selected
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
+                i.putExtra(Book.class.getSimpleName(), wishlistBooks.get(position));
                 i.putExtra(BookshelfFragment.class.getSimpleName(), false);
                 startActivity(i);
             }
@@ -84,7 +103,6 @@ public class WishlistFragment extends Fragment {
         };
 
         // Set up recycler view with the adapter and linear layout
-        rvBooks = view.findViewById(R.id.rvBooks);
         wishlistBooks = new ArrayList<>(); // Have to initialize allBooks before passing it into the adapter
         adapter = new BooksAdapter(getContext(), wishlistBooks, clickListener);
         rvBooks.setAdapter(adapter);
@@ -96,6 +114,7 @@ public class WishlistFragment extends Fragment {
 
         getWishlistBooks();
     }
+
 
     private void saveNewWishlist(List<Book> wishlist) {
         LocalInkUser localInkUser = new LocalInkUser(ParseUser.getCurrentUser());
@@ -209,5 +228,20 @@ public class WishlistFragment extends Fragment {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
+    }
+
+    private String buildEmailString(List<Book> wishlistBooks) {
+        StringBuilder email = new StringBuilder("Hi! \n\n Here are the books on my Local Ink wishlist: \n");
+        for (Book book : wishlistBooks) {
+            try {
+                email.append(book.getTitle()).append(" by ").append(book.getAuthor()).append(" at ").append(new LocalInkUser(book.getBookstore()).getName());
+            } catch (ParseException e) {
+                email.append(book.getTitle()).append(" by ").append(book.getAuthor());
+                Log.e(TAG, "Could not get bookstore information for book: " + book.getTitle());
+            }
+            email.append("\n");
+        }
+
+        return email.toString();
     }
 }
