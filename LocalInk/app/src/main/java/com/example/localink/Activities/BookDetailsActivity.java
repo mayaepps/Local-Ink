@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -21,6 +22,8 @@ import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.chip.Chip;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -38,6 +41,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     private Book book;
     private ParseUser store;
     ActivityBookDetailsBinding binding;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,11 +111,19 @@ public class BookDetailsActivity extends AppCompatActivity {
     private void populateViews() {
         // Populate the views in the detail activity with the information from the book object
         try {
-            binding.tvTitle.setText(book.getTitle());
-            binding.tvAuthor.setText(book.getAuthor());
-            binding.tvSynopsis.setText(book.getSynopsis());
-            binding.cGenre.setText(book.getGenre());
-            binding.cAgeRange.setText(book.getAgeRange());
+            TextView tvTitle = findViewById(R.id.tvTitle);
+            TextView tvAuthor = findViewById(R.id.tvAuthor);
+            TextView tvSynopsis = findViewById(R.id.tvSynopsis);
+            Chip cGenre = findViewById(R.id.cGenre);
+            Chip cAgeRange = findViewById(R.id.cAgeRange);
+            final TextView tvStoreName = findViewById(R.id.tvStoreName);
+            final TextView tvStoreLocation = findViewById(R.id.tvStoreLocation);
+
+            tvTitle.setText(book.getTitle());
+            tvAuthor.setText(book.getAuthor());
+            tvSynopsis.setText(book.getSynopsis());
+            cGenre.setText(book.getGenre());
+            cAgeRange.setText(book.getAgeRange());
             book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
@@ -119,14 +131,19 @@ public class BookDetailsActivity extends AppCompatActivity {
                     store = user;
                     startMap();
 
-                    binding.tvStoreName.setText(String.format("At %s", localInkUser.getName()));
-                    binding.tvStoreLocation.setText(localInkUser.getAddress());
+                    tvStoreName.setText(String.format("At %s", localInkUser.getName()));
+                    tvStoreLocation.setText(localInkUser.getAddress());
                 }
             });
             Glide.with(this).load(book.getCover()).into(binding.ivCover);
         } catch (ParseException e) {
             Log.e(TAG, "Error getting book details: " + e.getMessage());
         }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bookInfoBottomSheet));
+        bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior.setPeekHeight(300);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     // Start the Google Maps fragment in the MapView at the bottom of the details

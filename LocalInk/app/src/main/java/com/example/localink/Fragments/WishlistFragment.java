@@ -230,6 +230,7 @@ public class WishlistFragment extends Fragment {
         });
     }
 
+    // Creates a string to put in the email with information about each of the books in the booklist
     private String buildEmailString(List<Book> wishlistBooks) {
         StringBuilder email = new StringBuilder("Hi! \n\n Here are the books on my Local Ink wishlist: \n");
         for (Book book : wishlistBooks) {
