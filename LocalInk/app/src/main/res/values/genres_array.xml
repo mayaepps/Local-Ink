@@ -2,6 +2,7 @@
 <resources>
     <string-array name="genres_array">
         <item>Fantasy</item>
+        <item>Fairy Tales</item>
         <item>Classics</item>
         <item>Comic/Graphic novel</item>
         <item>Historical Fiction</item>
@@ -12,9 +13,15 @@
         <item>Romance</item>
         <item>Science Fiction</item>
         <item>Biography/Autobiography</item>
+        <item>Adventure</item>
+        <item>Magical Realism</item>
         <item>Self Help</item>
         <item>Cookbooks</item>
         <item>History</item>
-        <item>Chic lit</item>
+        <item>Motivational</item>
+        <item>Travel</item>
+        <item>Chic Lit</item>
+        <item>Humor</item>
+        <item>Mythology</item>
     </string-array>
 </resources>

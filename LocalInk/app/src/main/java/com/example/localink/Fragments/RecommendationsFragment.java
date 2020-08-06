@@ -193,6 +193,11 @@ public class RecommendationsFragment extends Fragment {
         recommendedBooks.addAll(perfectMatches);
         adapter.notifyDataSetChanged();
 
+        // Add books that partially match the user's preferences to the recommendation list
+        List<Book> partialMatches = getPartialMatchBooks();
+        recommendedBooks.addAll(partialMatches);
+        adapter.notifyDataSetChanged();
+
         // Get books that don't perfectly match the user's preferences but may still interest them
         final List<Book> exploreBooks = getExploreBooks();
 
@@ -273,6 +278,26 @@ public class RecommendationsFragment extends Fragment {
         otherBooks.removeAll(booksToRemove);
 
         return  perfectMatches;
+    }
+
+    private List<Book> getPartialMatchBooks() {
+        final List<Book> partialMatches = new ArrayList<>();
+        List<Book> booksToRemove = new ArrayList<>();
+
+        for (Book book : otherBooks) {
+            // (But don't recommend books that are already in the wishlist)
+            if (inWishlist(book)) {
+                booksToRemove.add(book);
+                continue;
+            }
+            if (matchesAge(book) && partiallyMatchesGenres(book, user.getGenrePreferences())) {
+                partialMatches.add(book);
+                booksToRemove.add(book);
+            }
+        }
+        otherBooks.removeAll(booksToRemove);
+
+        return  partialMatches;
     }
 
     // Returns whether or not the given book is already in this user's wishlist
@@ -356,10 +381,27 @@ public class RecommendationsFragment extends Fragment {
                 });
     }
 
-    // Returns whether or not the book fits any of the user's preferred genres
+    // Returns whether or not the book fits all of the user's preferred genres
     private boolean matchesGenres(Book book, List<String> genres) {
         try {
-            return genres.containsAll(book.getGenres());
+            Log.d(TAG, book.getGenres().toString());
+            return book.getGenres().containsAll(genres);
+
+        } catch (ParseException e) {
+            Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
+        }
+        return false;
+    }
+
+    // Returns whether or not the book fits all of the user's preferred genres
+    private boolean partiallyMatchesGenres(Book book, List<String> genres) {
+        try {
+            for (String genre : book.getGenres()) {
+                if (genres.contains(genre)) {
+                    return true;
+                }
+            }
+            return false;
 
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
