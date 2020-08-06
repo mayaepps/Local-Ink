@@ -21,6 +21,8 @@ import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import static com.example.localink.Utils.FragmentUtils.displayFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -52,19 +54,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        FragmentUtils.displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                     case R.id.action_wishlist:
-                        FragmentUtils.displayFragment(fragmentManager, wishlistContainerFragment, recommendationsFragment, profileFragment);
+                        displayFragment(fragmentManager, wishlistContainerFragment, recommendationsFragment, profileFragment);
                         return true;
                     case R.id.action_profile:
-                        FragmentUtils.displayFragment(fragmentManager, profileFragment, wishlistContainerFragment, recommendationsFragment);
+                        displayFragment(fragmentManager, profileFragment, wishlistContainerFragment, recommendationsFragment);
                         return true;
                     default:
-                        FragmentUtils.displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
                         return true;
                 }
             }
