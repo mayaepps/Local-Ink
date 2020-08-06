@@ -122,7 +122,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             tvTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());
             tvSynopsis.setText(book.getSynopsis());
-            cGenre.setText(book.getGenre());
+            // cGenre.setText(book.getGenres());
             cAgeRange.setText(book.getAgeRange());
             book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override

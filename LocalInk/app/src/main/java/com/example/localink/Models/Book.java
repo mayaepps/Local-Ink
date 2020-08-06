@@ -1,8 +1,5 @@
 package com.example.localink.Models;
 
-import android.content.res.Resources;
-
-import com.example.localink.R;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -12,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +24,7 @@ public class Book extends ParseObject {
     public static final String KEY_SYNOPSIS = "synopsis";
     public static final String KEY_BOOKSTORE = "bookstore";
     private static final String KEY_ISBN = "isbn";
-    private static final String KEY_GENRE = "genre";
+    private static final String KEY_GENRES = "genres";
     private static final String KEY_AGE_RANGE = "age_range";
     public static final String KEY_CREATED_AT = "createdAt";
 
@@ -45,6 +41,7 @@ public class Book extends ParseObject {
             put("Romance", Arrays.asList("Chic lit"));
         }
     };
+
 
     // Takes a JSON Book and returns a Book object
     public static Book fromJSON(JSONObject json) throws JSONException {
@@ -114,13 +111,13 @@ public class Book extends ParseObject {
         put(KEY_ISBN, isbn);
     }
 
-    public String getGenre() throws ParseException {
-        return fetchIfNeeded().getString(KEY_GENRE);
+    public List<String> getGenres() throws ParseException {
+        return fetchIfNeeded().getList(KEY_GENRES);
     }
 
     // TODO: check the genre is in the predefined list of genres before setting
-    public void setGenre(String genre) {
-        put(KEY_GENRE, genre);
+    public void setGenres(List<String> genres) {
+        put(KEY_GENRES, genres);
     }
 
     // TODO: check the age range is in the predefined list of age ranges before setting

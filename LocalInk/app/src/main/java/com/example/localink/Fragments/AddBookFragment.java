@@ -21,8 +21,10 @@ import com.example.localink.Activities.MainActivity;
 import com.example.localink.Clients.BookClient;
 import com.example.localink.Models.Book;
 import com.example.localink.R;
+import com.example.localink.Utils.ChipUtils;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.ChipGroup;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -60,7 +62,7 @@ public class AddBookFragment extends Fragment {
     EditText etIsbn;
     EditText etSynopsis;
     EditText etCover;
-    Spinner spnrGenre;
+    ChipGroup cgGenres;
     Spinner spnrAgeRange;
     MaterialButton btnCreate;
     MaterialButton btnScan;
@@ -95,13 +97,13 @@ public class AddBookFragment extends Fragment {
         etSynopsis = view.findViewById(R.id.etSynopsis);
         btnCreate = view.findViewById(R.id.btnCreate);
         etCover = view.findViewById(R.id.etCover);
-        spnrGenre = view.findViewById(R.id.spnrGenre);
+        cgGenres = view.findViewById(R.id.cgGenre);
         spnrAgeRange = view.findViewById(R.id.spnrAgeRange);
         btnCreate = view.findViewById(R.id.btnCreate);
         scannerView = view.findViewById(R.id.zxing);
 
         scannerView.setVisibility(View.GONE);
-        spnrGenre.setPrompt("Select your favorite genre!");
+        ChipUtils.setUpChips(getContext(), cgGenres, getResources().getStringArray(R.array.genres_array), false);
         spnrAgeRange.setPrompt("Select your favorite age range!");
 
         // When the scan button is tapped, request permission to use the camera
@@ -192,7 +194,7 @@ public class AddBookFragment extends Fragment {
                 }
                 book.setSynopsis(etSynopsis.getText().toString());
                 book.setCover(etCover.getText().toString());
-                book.setGenre(spnrGenre.getSelectedItem().toString());
+                book.setGenres(ChipUtils.getChipSelections(cgGenres));
                 book.setAgeRange(spnrAgeRange.getSelectedItem().toString());
                 book.setBookstore(ParseUser.getCurrentUser());
 
@@ -211,10 +213,9 @@ public class AddBookFragment extends Fragment {
                             etIsbn.setText("");
                             etSynopsis.setText("");
                             etCover.setText("");
-                            spnrGenre.setSelection(0);
-                            spnrGenre.setPrompt("Select your favorite genre!");
                             spnrAgeRange.setSelection(0);
                             spnrAgeRange.setPrompt("Select your favorite age range!");
+                            cgGenres.clearCheck();
 
                             // Go to the bookshelf fragment to see the book you just created
                             // (and let it know it should refresh to get newly created book)
@@ -237,8 +238,7 @@ public class AddBookFragment extends Fragment {
             etSynopsis.setText(book.getSynopsis());
             etCover.setText(book.getCover());
             etIsbn.setText(book.getIsbn());
-            etCover.setText(book.getCover());
-            Toast.makeText(getContext(), "Please set the genre and age range and confirm the " +
+            Toast.makeText(getContext(), "Please set the genre and age range, and confirm the " +
                     "filled in fields are correct", Toast.LENGTH_SHORT).show();
         } catch (ParseException e) {
             Log.e(TAG, "Could not populate views with book object: " + e.getMessage());

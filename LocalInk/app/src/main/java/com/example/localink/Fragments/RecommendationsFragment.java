@@ -234,7 +234,7 @@ public class RecommendationsFragment extends Fragment {
             }
 
             for (Book book : otherBooks) {
-                if (matchesAge(book) && matchesGenre(book, relatedGenres)) {
+                if (matchesAge(book) && matchesGenres(book, relatedGenres)) {
                     exploreBooks.add(book);
                 }
             }
@@ -265,7 +265,7 @@ public class RecommendationsFragment extends Fragment {
                 booksToRemove.add(book);
                 continue;
             }
-            if (matchesAge(book) && matchesGenre(book, user.getGenrePreferences())) {
+            if (matchesAge(book) && matchesGenres(book, user.getGenrePreferences())) {
                 perfectMatches.add(book);
                 booksToRemove.add(book);
             }
@@ -357,14 +357,10 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Returns whether or not the book fits any of the user's preferred genres
-    private boolean matchesGenre(Book book, List<String> genres) {
+    private boolean matchesGenres(Book book, List<String> genres) {
         try {
-            for (String genre : genres) {
-                if (genre.equals(book.getGenre())) {
-                    return true;
-                }
-            }
-            return false;
+            return genres.containsAll(book.getGenres());
+
         } catch (ParseException e) {
             Log.e(TAG, "Error retrieving the genre of book " + book.getTitle(), e);
         }
