@@ -109,6 +109,10 @@ public class AddBookFragment extends Fragment {
         scannerView.setVisibility(View.GONE);
         ChipUtils.setUpChips(getContext(), cgGenres, getResources().getStringArray(R.array.genres_array), false);
         spnrAgeRange.setPrompt("Select your favorite age range!");
+        Glide.with(getActivity())
+                .load("")
+                .placeholder(getResources().getDrawable(R.drawable.ic_baseline_menu_book_24))
+                .into(ivCoverPreview);
 
         // When the scan button is tapped, request permission to use the camera
         // If permission is granted, start the scanner and set the result handler so when the scanner
@@ -217,6 +221,7 @@ public class AddBookFragment extends Fragment {
                             etIsbn.setText("");
                             etSynopsis.setText("");
                             etCover.setText("");
+                            Glide.with(getContext()).load(getResources().getDrawable(R.drawable.ic_baseline_menu_book_24)).into(ivCoverPreview);
                             spnrAgeRange.setSelection(0);
                             spnrAgeRange.setPrompt("Select your favorite age range!");
                             cgGenres.clearCheck();
