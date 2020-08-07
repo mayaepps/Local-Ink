@@ -113,8 +113,8 @@ public class ProfileFragment extends Fragment {
         ChipGroup cgAgeRange = getActivity().findViewById(R.id.cgAgeRange);
         ChipGroup cgGenre = getActivity().findViewById(R.id.cgGenre);
 
-        ChipUtils.setUpChips(getContext(), cgAgeRange, user.getAgePreferences());
-        ChipUtils.setUpChips(getContext(), cgGenre, user.getGenrePreferences());
+        ChipUtils.setUpChips(getContext(), cgAgeRange, user.getAgePreferences(), false);
+        ChipUtils.setUpChips(getContext(), cgGenre, user.getGenrePreferences(), false);
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {

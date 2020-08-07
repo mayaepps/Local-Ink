@@ -41,7 +41,7 @@ public class ChipUtils {
     }
 
     // Put a chip in the chipGroup for each element in the choices string, cannot be checked
-    public static void setUpChips(Context context, ChipGroup chipGroup, List<String> choices) {
+    public static void setUpChips(Context context, ChipGroup chipGroup, List<String> choices, boolean doThinStyle) {
 
         chipGroup.removeAllViews();
         for (String choice : choices) {
@@ -49,6 +49,10 @@ public class ChipUtils {
             chip.setText(choice);
             chip.setChipBackgroundColorResource(R.color.paleColorAccent);
             chipGroup.addView(chip);
+
+            if (doThinStyle) {
+                chip.setChipMinHeight(64F);
+            }
         }
     }
 
@@ -62,6 +66,7 @@ public class ChipUtils {
             } else {
                 chip.setChecked(false);
             }
+
         }
 
     }

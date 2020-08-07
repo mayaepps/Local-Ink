@@ -1,5 +1,6 @@
 package com.example.localink.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,9 +22,11 @@ import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.example.localink.Utils.ChipUtils;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -114,7 +117,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             TextView tvTitle = findViewById(R.id.tvTitle);
             TextView tvAuthor = findViewById(R.id.tvAuthor);
             TextView tvSynopsis = findViewById(R.id.tvSynopsis);
-            Chip cGenre = findViewById(R.id.cGenre);
+            ChipGroup cgGenres = findViewById(R.id.cgGenres);
             Chip cAgeRange = findViewById(R.id.cAgeRange);
             final TextView tvStoreName = findViewById(R.id.tvStoreName);
             final TextView tvStoreLocation = findViewById(R.id.tvStoreLocation);
@@ -122,7 +125,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             tvTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());
             tvSynopsis.setText(book.getSynopsis());
-            cGenre.setText(book.getGenres().toString());
+            ChipUtils.setUpChips(this, cgGenres, book.getGenres(), false);
             cAgeRange.setText(book.getAgeRange());
             book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override

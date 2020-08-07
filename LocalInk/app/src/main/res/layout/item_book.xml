@@ -64,22 +64,33 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:id="@+id/cgGenresScroll"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llBookInfo"
+        android:layout_marginTop="-5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/ivCover">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgGenresBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:textAlignment="textEnd"
+            app:singleLine="true" />
+
+    </HorizontalScrollView>
+
     <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgAgeRangeBook"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@+id/llBookInfo"
-        android:layout_alignParentEnd="true"
-        android:paddingTop="8dp">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipGenre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Genre"
-            app:chipMinHeight="24dp"
-            app:chipMinTouchTargetSize="0dp"
-            app:chipBackgroundColor="@color/paleColorAccent"/>
-
+        android:layout_toRightOf="@id/cgGenresScroll"
+        android:paddingTop="8dp"
+        android:layout_marginStart="8dp">
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAgeRange"
             android:layout_width="wrap_content"
@@ -88,8 +99,8 @@
             app:chipMinHeight="24dp"
             app:chipMinTouchTargetSize="0dp"
             app:chipBackgroundColor="@color/paleColorAccent"/>
-
     </com.google.android.material.chip.ChipGroup>
+
 
 </RelativeLayout>
 

@@ -21,6 +21,7 @@ import com.example.localink.Models.Book;
 import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.ParseException;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
         private TextView tvBookTitle;
         private TextView tvAuthor;
         private TextView tvSynopsis;
-        private Chip chipGenre;
+        private ChipGroup cgGenresBook;
         private Chip chipAgeRange;
 
         public ViewHolder(@NonNull final View itemView) {
@@ -86,7 +87,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvSynopsis = itemView.findViewById(R.id.tvSynopsis);
-            chipGenre = itemView.findViewById(R.id.chipGenre);
+            cgGenresBook = itemView.findViewById(R.id.cgGenresBook);
             chipAgeRange = itemView.findViewById(R.id.chipAgeRange);
 
             // If a clickListener was passed into the adapter, set the methods on the itemView
@@ -118,7 +119,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                 tvBookTitle.setText(book.getTitle());
                 tvAuthor.setText(book.getAuthor());
                 tvSynopsis.setText(book.getSynopsis());
-                chipGenre.setText(book.getGenres().toString());
+                ChipUtils.setUpChips(context, cgGenresBook, book.getGenres(), true);
                 chipAgeRange.setText(book.getAgeRange());
             } catch (ParseException e) {
                 Log.e("ViewHolder", "Error fetching book fields from Parse " + e.getMessage());
