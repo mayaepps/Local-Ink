@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localink.Activities.BookstoreMainActivity;
 import com.example.localink.Activities.MainActivity;
@@ -62,6 +64,7 @@ public class AddBookFragment extends Fragment {
     EditText etIsbn;
     EditText etSynopsis;
     EditText etCover;
+    ImageView ivCoverPreview;
     ChipGroup cgGenres;
     Spinner spnrAgeRange;
     MaterialButton btnCreate;
@@ -97,6 +100,7 @@ public class AddBookFragment extends Fragment {
         etSynopsis = view.findViewById(R.id.etSynopsis);
         btnCreate = view.findViewById(R.id.btnCreate);
         etCover = view.findViewById(R.id.etCover);
+        ivCoverPreview = view.findViewById(R.id.ivCoverPreview);
         cgGenres = view.findViewById(R.id.cgGenre);
         spnrAgeRange = view.findViewById(R.id.spnrAgeRange);
         btnCreate = view.findViewById(R.id.btnCreate);
@@ -237,6 +241,7 @@ public class AddBookFragment extends Fragment {
             etAuthor.setText(book.getAuthor());
             etSynopsis.setText(book.getSynopsis());
             etCover.setText(book.getCover());
+            Glide.with(getContext()).load(book.getCover()).into(ivCoverPreview);
             etIsbn.setText(book.getIsbn());
             Toast.makeText(getContext(), "Please set the genre and age range, and confirm the " +
                     "filled in fields are correct", Toast.LENGTH_SHORT).show();

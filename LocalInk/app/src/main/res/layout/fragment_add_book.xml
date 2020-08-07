@@ -127,19 +127,35 @@
                 android:layout_below="@+id/etIsbn"
                 android:hint="@string/synopsis"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCover"
+            <RelativeLayout
+                android:id="@+id/llCover"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_below="@+id/etSynopsis"
-                android:hint="@string/cover"/>
+                android:orientation="horizontal"
+                android:layout_below="@id/etSynopsis"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="16dp">
+
+                <ImageView
+                    android:id="@+id/ivCoverPreview"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/cover"
+                    android:layout_toRightOf="@+id/ivCoverPreview"/>
+
+            </RelativeLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etCover"
+                android:layout_below="@+id/llCover"
                 android:text="@string/genre"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
