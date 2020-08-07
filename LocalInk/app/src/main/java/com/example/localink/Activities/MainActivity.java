@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
+import com.example.localink.Fragments.SearchFragment;
 import com.example.localink.Fragments.WishlistContainerFragment;
 import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Create the different fragments the user can see
         final Fragment recommendationsFragment = new RecommendationsFragment();
         final Fragment wishlistContainerFragment = new WishlistContainerFragment();
+        final Fragment searchFragment = new SearchFragment();
         final Fragment profileFragment = new ProfileFragment();
 
         // The user can tap on the icons/items in the bottom navigation view to switch fragments
@@ -57,16 +59,19 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, searchFragment, profileFragment);
                         return true;
                     case R.id.action_wishlist:
-                        displayFragment(fragmentManager, wishlistContainerFragment, recommendationsFragment, profileFragment);
+                        displayFragment(fragmentManager, wishlistContainerFragment, searchFragment, recommendationsFragment, profileFragment);
+                        return true;
+                    case R.id.action_search:
+                        displayFragment(fragmentManager, searchFragment, wishlistContainerFragment, recommendationsFragment, profileFragment);
                         return true;
                     case R.id.action_profile:
-                        displayFragment(fragmentManager, profileFragment, wishlistContainerFragment, recommendationsFragment);
+                        displayFragment(fragmentManager, profileFragment, wishlistContainerFragment, recommendationsFragment, searchFragment);
                         return true;
                     default:
-                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, profileFragment);
+                        displayFragment(fragmentManager, recommendationsFragment, wishlistContainerFragment, searchFragment, profileFragment);
                         return true;
                 }
             }

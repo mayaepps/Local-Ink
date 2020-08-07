@@ -32,6 +32,30 @@ public class FragmentUtils {
         ft.commit();
     }
 
+    // Show fragmentA and hide all the other fragments
+    public static void displayFragment(FragmentManager fragmentManager, Fragment fA, Fragment fB, Fragment fC, Fragment fD) {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        if (fA.isAdded()) { // if the fragment is already in container
+            ft.show(fA);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.flContainer, fA, fA.getClass().getSimpleName());
+        }
+
+        if (fB.isAdded()) {
+            ft.hide(fB);
+        }
+
+        if (fC.isAdded()) {
+            ft.hide(fC);
+        }
+
+        if (fD.isAdded()) {
+            ft.hide(fD);
+        }
+
+        ft.commit();
+    }
+
     // Display the given fragment and hide the other fragment
     public static void displayFragment(FragmentManager fragmentManager, Fragment fragmentA, Fragment fragmentB) {
 
