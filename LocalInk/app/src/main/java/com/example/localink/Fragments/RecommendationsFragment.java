@@ -501,6 +501,7 @@ public class RecommendationsFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 if (mainActivity != null) {
                     mainActivity.setWishlistRefresh(true);
+                    mainActivity.setMapRefresh(true);
                 }
             }
         }
