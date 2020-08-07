@@ -107,17 +107,4 @@ public class WishlistContainerFragment extends Fragment {
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
     }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (!hidden && mainActivity.isWishlistRefresh()) {
-            // refresh the screen -- query parse again to get the new book
-            ((WishlistFragment) wishlistFragment).getWishlistBooks();
-            ((MapsFragment) mapsFragment).queryWishlistStores();
-            mainActivity.setWishlistRefresh(false);
-        }
-    }
 }

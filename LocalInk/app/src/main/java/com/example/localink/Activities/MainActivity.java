@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     private boolean wishlistRefresh = false;
+    private boolean mapRefresh = false;
 
 
     @Override
@@ -86,5 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void setWishlistRefresh(boolean wishlistRefresh) {
         this.wishlistRefresh = wishlistRefresh;
+    }
+
+    public boolean isMapRefresh() {
+        return mapRefresh;
+    }
+
+    public void setMapRefresh(boolean mapRefresh) {
+        this.mapRefresh = mapRefresh;
     }
 }

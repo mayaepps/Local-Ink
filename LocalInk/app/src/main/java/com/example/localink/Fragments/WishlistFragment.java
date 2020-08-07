@@ -182,7 +182,6 @@ public class WishlistFragment extends Fragment {
                     return;
                 }
                 Log.i(TAG, "New wishlist saved to Parse.");
-
             }
         });
     }
@@ -213,6 +212,7 @@ public class WishlistFragment extends Fragment {
                 wishlistBooks.remove(viewHolder.getAdapterPosition());
                 saveNewWishlist(wishlistBooks);
                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                ((MainActivity) getActivity()).setMapRefresh(true);
 
             }
 
@@ -244,5 +244,17 @@ public class WishlistFragment extends Fragment {
         }
 
         return email.toString();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (!hidden && mainActivity.isWishlistRefresh()) {
+            // refresh the screen -- query parse again to get the new book
+            getWishlistBooks();
+            mainActivity.setWishlistRefresh(false);
+        }
     }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.BookstoreInfoWindowAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
@@ -190,6 +191,7 @@ public class MapsFragment extends Fragment {
     // Query Parse for the stores on the user's wishlist and put a marker on the map for each
     protected void queryWishlistStores() {
         List<Book> wishlist = (new LocalInkUser(ParseUser.getCurrentUser())).getWishlist();
+        map.clear();
 
         try {
             for (Book book : wishlist) {
@@ -203,6 +205,18 @@ public class MapsFragment extends Fragment {
             }
         } catch (ParseException e) {
             Log.e(TAG, "Could not get wishlist bookstores: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (!hidden && mainActivity.isMapRefresh()) {
+            // refresh the screen -- query parse again to get the new wishlist stores
+            queryWishlistStores();
+            mainActivity.setMapRefresh(false);
         }
     }
 }
