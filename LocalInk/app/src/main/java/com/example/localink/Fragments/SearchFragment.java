@@ -31,6 +31,9 @@ public class SearchFragment extends Fragment {
     private List<Book> searchedBooks;
     private RecyclerView rvSearch;
     private SearchAdapter searchAdapter;
+    private SearchView svBooks;
+
+    private List<Book> booksContaining = new ArrayList<>();
 
     public SearchFragment() {
         // Required empty public constructor
@@ -64,19 +67,73 @@ public class SearchFragment extends Fragment {
         rvSearch.setLayoutManager(linearLayoutManager);
 
         // Set a query listener for when the user taps search
-        SearchView svBooks = view.findViewById(R.id.svBooks);
+        svBooks = view.findViewById(R.id.svBooks);
         svBooks.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchedBooks.clear();
-                queryBooks(query);
-                return false;
+
+                if (query.length() == 0) {
+                    searchAdapter.notifyDataSetChanged();
+                } else {
+                    queryBooks(query);
+                }
+
+                return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                searchedBooks.clear();
+
+                if (newText.length() == 0) {
+                    searchAdapter.notifyDataSetChanged();
+                } else if (newText.length() == 1) {
+                    queryBooksStartingWith(newText);
+                } else {
+                    searchBooksStartingWith(newText);
+                }
+                return true;
             }
         });
+    }
+
+
+    // Then I search the books that queryBooksStartingWith just got when book text is added
+    private void searchBooksStartingWith(String newText) {
+        for (Book book : booksContaining) {
+            if (book.getTitle().startsWith(newText)) {
+                searchedBooks.add(book);
+                searchAdapter.notifyDataSetChanged();
+
+            }
+        }
+
+    }
+
+    // First I query Parse to get all the books with titles starting with that letter
+    // (whereStartsWith is apparently very expensive, so I am trying to only use it sparingly)
+    private void queryBooksStartingWith(String newText) {
+
+        // query for books
+        ParseQuery<Book> bookSearchQuery = ParseQuery.getQuery(Book.class);
+
+        bookSearchQuery.whereStartsWith(Book.KEY_TITLE, newText);
+
+        bookSearchQuery.findInBackground(new FindCallback<Book>() {
+            @Override
+            public void done(List<Book> books, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Could not get search results: " + e.getMessage());
+                    return;
+                }
+                if (books.size() != 0) {
+                    booksContaining.addAll(books);
+                    searchedBooks.addAll(books);
+                    searchAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     private void queryBooks(final String query) {
@@ -84,7 +141,7 @@ public class SearchFragment extends Fragment {
         // query for books
         ParseQuery<Book> bookSearchQuery = ParseQuery.getQuery(Book.class);
 
-        bookSearchQuery.whereStartsWith(Book.KEY_TITLE, query);
+        bookSearchQuery.whereContains(Book.KEY_TITLE, query);
 
         bookSearchQuery.findInBackground(new FindCallback<Book>() {
             @Override
@@ -112,6 +169,8 @@ public class SearchFragment extends Fragment {
         if (hidden) {
             searchedBooks.clear();
             searchAdapter.notifyDataSetChanged();
+            svBooks.setQuery("", false);
+
         }
     }
 }
