@@ -187,7 +187,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickListener.onBookstoreClick(itemView, getAdapterPosition());
+                    clickListener.onBookClick(itemView, getAdapterPosition());
                 }
             });
         }

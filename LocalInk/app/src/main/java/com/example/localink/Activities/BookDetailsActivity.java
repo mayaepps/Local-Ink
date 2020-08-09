@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +24,7 @@ import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
+import com.example.localink.Utils.MapsUtils;
 import com.example.localink.databinding.ActivityBookDetailsBinding;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
@@ -132,7 +134,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 public void done(ParseUser user, ParseException e) {
                     LocalInkUser localInkUser = new LocalInkUser((user));
                     store = user;
-                    startMap();
+                    MapsUtils.startMap(getSupportFragmentManager().beginTransaction(), R.id.mapView, store);
 
                     tvStoreName.setText(String.format("At %s", localInkUser.getName()));
                     tvStoreLocation.setText(localInkUser.getAddress());
@@ -147,18 +149,5 @@ public class BookDetailsActivity extends AppCompatActivity {
         bottomSheetBehavior.setHideable(false);
         bottomSheetBehavior.setPeekHeight(300);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
-    // Start the Google Maps fragment in the MapView at the bottom of the details
-    // Send the current user as a bundle (used to get store name/location for the marker)
-    private void startMap() {
-        Fragment mapsFragment = new MapsFragment();
-        Bundle bundle = new Bundle();
-        ArrayList<ParseUser> stores = new ArrayList<>();
-        stores.add(store);
-        bundle.putParcelableArrayList(ParseUser.class.getSimpleName(), stores);
-        mapsFragment.setArguments(bundle);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.mapView, mapsFragment).commit();
     }
 }

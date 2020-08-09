@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.localink.Activities.BookDetailsActivity;
+import com.example.localink.Activities.BookstoreDetailsActivity;
 import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.SearchAdapter;
 import com.example.localink.Models.Book;
@@ -77,9 +78,8 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onBookstoreClick(View view, int position) {
-                Intent intent = new Intent(getContext(), BookDetailsActivity.class);
-                intent.putExtra(Book.class.getSimpleName(), searchedObjects.get(position));
-                intent.putExtra(BookshelfFragment.class.getSimpleName(), true);
+                Intent intent = new Intent(getContext(), BookstoreDetailsActivity.class);
+                intent.putExtra(ParseUser.class.getSimpleName(), searchedObjects.get(position));
                 getActivity().startActivity(intent);
             }
         };
