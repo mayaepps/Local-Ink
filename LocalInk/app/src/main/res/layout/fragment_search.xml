@@ -6,11 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.SearchFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/local_ink_logo_inverted"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svBooks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/toolbar"
         android:hint="@string/search_for_a_book"
         app:startIconDrawable="@drawable/ic_baseline_search_24">
 

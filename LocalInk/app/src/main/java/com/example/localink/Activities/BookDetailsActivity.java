@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Fragments.MapsFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
@@ -103,6 +105,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
 
+
                 Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
                 intent.putExtra(MainActivity.ADDED_TO_WISHLIST, true);
                 setResult(RESULT_OK, intent);
@@ -125,10 +128,25 @@ public class BookDetailsActivity extends AppCompatActivity {
             final TextView tvStoreLocation = findViewById(R.id.tvStoreLocation);
 
             tvTitle.setText(book.getTitle());
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(tvTitle);
             tvAuthor.setText(book.getAuthor());
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(tvAuthor);
             tvSynopsis.setText(book.getSynopsis());
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(tvSynopsis);
             ChipUtils.setUpChips(this, cgGenres, book.getGenres(), false);
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(cgGenres);
             cAgeRange.setText(book.getAgeRange());
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(cAgeRange);
             book.getBookstore().fetchInBackground(new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
@@ -141,6 +159,9 @@ public class BookDetailsActivity extends AppCompatActivity {
                 }
             });
             Glide.with(this).load(book.getCover()).into(binding.ivCover);
+            YoYo.with(Techniques.BounceIn)
+                    .duration(1000)
+                    .playOn(binding.ivCover);
         } catch (ParseException e) {
             Log.e(TAG, "Error getting book details: " + e.getMessage());
         }

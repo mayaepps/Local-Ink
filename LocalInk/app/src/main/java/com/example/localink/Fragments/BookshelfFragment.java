@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Activities.BookstoreMainActivity;
@@ -42,6 +44,7 @@ public class BookshelfFragment extends Fragment {
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> storeBooks;
+    private TextView tvToolbarTitle;
 
     public BookshelfFragment() {
         // Required empty public constructor
@@ -62,6 +65,10 @@ public class BookshelfFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tvToolbarTitle = view.findViewById(R.id.tvToolbarTitle);
+        LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+        tvToolbarTitle.setText(String.format("%s's Books", user.getName()));
 
         BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
 
