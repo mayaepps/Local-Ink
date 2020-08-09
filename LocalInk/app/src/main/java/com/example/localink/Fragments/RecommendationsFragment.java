@@ -3,6 +3,7 @@ package com.example.localink.Fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.camera2.params.MandatoryStreamCombination;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.example.localink.Activities.BookDetailsActivity;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
+import com.example.localink.Utils.LocationUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,12 +61,9 @@ import static android.app.Activity.RESULT_OK;
 public class RecommendationsFragment extends Fragment {
 
     private static final String TAG = "RecommendationsFragment";
-    private static final int ACCESS_LOCATION_REQUEST_CODE = 15;
     private static final int MINIMUM_RECS = 10;
     private static final int NUM_INITIAL_STORES = 5;
     private static final int NUM_INITIAL_MILES = 20;
-    private static final int BOOK_DETAILS_INTENT_CODE = 17;
-    public static final String ADDED_TO_WISHLIST = "AddedToWishlist";
     private RecyclerView rvBooks;
     private BooksAdapter adapter;
     private List<Book> recommendedBooks;
@@ -118,7 +117,7 @@ public class RecommendationsFragment extends Fragment {
                 Intent i = new Intent(getContext(), BookDetailsActivity.class);
                 i.putExtra(Book.class.getSimpleName(), recommendedBooks.get(position));
                 i.putExtra(BookshelfFragment.class.getSimpleName(), true);
-                startActivityForResult(i, BOOK_DETAILS_INTENT_CODE);
+                startActivityForResult(i, MainActivity.BOOK_DETAILS_INTENT_CODE);
             }
 
             // Required by the interface
@@ -210,7 +209,13 @@ public class RecommendationsFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (!recyclerView.canScrollVertically(1) && !alreadyAddedExploreBooks) {
-                    Snackbar.make(getView(), R.string.get_more_books_snackbar, Snackbar.LENGTH_LONG)
+                    int snackBarLength;
+                    if (recommendedBooks.size() < 3) {
+                        snackBarLength = Snackbar.LENGTH_INDEFINITE;
+                    } else {
+                        snackBarLength = Snackbar.LENGTH_LONG;
+                    }
+                    Snackbar.make(getView(), R.string.get_more_books_snackbar, snackBarLength)
                             .setAction(R.string.get_more_books_snackbar_action, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -357,28 +362,22 @@ public class RecommendationsFragment extends Fragment {
 
         final ParseGeoPoint currentLocation = new ParseGeoPoint();
 
-        // Ask for permission to access current location if they aren't already granted
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
-        }
-
         // Get the current location and put the latitude and longitude into the ParseGeoPoint
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            currentLocation.setLatitude(location.getLatitude());
-                            currentLocation.setLongitude(location.getLongitude());
-                            getNearbyStores(currentLocation, numLimit, radiusLimit);
-                        } else {
-                            Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
-                            //TODO: Try a saved location in Parse
-                            Log.e(TAG, "Current user's location could not be found!");
-                        }
-                    }
-                });
+        LocationUtils.getCurrentLocation(getContext(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    currentLocation.setLatitude(location.getLatitude());
+                    currentLocation.setLongitude(location.getLongitude());
+                    getNearbyStores(currentLocation, numLimit, radiusLimit);
+                } else {
+                    Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
+                    //TODO: Try a saved location in Parse
+                    Log.e(TAG, "Current user's location could not be found!");
+                }
+            }
+        });
     }
 
     // Returns whether or not the book fits all of the user's preferred genres
@@ -495,8 +494,8 @@ public class RecommendationsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == BOOK_DETAILS_INTENT_CODE && resultCode == RESULT_OK) {
-            boolean ifBookAddedToWishlist = data.getBooleanExtra(ADDED_TO_WISHLIST, false);
+        if (requestCode == MainActivity.BOOK_DETAILS_INTENT_CODE && resultCode == RESULT_OK) {
+            boolean ifBookAddedToWishlist = data.getBooleanExtra(MainActivity.ADDED_TO_WISHLIST, false);
             if (ifBookAddedToWishlist) {
                 MainActivity mainActivity = (MainActivity) getActivity();
                 if (mainActivity != null) {

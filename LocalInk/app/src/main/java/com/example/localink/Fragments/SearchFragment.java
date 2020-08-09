@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.localink.Activities.BookDetailsActivity;
+import com.example.localink.Activities.MainActivity;
 import com.example.localink.Adapters.SearchAdapter;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
@@ -28,6 +31,8 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class SearchFragment extends Fragment {
 
@@ -61,9 +66,28 @@ public class SearchFragment extends Fragment {
 
         searchedObjects = new ArrayList<>();
 
+        SearchAdapter.OnClickListener clickListener= new SearchAdapter.OnClickListener() {
+            @Override
+            public void onBookClick(View view, int position) {
+                Intent intent = new Intent(getContext(), BookDetailsActivity.class);
+                intent.putExtra(Book.class.getSimpleName(), searchedObjects.get(position));
+                intent.putExtra(BookshelfFragment.class.getSimpleName(), true);
+                getActivity().startActivityForResult(intent, MainActivity.BOOK_DETAILS_INTENT_CODE);
+            }
+
+            @Override
+            public void onBookstoreClick(View view, int position) {
+                Intent intent = new Intent(getContext(), BookDetailsActivity.class);
+                intent.putExtra(Book.class.getSimpleName(), searchedObjects.get(position));
+                intent.putExtra(BookshelfFragment.class.getSimpleName(), true);
+                getActivity().startActivity(intent);
+            }
+        };
+
+
         // Get recycler view and set search adapter
         rvSearch = view.findViewById(R.id.rvSearch);
-        searchAdapter = new SearchAdapter(getContext(), searchedObjects);
+        searchAdapter = new SearchAdapter(getContext(), searchedObjects, clickListener);
         rvSearch.setAdapter(searchAdapter);
 
         //set layout manager on recycler view
@@ -191,6 +215,23 @@ public class SearchFragment extends Fragment {
               searchAdapter.notifyDataSetChanged();
           }
         });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MainActivity.BOOK_DETAILS_INTENT_CODE && resultCode == RESULT_OK) {
+            boolean ifBookAddedToWishlist = data.getBooleanExtra(MainActivity.ADDED_TO_WISHLIST, false);
+            if (ifBookAddedToWishlist) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if (mainActivity != null) {
+                    mainActivity.setWishlistRefresh(true);
+                    mainActivity.setMapRefresh(true);
+                }
+            }
+        }
     }
 
     // When the fragment is hidden, remove the previous searches

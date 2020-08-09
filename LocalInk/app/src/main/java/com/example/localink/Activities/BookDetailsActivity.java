@@ -102,7 +102,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 });
 
                 Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
-                intent.putExtra(RecommendationsFragment.ADDED_TO_WISHLIST, true);
+                intent.putExtra(MainActivity.ADDED_TO_WISHLIST, true);
                 setResult(RESULT_OK, intent);
                 finish();
             }

@@ -27,6 +27,9 @@ import static com.example.localink.Utils.FragmentUtils.displayFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    public static final int BOOK_DETAILS_INTENT_CODE = 17;
+    public static final String ADDED_TO_WISHLIST = "AddedToWishlist";
+
     ActivityMainBinding binding;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
