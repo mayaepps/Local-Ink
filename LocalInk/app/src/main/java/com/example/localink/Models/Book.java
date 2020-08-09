@@ -20,7 +20,7 @@ public class Book extends ParseObject {
 
     //These keys must exactly match the keys in the Parse database
     public static final String KEY_TITLE = "title";
-    private static final String KEY_AUTHOR = "author";
+    public static final String KEY_AUTHOR = "author";
     public static final String KEY_COVER = "cover";
     public static final String KEY_SYNOPSIS = "synopsis";
     public static final String KEY_BOOKSTORE = "bookstore";
