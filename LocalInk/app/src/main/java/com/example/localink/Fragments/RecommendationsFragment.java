@@ -72,7 +72,6 @@ public class RecommendationsFragment extends Fragment {
     private BottomSheetBehavior bottomSheetBehavior;
     private SeekBar seekbarRadiusStores;
     private SeekBar seekbarNumStores;
-    private FusedLocationProviderClient fusedLocationClient;
     private boolean alreadyAddedExploreBooks = false;
 
     public RecommendationsFragment() {
@@ -82,7 +81,6 @@ public class RecommendationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         setHasOptionsMenu(true);
     }
 

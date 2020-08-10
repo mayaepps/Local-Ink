@@ -52,9 +52,7 @@ public class AddBookFragment extends Fragment {
     private static final String TAG = "AddBookFragment";
 
     private BookClient client;
-
     private ZXingScannerView scannerView;
-
     private boolean isScannerOn = false;
 
     EditText etSearchIsbn;

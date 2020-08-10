@@ -17,7 +17,6 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RegisterReaderActivity extends AppCompatActivity {

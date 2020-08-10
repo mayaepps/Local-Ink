@@ -1,23 +1,20 @@
 package com.example.localink.Activities;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.example.localink.Fragments.AddBookFragment;
 import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Fragments.BookstoreProfileFragment;
 import com.example.localink.R;
-import com.example.localink.Utils.FragmentUtils;
 import com.example.localink.databinding.ActivityBookstoreMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import static com.example.localink.Utils.FragmentUtils.displayFragment;
 

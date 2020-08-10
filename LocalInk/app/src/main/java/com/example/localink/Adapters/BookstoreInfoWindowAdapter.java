@@ -3,9 +3,7 @@ package com.example.localink.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,11 +24,14 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private static final String TAG = BookstoreInfoWindowAdapter.class.getSimpleName();
     private Context context;
-    private boolean showWishlist;
+    LocalInkUser bookstore;
+    ImageView ivProfileImage;
+    TextView tvStoreName;
+    TextView tvAddress;
+    TextView tvBooksCarried;
 
     public BookstoreInfoWindowAdapter(Context ctx){
         context = ctx;
-        this.showWishlist = showWishlist;
     }
 
     @Override
@@ -44,13 +45,13 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 .inflate(R.layout.item_marker, null);
 
         // Get the bookstore this marker represents
-        LocalInkUser bookstore = (LocalInkUser) marker.getTag();
+        bookstore = (LocalInkUser) marker.getTag();
 
         // Find the views
-        ImageView ivProfileImage = view.findViewById(R.id.ivProfileImage);
-        TextView tvStoreName = view.findViewById(R.id.tvStoreName);
-        TextView tvAddress = view.findViewById(R.id.tvAddress);
-        TextView tvBooksCarried = view.findViewById(R.id.tvBooksCarried);
+        ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        tvStoreName = view.findViewById(R.id.tvStoreName);
+        tvAddress = view.findViewById(R.id.tvAddress);
+        tvBooksCarried= view.findViewById(R.id.tvBooksCarried);
 
         // Set the views
         ParseFile profileImage = bookstore.getProfileImage();
@@ -103,4 +104,5 @@ public class BookstoreInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         return bookNames.toString();
     }
+
 }

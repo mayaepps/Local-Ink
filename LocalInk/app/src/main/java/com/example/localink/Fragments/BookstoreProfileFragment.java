@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 public class BookstoreProfileFragment extends Fragment {
 
-    private static final String TAG = "BookstoreProfileFragmnt";
     FloatingActionButton fabSave;
     ImageView ivProfileImage;
     TextView tvName;

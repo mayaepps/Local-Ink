@@ -1,23 +1,19 @@
 package com.example.localink.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.localink.Models.LocalInkUser;
-import com.example.localink.R;
 import com.example.localink.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {

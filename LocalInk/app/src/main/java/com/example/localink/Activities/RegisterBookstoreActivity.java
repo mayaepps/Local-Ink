@@ -17,7 +17,6 @@ import com.parse.SignUpCallback;
 
 public class RegisterBookstoreActivity extends AppCompatActivity {
 
-    private static final String TAG = "RegisterBookstoreActivi";
     ActivityRegisterBookstoreBinding binding;
 
     @Override

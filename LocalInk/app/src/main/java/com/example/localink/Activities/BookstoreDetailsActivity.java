@@ -1,19 +1,17 @@
 package com.example.localink.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.bumptech.glide.Glide;
 import com.example.localink.Adapters.BooksAdapter;
-import com.example.localink.Fragments.BookshelfFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -94,7 +92,7 @@ public class BookstoreDetailsActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         Toast.makeText(BookstoreDetailsActivity.this, "No application can handle this request."
-                                + " Please install a web browser",  Toast.LENGTH_LONG).show();
+                                + " Please install a web browser", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (UnsupportedEncodingException e) {

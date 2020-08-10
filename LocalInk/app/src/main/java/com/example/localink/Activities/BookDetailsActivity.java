@@ -1,6 +1,5 @@
 package com.example.localink.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,17 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.localink.Fragments.BookshelfFragment;
-import com.example.localink.Fragments.MapsFragment;
-import com.example.localink.Fragments.RecommendationsFragment;
-import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.Models.Book;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
@@ -36,15 +29,11 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.parceler.Parcels;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "BookDetailsActivity";
-    private FragmentTransaction fragmentTransaction;
     private Book book;
     private ParseUser store;
     ActivityBookDetailsBinding binding;

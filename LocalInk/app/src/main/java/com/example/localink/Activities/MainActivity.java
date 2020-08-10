@@ -1,6 +1,5 @@
 package com.example.localink.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,15 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.SearchFragment;
 import com.example.localink.Fragments.WishlistContainerFragment;
-import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
-import com.example.localink.Utils.FragmentUtils;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -26,7 +22,6 @@ import static com.example.localink.Utils.FragmentUtils.displayFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
     public static final int BOOK_DETAILS_INTENT_CODE = 17;
     public static final String ADDED_TO_WISHLIST = "AddedToWishlist";
 

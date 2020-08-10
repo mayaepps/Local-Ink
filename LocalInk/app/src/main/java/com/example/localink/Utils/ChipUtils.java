@@ -1,7 +1,6 @@
 package com.example.localink.Utils;
 
 import android.content.Context;
-import android.os.Build;
 
 import com.example.localink.R;
 import com.google.android.material.chip.Chip;

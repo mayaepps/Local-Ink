@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.localink.Fragments.MapsFragment;
-import com.example.localink.R;
-import com.google.android.gms.maps.MapView;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;

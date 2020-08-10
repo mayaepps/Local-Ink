@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,6 @@ public class Book extends ParseObject {
     private static final String KEY_ISBN = "isbn";
     private static final String KEY_GENRES = "genres";
     private static final String KEY_AGE_RANGE = "age_range";
-    public static final String KEY_CREATED_AT = "createdAt";
 
     public static final Map<String, List<String>> similarGenres = new HashMap<String, List<String>>() {
         {
