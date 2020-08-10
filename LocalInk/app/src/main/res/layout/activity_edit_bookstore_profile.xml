@@ -55,8 +55,26 @@
             android:id="@+id/etStreetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/street_address"
-            android:layout_below="@id/tilName" />
+            android:layout_below="@id/tilName"
+            android:hint="@string/street_address" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilWebsite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tilStreetAddress"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tilName"
+            android:hint="@string/website" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

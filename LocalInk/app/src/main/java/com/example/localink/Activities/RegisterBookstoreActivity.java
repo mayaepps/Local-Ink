@@ -51,6 +51,7 @@ public class RegisterBookstoreActivity extends AppCompatActivity {
                 + binding.etCity.getText().toString() + ", " + binding.etState.getText().toString() + " "
                 + binding.etZipCode.getText().toString());
         newUser.setIsBookstore(true);
+        newUser.setWebsite(binding.etWebsite.getText().toString());
         ParseGeoPoint point = GeocoderUtils.getGeoLocationFromAddress(this, newUser.getAddress());
         if (point != null) {
             newUser.setGeoLocation(point);

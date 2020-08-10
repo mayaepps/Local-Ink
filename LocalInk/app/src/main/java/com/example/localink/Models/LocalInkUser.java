@@ -22,6 +22,7 @@ public class LocalInkUser {
     public static final String KEY_NAME = "name";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
     public static final String KEY_GEO_LOCATION = "geoLocation";
+    private static final String KEY_WEBSITE = "website";
 
     public LocalInkUser() { }
 
@@ -97,5 +98,13 @@ public class LocalInkUser {
 
     public void setGeoLocation(ParseGeoPoint point) {
         user.put(KEY_GEO_LOCATION, point);
+    }
+
+    public String getWebsite() {
+        return user.getString(KEY_WEBSITE);
+    }
+
+    public void setWebsite(String url) {
+        user.put(KEY_WEBSITE, url);
     }
 }

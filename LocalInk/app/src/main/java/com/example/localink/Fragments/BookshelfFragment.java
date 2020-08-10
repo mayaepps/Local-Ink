@@ -68,7 +68,7 @@ public class BookshelfFragment extends Fragment {
 
         tvToolbarTitle = view.findViewById(R.id.tvToolbarTitle);
         LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
-        tvToolbarTitle.setText(String.format("%s's Books", user.getName()));
+        tvToolbarTitle.setText(String.format("%s's Bookshelf", user.getName()));
 
         BooksAdapter.OnClickListener clickListener = new BooksAdapter.OnClickListener() {
 

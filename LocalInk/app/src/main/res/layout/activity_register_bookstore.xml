@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Activities.RegisterBookstoreActivity">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_book_background" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilName"
         android:layout_width="match_parent"
@@ -57,13 +63,31 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilWebsite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tilPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/website"
+            android:inputType="textWebEditText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilStreetAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:layout_below="@id/tilPassword">
+        android:layout_below="@id/tilWebsite">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etStreetAddress"
@@ -115,12 +139,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/state" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/login_book_background" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

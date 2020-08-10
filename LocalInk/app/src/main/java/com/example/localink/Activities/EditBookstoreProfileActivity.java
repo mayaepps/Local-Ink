@@ -42,9 +42,9 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         Intent i = getIntent();
         final LocalInkUser user = Parcels.unwrap(i.getParcelableExtra(ParseUser.class.getSimpleName()));
 
-        // TODO: change the way location is stored so all fields can be populated when the user edits the location
         binding.etStreetAddress.setText(user.getAddress());
         binding.etName.setText(user.getName());
+        binding.etWebsite.setText(user.getWebsite());
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
             Glide.with(this).load(profileImage.getUrl()).circleCrop().into(binding.ivProfileImage);
@@ -70,9 +70,11 @@ public class EditBookstoreProfileActivity extends AppCompatActivity {
         // Get the new info from the views
         String name = binding.etName.getText().toString();
         String address = binding.etStreetAddress.getText().toString();
+        String website = binding.etWebsite.getText().toString();
 
         user.setAddress(address);
         user.setName(name);
+        user.setWebsite(website);
         if (ImageUtils.getPhotoFile() != null) {
             user.setProfileImage(new ParseFile(ImageUtils.getPhotoFile()));
         }

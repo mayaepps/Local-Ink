@@ -40,15 +40,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardElevation="16dp"
-        android:layout_marginTop="-90dp"
+        android:layout_marginTop="-80dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/bookstoreMapView"
-        app:cardCornerRadius="90dp">
+        app:cardCornerRadius="80dp">
 
     <ImageView
         android:id="@+id/ivStoreProfile"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         tools:src="@tools:sample/avatars" />
 
     </com.google.android.material.card.MaterialCardView>
@@ -81,6 +81,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tvAddress"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="8dp"/>
 
 </RelativeLayout>

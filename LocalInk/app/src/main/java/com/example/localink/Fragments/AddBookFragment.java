@@ -217,7 +217,6 @@ public class AddBookFragment extends Fragment {
                             etIsbn.setText("");
                             etSynopsis.setText("");
                             etCover.setText("");
-                            Glide.with(getContext()).load(getResources().getDrawable(R.drawable.ic_baseline_menu_book_24)).into(ivCoverPreview);
                             spnrAgeRange.setSelection(0);
                             spnrAgeRange.setPrompt("Select your favorite age range!");
                             cgGenres.clearCheck();

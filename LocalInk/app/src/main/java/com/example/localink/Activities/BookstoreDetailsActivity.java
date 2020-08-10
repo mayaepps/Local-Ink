@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.localink.Adapters.BooksAdapter;
@@ -60,6 +61,7 @@ public class BookstoreDetailsActivity extends AppCompatActivity {
         populateViews();
     }
 
+    // Populate all the views in the layout with this bookstore's info
     private void populateViews() {
 
         Glide.with(this).load(bookstore.getProfileImage().getUrl()).into(binding.ivStoreProfile);
@@ -76,8 +78,25 @@ public class BookstoreDetailsActivity extends AppCompatActivity {
                 try {
                     String searchQuery = URLEncoder.encode(bookstore.getName().toString(), "UTF-8");
                     Uri uri = Uri.parse("http://www.google.com/#q=" + searchQuery);
+
+                    // But if the bookstore has set a website, go to that website instead of the google search
+                    if (bookstore.getWebsite() != null && !bookstore.getWebsite().isEmpty()) {
+                        String url = bookstore.getWebsite();
+                        if (!url.startsWith("http://") && !url.startsWith("https://"))
+                            url = "http://" + url;
+                        uri = Uri.parse(url);
+                    }
+
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+
+                    // Check to make sure it can handle this request before making it
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(BookstoreDetailsActivity.this, "No application can handle this request."
+                                + " Please install a web browser",  Toast.LENGTH_LONG).show();
+                    }
+
                 } catch (UnsupportedEncodingException e) {
                     Log.e(TAG, "Could not encode search query for bookstore: " + bookstore.getName(), e);
                 }

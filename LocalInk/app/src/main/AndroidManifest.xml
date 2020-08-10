@@ -48,7 +48,7 @@
         <activity android:name=".Activities.RegisterReaderActivity" />
         <activity
             android:name=".Activities.BookstoreMainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.SplashScreenActivity">
             <intent-filter>

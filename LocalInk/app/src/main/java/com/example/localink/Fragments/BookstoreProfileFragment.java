@@ -2,12 +2,15 @@ package com.example.localink.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +30,9 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class BookstoreProfileFragment extends Fragment {
 
     private static final String TAG = "BookstoreProfileFragmnt";
@@ -35,6 +41,7 @@ public class BookstoreProfileFragment extends Fragment {
     TextView tvName;
     TextView tvAddress;
     MaterialButton btnLogout;
+    MaterialButton btnWebsite;
 
     public BookstoreProfileFragment() {
         // Required empty public constructor
@@ -63,10 +70,34 @@ public class BookstoreProfileFragment extends Fragment {
         tvAddress = view.findViewById(R.id.tvAddress);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnWebsite = view.findViewById(R.id.btnWebsite);
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
 
         populateViews(user);
+
+        // Open the website if the user clicks on the website text button
+        btnWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
+                String url = user.getWebsite();
+
+                if (!url.startsWith("http://") && !url.startsWith("https://"))
+                    url = "http://" + url;
+
+                Uri uri = Uri.parse(url);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(getContext(), "No application can handle this request."
+                            + " Please install a web browser",  Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +125,7 @@ public class BookstoreProfileFragment extends Fragment {
 
         tvAddress.setText("Address: " + user.getAddress());
         tvName.setText(user.getName());
+        btnWebsite.setText(user.getWebsite());
 
         ParseFile profileImage = user.getProfileImage();
         if (profileImage != null) {
