@@ -1,6 +1,4 @@
-# friendly-barnacle
-
-# Bookstore app
+# Local Ink app
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -10,7 +8,7 @@
 
 ## Overview
 ### Description
-This app aims to connect members of the community to independent, local booksellers by recommending books to users based on a profile. The independent booksellers and small bookstores add details for their books that are used to match books with readers' preferences. The books are recommended based on the user's profile and availability at local bookstores. Users can then add these books to a wishlist to buy later or send the list to friends or family as gift ideas. 
+Local Ink is an Android app that aims to connect members of the community to independent, local booksellers by recommending books to users based on a profile. The independent booksellers and small bookstores add details for their books that are used to match books with readers' preferences. The books are recommended based on the user's profile and availability at local bookstores. Users can then add these books to a wishlist to buy later or send the list to friends or family as gift ideas. 
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
