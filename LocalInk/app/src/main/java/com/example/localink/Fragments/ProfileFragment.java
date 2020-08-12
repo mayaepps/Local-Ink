@@ -6,9 +6,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +26,7 @@ import com.example.localink.Activities.MainActivity;
 import com.example.localink.Models.LocalInkUser;
 import com.example.localink.R;
 import com.example.localink.Utils.ChipUtils;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -52,7 +58,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -66,6 +72,10 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
+
         // Find views in profile page
         fabEdit = view.findViewById(R.id.fabEdit);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
@@ -73,7 +83,6 @@ public class ProfileFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         tvGenre = view.findViewById(R.id.tvGenre);
         tvAgeRange = view.findViewById(R.id.tvAgeRange);
-        btnLogout = view.findViewById(R.id.btnLogout);
 
         populateViews(ParseUser.getCurrentUser());
 
@@ -88,17 +97,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // When the user taps the log out button, log the current user out of Parse
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Activity activity = getActivity();
-                Intent i = new Intent(getContext(), LoginActivity.class);
-                startActivity(i);
-                activity.finish();
-            }
-        });
     }
 
     // Set views using info in user
@@ -134,6 +132,27 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_profile, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.miLogOut) {
+            // Log out has been tapped, log the current user out of Parse
+            ParseUser.logOut();
+            Activity activity = getActivity();
+            Intent i = new Intent(getContext(), LoginActivity.class);
+            startActivity(i);
+            activity.finish();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

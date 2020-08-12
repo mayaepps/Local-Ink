@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@color/colorPrimary"
-        android:elevation="8dp"/>
+        android:elevation="8dp"
+        app:menu="@menu/menu_profile"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvProfile"
@@ -73,14 +74,6 @@
         android:src="@drawable/ic_baseline_edit_24"
         app:useCompatPadding="true"
         app:backgroundTint="@color/colorAccent"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/log_out"
-        android:layout_below="@id/btnWebsite"
-        android:layout_margin="16dp"/>
 
 
 </RelativeLayout>

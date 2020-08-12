@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -45,6 +50,7 @@ public class BookstoreProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -58,13 +64,17 @@ public class BookstoreProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
+
         // Find views in the bookstore profile screen
         fabSave = view.findViewById(R.id.fabEdit);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         tvName = view.findViewById(R.id.tvName);
         tvAddress = view.findViewById(R.id.tvAddress);
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
-        btnLogout = view.findViewById(R.id.btnLogout);
         btnWebsite = view.findViewById(R.id.btnWebsite);
 
         final LocalInkUser user = new LocalInkUser(ParseUser.getCurrentUser());
@@ -103,17 +113,6 @@ public class BookstoreProfileFragment extends Fragment {
             }
         });
 
-        // When the user taps the log out button, log the current user out of Parse
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Activity activity = getActivity();
-                Intent i = new Intent(getContext(), LoginActivity.class);
-                startActivity(i);
-                activity.finish();
-            }
-        });
     }
 
     private void populateViews(LocalInkUser user) {
@@ -139,5 +138,26 @@ public class BookstoreProfileFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_profile, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.miLogOut) {
+            // Log out has been tapped, log the current user out of Parse
+            ParseUser.logOut();
+            Activity activity = getActivity();
+            Intent i = new Intent(getContext(), LoginActivity.class);
+            startActivity(i);
+            activity.finish();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

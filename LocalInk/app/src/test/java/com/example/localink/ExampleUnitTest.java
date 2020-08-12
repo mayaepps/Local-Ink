@@ -48,6 +48,7 @@ public class ExampleUnitTest {
         ParseObject.registerSubclass(Book.class);
 
         mockRecFragment = Mockito.mock(RecommendationsFragment.class);
+        ParseUser user = Mockito.mock(ParseUser.class);
 
         List<Book> books = new ArrayList<>();
 
@@ -66,7 +67,7 @@ public class ExampleUnitTest {
         book3.setAgeRange("Middle Grade");
         books.add(book3);
 
-        List<Book> perfectMatchBooks = mockRecFragment.getPerfectMatchBooks(books, new LocalInkUser(ParseUser.getCurrentUser()));
+        List<Book> perfectMatchBooks = mockRecFragment.getPerfectMatchBooks(books, new LocalInkUser(user));
 
         String firstBookTitle = perfectMatchBooks.get(0).getTitle();
 
