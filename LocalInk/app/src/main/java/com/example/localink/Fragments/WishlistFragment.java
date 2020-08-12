@@ -1,5 +1,6 @@
 package com.example.localink.Fragments;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -155,6 +158,7 @@ public class WishlistFragment extends Fragment {
             Book book = wishlistBooks.get(i);
             if (book.getTitle() == null) {
                 booksToRemove.add(book);
+                createNotificationBookRemoved(book);
             }
         }
 
@@ -162,6 +166,30 @@ public class WishlistFragment extends Fragment {
             removeBookFromWishlist(book);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    private void createNotificationBookRemoved(Book book) {
+
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), MainActivity.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("A book on your wishlist has been removed")
+                .setContentText("A book on your wishlist has been removed from its bookstore's bookshelf. ")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_baseline_keyboard_arrow_down_24, "Check your wishlist",
+                        pendingIntent);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(book.hashCode(), builder.build());
     }
 
     // Removes a single book from the current wishlist and saves the changes to Parse

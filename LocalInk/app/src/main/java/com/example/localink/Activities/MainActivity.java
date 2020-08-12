@@ -1,5 +1,8 @@
 package com.example.localink.Activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,7 @@ import com.example.localink.Fragments.ProfileFragment;
 import com.example.localink.Fragments.RecommendationsFragment;
 import com.example.localink.Fragments.SearchFragment;
 import com.example.localink.Fragments.WishlistContainerFragment;
+import com.example.localink.Fragments.WishlistFragment;
 import com.example.localink.R;
 import com.example.localink.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int BOOK_DETAILS_INTENT_CODE = 17;
     public static final String ADDED_TO_WISHLIST = "AddedToWishlist";
+    public static final String CHANNEL_ID = "notificationChannel";
 
     ActivityMainBinding binding;
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createNotificationChannel();
 
         supportPostponeEnterTransition();
 
@@ -77,7 +84,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Set default selection so when the app loads for the first time, it will have the recommendations/home fragment loaded
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
+    }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     public AVLoadingIndicatorView getAVLoadingIndivatorView() {
