@@ -186,7 +186,7 @@ public class RecommendationsFragment extends Fragment {
         removeDuplicateBooks();
 
         // Add books that perfectly match the user's preferences to the recommendation list
-        List<Book> perfectMatches = getPerfectMatchBooks();
+        List<Book> perfectMatches = getPerfectMatchBooks(otherBooks, user);
         recommendedBooks.addAll(perfectMatches);
         adapter.notifyDataSetChanged();
 
@@ -229,7 +229,7 @@ public class RecommendationsFragment extends Fragment {
 
     // If there aren't enough books that fit the preferences,
     // get the books that match the user's age preferences, but show them other genres
-    private List<Book> getExploreBooks() {
+    public List<Book> getExploreBooks() {
         final List<Book> exploreBooks = new ArrayList<>();
 
         // start with "exploring" related genres (similar genres are defined in Book class)
@@ -263,22 +263,22 @@ public class RecommendationsFragment extends Fragment {
         return exploreBooks;
     }
 
-    private List<Book> getPerfectMatchBooks() {
+    public List<Book> getPerfectMatchBooks(List<Book> books, LocalInkUser localInkUser) {
         final List<Book> perfectMatches = new ArrayList<>();
         List<Book> booksToRemove = new ArrayList<>();
 
-        for (Book book : otherBooks) {
+        for (Book book : books) {
             // (But don't recommend books that are already in the wishlist)
             if (inWishlist(book)) {
                 booksToRemove.add(book);
                 continue;
             }
-            if (matchesAge(book) && matchesGenres(book, user.getGenrePreferences())) {
+            if (matchesAge(book) && matchesGenres(book, localInkUser.getGenrePreferences())) {
                 perfectMatches.add(book);
                 booksToRemove.add(book);
             }
         }
-        otherBooks.removeAll(booksToRemove);
+        books.removeAll(booksToRemove);
 
         return  perfectMatches;
     }
@@ -355,7 +355,7 @@ public class RecommendationsFragment extends Fragment {
     }
 
     // Get the user's last known location
-    private void getLastKnownLocation(final int numLimit, final int radiusLimit) {
+    public void getLastKnownLocation(final int numLimit, final int radiusLimit) {
         alreadyAddedExploreBooks = false;
         ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
 

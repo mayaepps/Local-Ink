@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93c735f8-296e-4119-ae5a-fbc91ca467f3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/BookDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/BookDetailsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/Fragments/RecommendationsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/java/com/example/localink/Fragments/RecommendationsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/activity_book_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/activity_book_details.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/item_book.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/layout/item_book.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocalInk/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LocalInk/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +31,58 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
+  <component name="RunManager">
+    <configuration name="Local Ink App" type="AndroidRunConfigurationType" factoryName="Android App">
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -47,5 +95,23 @@
       <updated>1595621963824</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="574" y="168" key="#Local_Ink_App" timestamp="1597261742186">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="574" y="168" key="#Local_Ink_App/0.23.1792.1015@0.23.1792.1015" timestamp="1597261742186" />
+    <state x="345" y="192" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597261711984">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="345" y="192" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1597261711984" />
+    <state x="713" y="426" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1597261688927">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="713" y="426" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1597261688927" />
+    <state x="603" y="363" key="com.intellij.ide.util.TipDialog" timestamp="1597261921607">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="603" y="363" key="com.intellij.ide.util.TipDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1597261921607" />
   </component>
 </project>
