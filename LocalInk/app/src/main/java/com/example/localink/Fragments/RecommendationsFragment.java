@@ -61,7 +61,7 @@ import static android.app.Activity.RESULT_OK;
 public class RecommendationsFragment extends Fragment {
 
     private static final String TAG = "RecommendationsFragment";
-    private static final int MINIMUM_RECS = 10;
+    private static final int MINIMUM_RECS = 15;
     private static final int NUM_INITIAL_STORES = 5;
     private static final int NUM_INITIAL_MILES = 20;
     private RecyclerView rvBooks;
@@ -356,6 +356,7 @@ public class RecommendationsFragment extends Fragment {
 
     // Get the user's last known location
     private void getLastKnownLocation(final int numLimit, final int radiusLimit) {
+        alreadyAddedExploreBooks = false;
         ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
 
         final ParseGeoPoint currentLocation = new ParseGeoPoint();

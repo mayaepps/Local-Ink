@@ -151,9 +151,12 @@ public class SearchFragment extends Fragment {
 
             } else if (object instanceof ParseUser) {
                 LocalInkUser user = new LocalInkUser((ParseUser) object);
-                if (user.getName().startsWith(newText)) {
-                    searchedObjects.add(object);
-                    continue objectsLoop;
+                String[] tokenizedBookstoreName = user.getName().split(" ");
+                for (String word : tokenizedBookstoreName) {
+                    if (word.startsWith(newText)) {
+                        searchedObjects.add(object);
+                        continue objectsLoop;
+                    }
                 }
             }
 
