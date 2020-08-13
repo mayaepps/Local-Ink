@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.params.MandatoryStreamCombination;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,7 @@ public class RecommendationsFragment extends Fragment {
     private SeekBar seekbarRadiusStores;
     private SeekBar seekbarNumStores;
     private boolean alreadyAddedExploreBooks = false;
+    private Location currentLocation = new Location(LocationManager.GPS_PROVIDER);
 
     public RecommendationsFragment() {
         // Required empty public constructor
@@ -82,6 +84,7 @@ public class RecommendationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        LocationUtils.startLocationUpdates(getContext(), currentLocation);
     }
 
     @Override
@@ -359,7 +362,7 @@ public class RecommendationsFragment extends Fragment {
         alreadyAddedExploreBooks = false;
         ((MainActivity) getActivity()).getAVLoadingIndivatorView().smoothToShow();
 
-        final ParseGeoPoint currentLocation = new ParseGeoPoint();
+        final ParseGeoPoint cLocation = new ParseGeoPoint();
 
         // Get the current location and put the latitude and longitude into the ParseGeoPoint
         LocationUtils.getCurrentLocation(getContext(), new OnSuccessListener<Location>() {
@@ -367,9 +370,16 @@ public class RecommendationsFragment extends Fragment {
             public void onSuccess(Location location) {
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
-                    currentLocation.setLatitude(location.getLatitude());
-                    currentLocation.setLongitude(location.getLongitude());
-                    getNearbyStores(currentLocation, numLimit, radiusLimit);
+                    currentLocation.set(location);
+                    cLocation.setLatitude(location.getLatitude());
+                    cLocation.setLongitude(location.getLongitude());
+                    getNearbyStores(cLocation, numLimit, radiusLimit);
+
+                } else if (currentLocation.getLongitude() != 0 && currentLocation.getLongitude() != 0) {
+                    cLocation.setLatitude(currentLocation.getLatitude());
+                    cLocation.setLongitude(currentLocation.getLongitude());
+                    getNearbyStores(cLocation, numLimit, radiusLimit);
+
                 } else {
                     Toast.makeText(getContext(), "Could not find your location", Toast.LENGTH_SHORT).show();
                     //TODO: Try a saved location in Parse
@@ -468,7 +478,6 @@ public class RecommendationsFragment extends Fragment {
             });
         }
     }
-
 
     // Searches through the list of books and checks
     // if there are any duplicate books (i.e. the same book sold at different stores)
