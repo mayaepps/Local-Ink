@@ -10,6 +10,10 @@
 ### Description
 Local Ink is an Android app that aims to connect members of the community to independent, local booksellers by recommending books to users based on a profile. The independent booksellers and small bookstores add details for their books that are used to match books with readers' preferences. The books are recommended based on the user's profile and availability at local bookstores. Users can then add these books to a wishlist to buy later or send the list to friends or family as gift ideas. 
 
+Here is a quick GIF of a couple featuers, but a watch the video for the full tour!
+
+<img src="local-ink.gif" width="300" height="550" />
+
 Here is a link to a video demo of the app with explanations! [Click here](https://drive.google.com/file/d/1IKBDGv4StiTgU7fjAT26C5ExKlQ1xNZE/view?usp=sharing)
 
 ### App Evaluation
